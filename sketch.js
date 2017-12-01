@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	var activation = document.getElementById("activation");
 	var reshape = document.getElementById("reshape");
 	var dropout = document.getElementById("dropout");
-	var recurrent = document.getElementById("recurrent");
 	var lstm = document.getElementById("lstm");
 	var batchnorm = document.getElementById("batchnorm");
 
@@ -147,11 +146,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	dropout.addEventListener('click', function() {
 		chain.push("dropout");
 		addBlock("dropout", chain);
-	});
-
-	recurrent.addEventListener('click', function() {
-		chain.push("recurrent");
-		addBlock("recurrent", chain);
 	});
 
 	lstm.addEventListener('click', function() {

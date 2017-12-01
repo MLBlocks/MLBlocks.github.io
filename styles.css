@@ -1,12 +1,14 @@
 html {
 	padding: 0;
 	margin: 0;
+	overflow: scroll;
 }
 
 body {
 	margin: 0;
 	padding: 0;
 	font-family: Avenir Next;
+	overflow: scroll;
 }
 
 input:focus {
@@ -19,6 +21,10 @@ button:focus {
 
 a {
 	color: white;
+}
+
+select:focus {
+	outline: none;
 }
 
 /*------------------------------------------------------------------------------------------------------------------------*/
@@ -188,22 +194,17 @@ a {
 
 /*------------------------------------------------------------------------------------------------------------------------*/
 
-#palette {
+#scroller {
 	width: 220px;
 	height: 100%;
 	background-color: lightgray;
 	box-shadow: 1px 2px 4px rgba(0,0,0,.15);
-	position: fixed;
+	position: relative;
 	left: 0;
+	z-index: 100;
 	top: 115px;
-	z-index: 1;
-}
-
-#palette #scroller {
-	width: 220px;
-	height: 100%;
-	margin-bottom: 20px;
-	overflow: scroll;
+	bottom: 0;
+	overflow: auto;
 }
 
 .block {
@@ -214,7 +215,6 @@ a {
 	margin: 12px;
 	padding: 0;
 	display: inline-table;
-	/*border: 1px solid white;*/
 	z-index: 0;
 }
 
@@ -253,7 +253,7 @@ a {
 
 .editable_block {
 	width: 150px;
-	height: 100px;
+	height: 50px;
 	border-radius: 5px;
 	box-shadow: 1px 2px 4px rgba(0,0,0,.3);
 	margin: 22px;
@@ -267,7 +267,6 @@ a {
 	text-align: center;
 	position: relative;
 	padding-top: 42%;
-	/*color: white;*/
 }
 
 #edit_type {
@@ -276,7 +275,7 @@ a {
 	text-align: center;
 	padding: 0;
 	margin: 0;
-	padding-top: 27%;
+	padding-top: 10%;
 }
 
 #closeBTN {
@@ -288,22 +287,16 @@ a {
 
 /*------------------------------------------------------------------------------------------------------------------------*/
 
-#canvas {
-	min-height: 400px;
-	left: 220px;
-	top: 120px;
-	right: 0;
-	position: absolute;
-	overflow: scroll;
-	margin: 0;
-	padding: 0;
-}
-
 #playground {
-	min-height: 400px;
-	margin: 0;
-	padding: 0;
+	min-height: 500px;
 	overflow: scroll;
+	position: absolute;
+	top: 115px;
+	right: 0;
+	left: 220px;
+	bottom: 0;
+	overflow: scroll;
+	background-color: #ecf0f1;
 }
 
 /*------------------------------------------------------------------------------------------------------------------------*/
@@ -344,11 +337,6 @@ a {
 
 #dropout {
 	background-color: #e67e22;
-	color: white;
-}
-
-#recurrent {
-	background-color: #e74c3c;
 	color: white;
 }
 
