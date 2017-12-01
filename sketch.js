@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	menu.addEventListener("click", function() {
 		if (opened == 0){
-			menu.style.transform = "rotate(90deg)";
+			menu.style.transform = "rotate(-90deg)";
 			menuNav.style.display = "block";
 			opened = 1;
 		} else {
@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				compileParams.push(optChoice);
 				console.log(compileParams);
 				chain = [];
+				compileParams = [];
 			} else {
 				alert("Canceling model export.");
 			};
@@ -100,6 +101,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			menu.style.transform = "rotate(0deg)";
 			menuNav.style.display = "none";
 			chain = [];
+			compileParams = [];
 		} else {
 			opened = 0;
 			menu.style.transform = "rotate(0deg)";
@@ -193,8 +195,8 @@ function addBlock(type, chain) {
 		console.log('Sending synapse from', type);
 	});
 	block.addEventListener('click', function() {
-		// removeBlock(playground, type, block, chain)
-		block.style.border = "2px solid lightblue";
+		removeBlock(playground, type, block, chain)
+		// block.style.border = "2px solid lightblue";
 	});
 };
 

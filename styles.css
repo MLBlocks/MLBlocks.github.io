@@ -18,7 +18,6 @@ button:focus {
 }
 
 a {
-	/*text-decoration: none;*/
 	color: white;
 }
 
@@ -27,7 +26,7 @@ a {
 .modal {
 	display: none;
   position: fixed;
-  z-index: 2000;
+  z-index: 6000;
 	left: 25%;
   top: 50;
   width: 600px;
@@ -75,61 +74,115 @@ a {
 
 #header {
 	width: 100%;
-	height: 80px;
-	background-color: #fff;
+	height: 65px;
+	background-color: #f3f3f3;
 	box-shadow: 1px 2px 4px rgba(0,0,0,.2);
 	display: inline-block;
 	text-align: center;
 	position: fixed;
-	left: 0;
-	right: 0;
-	z-index: 1000;
+	z-index: 4000;
 }
 
 #header img {
-	width: 60px;
-	margin-left: 50px;
-	margin-top: 20px;
+	width: 47px;
+	margin-left: 10px;
+	margin-top: 17px;
 	margin-right: 0;
 	margin-bottom: 0;
 	float: left;
 }
 
-#header #menu {
+/*------------------------------------------------------------------------------------------------------------------------*/
+
+#hyperparams {
+	width: 100%;
+	height: 50px;
+	background-color: white;
+	box-shadow: 1px 2px 4px rgba(0,0,0,.2);
+	text-align: center;
+	position: fixed;
+	display: inline-flex;
+	z-index: 4000;
+	top: 65px;
+}
+
+#hyperparams #lossfunc {
+	position: relative;
+	width: 200px;
+	height: 27px;
+	border: 1px solid rgba(0,0,0,0.4);
+	border-radius: 0;
+	box-shadow: 1px 2px 4px rgba(0,0,0,.2);
+	margin: 10px 30px;
+	margin-left: 12px;
+	font-family: Avenir Next;
+	font-size: 12px;
+	font-weight: 500;
+}
+
+#hyperparams #opt {
+	position: relative;
+	width: 200px;
+	height: 27px;
+	border: 1px solid rgba(0,0,0,0.4);
+	border-radius: 0;
+	box-shadow: 1px 2px 4px rgba(0,0,0,.2);
+	margin: 10px 30px;
+	font-family: Avenir Next;
+	font-size: 12px;
+	font-weight: 500;
+}
+
+#hyperparams #compileBTN {
+	width: 120px;
+	height: 27px;
+	background-color: lightgray;
+	color: white;
+	font-family: Avenir Next;
+	box-shadow: 1px 2px 4px rgba(0,0,0,.15);
+	font-size: 15px;
+	border: none;
+	border-radius: 50px;
+	font-weight: 600;
+	margin-left: 25px;
+	margin-top: 10px;
+}
+
+#hyperparams #menu {
 	font-size: 32px;
-	margin: 25px 50px;
+	margin: 8px 50px;
 	float: right;
 }
 
-#header #menu:hover {
+#hyperparams #menu:hover {
 	transform: scale(1.1);
 	transition: 0.5s;
 	cursor: pointer;
 }
 
-#header #menuNav {
+#hyperparams #menuNav {
 	display: none;
 	width: 85px;
 	height: 140px;
 	background-color: white;
-	float: right;
 	list-style: none;
 	text-align: center;
 	box-shadow: 1px 2px 4px rgba(0,0,0,.2);
 	border-radius: 5px;
 	margin-right: -20px;
 	position: relative;
-	z-index: 1100;
+	z-index: 5000;
+	float: right;
 }
 
-#header #menuNav li {
+#hyperparams #menuNav li {
 	margin: 10px 5px;
 	padding: 0;
 	text-align: left;
 	margin-left: -20px;
 }
 
-#header #menuNav li:hover {
+#hyperparams #menuNav li:hover {
 	cursor: pointer;
 }
 
@@ -137,50 +190,47 @@ a {
 
 #palette {
 	width: 220px;
-	height: 585px;
-	background-color: #bdc3c7;
+	height: 100%;
+	background-color: lightgray;
 	box-shadow: 1px 2px 4px rgba(0,0,0,.15);
-	overflow: scroll;
-	position: absolute;
+	position: fixed;
 	left: 0;
-	top: 80px;
-	bottom: 0;
-}
-
-#hyperparams {
-	width: 95%;
-	height: 180px;
-	margin: 0 auto;
-	padding-top: 20px;
-}
-
-#hyperparams #title {
-	font-size: 15px;
-	font-weight: 500;
-}
-
-#sep {
-	position: relative;
-	width: 100%;
-	height: 1px;
-	background-color: black;
+	top: 115px;
+	z-index: 1;
 }
 
 #palette #scroller {
-	width: 100%;
+	width: 220px;
 	height: 100%;
-	padding: 0;
-	margin: 0;
+	margin-bottom: 20px;
+	overflow: scroll;
 }
 
 .block {
-	width: 190px;
-	height: 50px;
+	width: 80px;
+	height: 90px;
 	border-radius: 5px;
 	box-shadow: 1px 2px 4px rgba(0,0,0,.3);
-	margin: 23px;
-	margin-left: 10px;
+	margin: 12px;
 	padding: 0;
+	display: inline-table;
+	/*border: 1px solid white;*/
+	z-index: 0;
+}
+
+.editable_block {
+	width: 150px;
+	height: 100px;
+	border-radius: 5px;
+	box-shadow: 1px 2px 4px rgba(0,0,0,.3);
+	margin: 22px;
+	padding: 0;
+	text-align: center;
+}
+
+.block:hover {
+	transform: scale(1.05);
+	transition: 0.5s;
 }
 
 #rhook {
@@ -208,14 +258,16 @@ a {
 	box-shadow: 1px 2px 4px rgba(0,0,0,.3);
 	margin: 22px;
 	padding: 0;
+	text-align: center;
 }
 
 #type {
-	font-size: 15px;
+	font-size: 19px;
 	font-weight: bold;
 	text-align: center;
 	position: relative;
-	padding-top: 10%;
+	padding-top: 42%;
+	/*color: white;*/
 }
 
 #edit_type {
@@ -224,7 +276,7 @@ a {
 	text-align: center;
 	padding: 0;
 	margin: 0;
-	padding: 40px;
+	padding-top: 27%;
 }
 
 #closeBTN {
@@ -239,9 +291,8 @@ a {
 #canvas {
 	min-height: 400px;
 	left: 220px;
-	top: 80px;
+	top: 120px;
 	right: 0;
-	bottom: 0;
 	position: absolute;
 	overflow: scroll;
 	margin: 0;

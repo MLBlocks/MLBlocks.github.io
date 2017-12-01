@@ -34,92 +34,98 @@
 
 		<div id="header">
 			<a href="#"><img src="./images/ML.png" alt="logo"></a>
+		</div>
+
+		<div id="hyperparams">
+			<select name="Loss" id="lossfunc">
+				<option value="binary_crossentropy">Binary Crossentropy</option>
+				<option value="categorical_crossentropy">Categorical Crossentropy</option>
+				<option value="sparse_categorical_crossentropy">Sparse Categorical Crossentropy</option>
+				<option value="mean_squared_error">Mean Squared Error</option>
+				<option value="mean_absolute_error">Mean Absolute Error</option>
+				<option value="mean_absolute_percentage_error">Mean Absolute Percentage Error</option>
+				<option value="mean_squared_logarithmic_error">Mean Squared Logarithmic Error</option>
+				<option value="squared_hinge">Squared Hinge</option>
+				<option value="hinge">Hinge</option>
+				<option value="categorical_hinge">Categorical Hinge</option>
+				<option value="logcosh">Logcosh</option>
+				<option value="kullback_leibler_divergence">Kullback Leibler Divergence</option>
+				<option value="poisson">Poisson</option>
+				<option value="cosine_proximity">Cosine Proximity</option>
+			</select>
+
+			<select name="optimizer" id="opt">
+				<option value="SGD">SGD</option>
+				<option value="RMSprop">RMSprop</option>
+				<option value="Adagrad">Adagrad</option>
+				<option value="Adadelta">Adadelta</option>
+				<option value="Adam">Adam</option>
+				<option value="Adamax">Adamax</option>
+				<option value="Nadam">Nadam</option>
+				<option value="TFOptimizer">TFOptimizer</option>
+			</select>
+
+			<br>
+			<br>
+
+			<button type="button" id="compileBTN">Compile</button>
+
 			<i class="fa fa-caret-down" aria-hidden="true" id="menu"></i>
+
 			<ul id="menuNav">
 				<li id="help"><i class="fa fa-info-circle" style="padding-right: 10px;" aria-hidden="true"></i>Help</li>
 				<li id="export"><i class="fa fa-upload" style="padding-right: 10px;" aria-hidden="true"></i>Export</li>
 				<li id="import"><i class="fa fa-download" style="padding-right: 10px;" aria-hidden="true"></i>Import</li>
 				<li id="delete"><i class="fa fa-trash-o" style="padding-right: 10px;" aria-hidden="true"></i>Clear</li>
 			</ul>
+
 		</div>
 
 		<div id="palette">
 			<div id="scroller">
-				<div id="hyperparams">
-					<p style="padding:0;padding-bottom:15px;margin:0;font-weight:700;">Hyper-parameters:</p>
-					<p id="title" style="margin:0;padding:0;">Loss:</p>
-
-					<select name="Loss" id="lossfunc">
-						<option value="binary_crossentropy">Binary Crossentropy</option>
-						<option value="categorical_crossentropy">Categorical Crossentropy</option>
-						<option value="sparse_categorical_crossentropy">Sparse Categorical Crossentropy</option>
-						<option value="mean_squared_error">Mean Squared Error</option>
-						<option value="mean_absolute_error">Mean Absolute Error</option>
-						<option value="mean_absolute_percentage_error">Mean Absolute Percentage Error</option>
-						<option value="mean_squared_logarithmic_error">Mean Squared Logarithmic Error</option>
-						<option value="squared_hinge">Squared Hinge</option>
-						<option value="hinge">Hinge</option>
-						<option value="categorical_hinge">Categorical Hinge</option>
-						<option value="logcosh">Logcosh</option>
-						<option value="kullback_leibler_divergence">Kullback Leibler Divergence</option>
-						<option value="poisson">Poisson</option>
-						<option value="cosine_proximity">Cosine Proximity</option>
-					</select>
-
-					<p id="title" style="margin:0;padding:0;padding-top:10px;">Optimizer:</p>
-					<select name="optimizer" id="opt">
-						<option value="SGD">SGD</option>
-						<option value="RMSprop">RMSprop</option>
-						<option value="Adagrad">Adagrad</option>
-						<option value="Adadelta">Adadelta</option>
-						<option value="Adam">Adam</option>
-						<option value="Adamax">Adamax</option>
-						<option value="Nadam">Nadam</option>
-						<option value="TFOptimizer">TFOptimizer</option>
-					</select>
-
-					<br>
-					<br>
-
-					<button type="button" id="compileBTN">Compile</button>
-				</div>
-
-				<div id="sep"></div>
-
-				<p style="padding:0;padding-left:10px;padding-top:15px;margin:0;font-weight:700;">Layers:</p>
 
 				<div class="block" id="input">
-					<p id="type">Input</p>
+					<p id="type">In</p>
 				</div>
+
 				<div class="block" id="dense">
-					<p id="type">Dense</p>
+					<p id="type">De</p>
 				</div>
+
 				<div class="block" id="conv2d">
-					<p id="type">Conv2D</p>
+					<p id="type">C2D</p>
 				</div>
+
 				<div class="block" id="mp2d">
-					<p id="type">MaxPooling2D</p>
+					<p id="type">MP2D</p>
 				</div>
+
 				<div class="block" id="flatten">
-					<p id="type">Flatten</p>
+					<p id="type">Fl</p>
 				</div>
+
 				<div class="block" id="activation">
-					<p id="type">Activation</p>
+					<p id="type">Act</p>
 				</div>
+
 				<div class="block" id="reshape">
-					<p id="type">Reshape</p>
+					<p id="type">Re</p>
 				</div>
+
 				<div class="block" id="dropout">
-					<p id="type">Dropout</p>
+					<p id="type">Do</p>
 				</div>
+
 				<div class="block" id="recurrent">
-					<p id="type">Recurrent</p>
+					<p id="type">Re</p>
 				</div>
+
 				<div class="block" id="lstm">
 					<p id="type">LSTM</p>
 				</div>
+
 				<div class="block" id="batchnorm">
-					<p id="type">BatchNorm</p>
+					<p id="type">BN</p>
 				</div>
 			</div>
 		</div>
