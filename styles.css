@@ -139,21 +139,6 @@ select:focus {
 	font-weight: 500;
 }
 
-#hyperparams #compileBTN {
-	width: 120px;
-	height: 27px;
-	background-color: lightgray;
-	color: white;
-	font-family: Avenir Next;
-	box-shadow: 1px 2px 4px rgba(0,0,0,.15);
-	font-size: 15px;
-	border: none;
-	border-radius: 50px;
-	font-weight: 600;
-	margin-left: 25px;
-	margin-top: 10px;
-}
-
 #hyperparams #menu {
 	font-size: 32px;
 	margin: 8px 50px;
