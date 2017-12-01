@@ -25,21 +25,12 @@ document.addEventListener("DOMContentLoaded", function() {
 	var lstm = document.getElementById("lstm");
 	var batchnorm = document.getElementById("batchnorm");
 
-	var compileBTN = document.getElementById('compileBTN');
 	var loss = document.getElementById('lossfunc');
 	var optimizer = document.getElementById('opt');
 
 	var opened = 0;
 	var chain = [];
 	var compileParams = [];
-
-	compileBTN.addEventListener('click', function() {
-		var lossChoice = loss.value;
-		var optChoice = optimizer.value;
-		compileParams.push(lossChoice);
-		compileParams.push(optChoice);
-		console.log(compileParams);
-	});
 
 	menu.addEventListener("click", function() {
 		if (opened == 0){
@@ -61,14 +52,17 @@ document.addEventListener("DOMContentLoaded", function() {
 		if (chain.length != 0) {
 			var msg = confirm("Are you sure you want to export this model?");
 			if (msg == true) {
-				console.log(chain);
 				var lossChoice = loss.value;
 				var optChoice = optimizer.value;
+
 				compileParams.push(lossChoice);
 				compileParams.push(optChoice);
+
+				console.log(chain);
 				console.log(compileParams);
 				chain = [];
 				compileParams = [];
+				
 			} else {
 				alert("Canceling model export.");
 			};
