@@ -168,17 +168,16 @@ select:focus {
 
 #hyperparams #menuNav {
 	display: none;
-	width: 85px;
+	width: 75px;
 	height: 140px;
 	background-color: white;
 	list-style: none;
 	text-align: center;
 	box-shadow: 1px 2px 4px rgba(0,0,0,.2);
 	border-radius: 5px;
-	margin-right: -20px;
 	position: relative;
 	z-index: 5000;
-	float: right;
+	margin-left: -40px;
 }
 
 #hyperparams #menuNav li {
