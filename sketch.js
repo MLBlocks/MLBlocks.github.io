@@ -305,8 +305,11 @@ function writeImports(code, type, chain) {
 function writeCode(code, importChain, layerChain, compileParams) {
 
 	code.insert("import numpy as np");
+	code.insert("\n");
 	code.insert("import keras");
+	code.insert("\n");
 	code.insert("from keras.models import Sequential, Model, model_from_json");
+	code.insert("\n");
 
 	var imports = new Set(importChain);
 	var finalImports = Array.from(imports);
@@ -316,5 +319,5 @@ function writeCode(code, importChain, layerChain, compileParams) {
 		code.insert("\n");
 	};
 
-	
+
 };
