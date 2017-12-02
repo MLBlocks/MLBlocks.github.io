@@ -4,6 +4,7 @@
 		<meta name="viewport" content="width=device-width">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
+		<link rel="shortcut icon" type="image/ico" href="images/favicon.ico">
 		<link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
 		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 		<link rel="stylesheet" href="styles.css">
@@ -11,6 +12,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js" charset="utf-8"></script>
 		<script src="sketch.js" charset="utf-8"></script>
 	</head>
 
@@ -23,7 +25,7 @@
 				<p>A project by <a href="https://github.com/rish-16/" target="_blank">Rishabh Anand</a></p>
 				<p style="font-size: 19px;"><strong>Instructions:</strong></p>
 				<ul>
-					<li>Drag and drop Layer Cards onto the sandbox space.</li>
+					<li>Drag and drop Layer Blocks onto the sandbox space.</li>
 					<li>Hold on a card and produce line to another card for Synapse.</li>
 					<li>Tweak layer parameters by clicking a card in the sandbox.</li>
 					<li>When the model is complete, export model in C++ or Python.</li>
@@ -65,6 +67,11 @@
 				<option value="TFOptimizer">TFOptimizer</option>
 			</select>
 
+			<input type="text" placeholder="Learning rate" id="alpha">
+			<input type="text" placeholder="Momentum" id="momentum">
+			<input type="text" placeholder="Clip norm" id="clipnorm">
+			<input type="text" placeholder="Clip value" id="clipvalue">
+
 			<i class="fa fa-caret-down" aria-hidden="true" id="menu"></i>
 
 			<ul id="menuNav">
@@ -72,6 +79,7 @@
 				<li id="export"><i class="fa fa-upload" style="padding-right: 10px;" aria-hidden="true"></i>Export</li>
 				<li id="import"><i class="fa fa-download" style="padding-right: 10px;" aria-hidden="true"></i>Import</li>
 				<li id="delete"><i class="fa fa-trash-o" style="padding-right: 10px;" aria-hidden="true"></i>Clear</li>
+				<li id="editor"><i class="fa fa-code" style="padding-right: 10px;" aria-hidden="true"></i>Editor</li>
 			</ul>
 
 		</div>
@@ -79,35 +87,35 @@
 		<div id="scroller">
 
 			<div class="block" id="input">
-				<p id="type">In</p>
+				<p id="type">Input</p>
 			</div>
 
 			<div class="block" id="dense">
-				<p id="type">De</p>
+				<p id="type">Dense</p>
 			</div>
 
 			<div class="block" id="conv2d">
-				<p id="type">C2D</p>
+				<p id="type">Conv2D</p>
 			</div>
 
 			<div class="block" id="mp2d">
-				<p id="type">MP2D</p>
+				<p id="type">MaxPool2D</p>
 			</div>
 
 			<div class="block" id="flatten">
-				<p id="type">Fl</p>
+				<p id="type">Flatten</p>
 			</div>
 
 			<div class="block" id="activation">
-				<p id="type">Act</p>
+				<p id="type">Activation</p>
 			</div>
 
 			<div class="block" id="reshape">
-				<p id="type">Re</p>
+				<p id="type">Reshape</p>
 			</div>
 
 			<div class="block" id="dropout">
-				<p id="type">Do</p>
+				<p id="type">Dropout</p>
 			</div>
 
 			<div class="block" id="lstm">
@@ -115,11 +123,19 @@
 			</div>
 
 			<div class="block" id="batchnorm">
-				<p id="type">BN</p>
+				<p id="type">BatchNorm</p>
 			</div>
 		</div>
 
 		<div id="playground"></div>
+
+		<div id="sandbox">
+			<div id="sbheader">
+				<p id="filename">model.py</p>
+				<button type="button" id="closesb"><i class="fa fa-times" aria-hidden="true"></i></button>
+			</div>
+			<div id="code"></div>
+		</div>
 
 	</body>
 
