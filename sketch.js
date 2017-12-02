@@ -151,67 +151,67 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	input.addEventListener('click', function() {
 		chain.push("input");
-		addBlock("input", chain);
+		addBlock("input", chain, importChain);
 		writeImports(code, "input", importChain);
 	});
 
 	dense.addEventListener('click', function() {
 		chain.push("dense");
-		addBlock("dense", chain);
+		addBlock("dense", chain, importChain);
 		writeImports(code, "dense", importChain);
 	});
 
 	conv2d.addEventListener('click', function() {
 		chain.push("conv2d");
-		addBlock("conv2d", chain);
+		addBlock("conv2d", chain, importChain);
 		writeImports(code, "conv2d", importChain);
 	});
 
 	mp2d.addEventListener('click', function() {
 		chain.push("mp2d");
-		addBlock("mp2d", chain);
+		addBlock("mp2d", chain, importChain);
 		writeImports(code, "mp2d", importChain);
 	});
 
 	flatten.addEventListener('click', function() {
 		chain.push("flatten");
-		addBlock("flatten", chain);
+		addBlock("flatten", chain, importChain);
 		writeImports(code, "flatten", importChain);
 	});
 
 	activation.addEventListener('click', function() {
 		chain.push("activation");
-		addBlock("activation", chain);
+		addBlock("activation", chain, importChain);
 		writeImports(code, "activation", importChain);
 	});
 
 	reshape.addEventListener('click', function() {
 		chain.push("reshape");
-		addBlock("reshape", chain);
+		addBlock("reshape", chain, importChain);
 		writeImports(code, "reshape", importChain);
 	});
 
 	dropout.addEventListener('click', function() {
 		chain.push("dropout");
-		addBlock("dropout", chain);
+		addBlock("dropout", chain, importChain);
 		writeImports(code, "dropout", importChain);
 	});
 
 	lstm.addEventListener('click', function() {
 		chain.push("lstm");
-		addBlock("lstm", chain);
+		addBlock("lstm", chain, importChain);
 		writeImports(code, "lstm", importChain);
 	});
 
 	batchnorm.addEventListener('click', function() {
 		chain.push("batchnorm");
-		addBlock("batchnorm", chain);
+		addBlock("batchnorm", chain, importChain);
 		writeImports(code, "batchnorm", importChain);
 	});
 
 });
 
-function addBlock(type, chain) {
+function addBlock(type, chain, importChain) {
 	var playground = document.getElementById('playground');
 	var block = document.createElement("DIV");
 	var category = document.createElement("P");
@@ -240,7 +240,7 @@ function addBlock(type, chain) {
 		console.log('Sending synapse from', type);
 	});
 	block.addEventListener('dblclick', function() {
-		removeBlock(playground, type, block, chain)
+		removeBlock(playground, type, block, chain, importChain);
 	});
 };
 
@@ -253,11 +253,13 @@ function clearPlayground(code) {
 	code.insert("\n")
 };
 
-function removeBlock(playground, type, block, chain) {
+function removeBlock(playground, type, block, chain, importChain) {
 	console.log('closing block type:', type);
 	playground.removeChild(block);
 	var i = chain.indexOf(type);
+	var j = importChain.indexOf(type);
 	chain.splice(i,1);
+	importChain.splice(j,1);
 };
 
 function writeImports(code, type, chain) {
@@ -318,6 +320,4 @@ function writeCode(code, importChain, layerChain, compileParams) {
 		code.insert("from keras.layers import " + String(finalImports[i]));
 		code.insert("\n");
 	};
-
-
 };
