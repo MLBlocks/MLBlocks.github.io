@@ -39,12 +39,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	var code = ace.edit("code");
   code.setTheme("ace/theme/xcode");
   code.getSession().setMode("ace/mode/python");
-	code.insert("# Export model to finish writing code...");
+	code.insert("# Export model to generate code...");
 	code.insert("\n")
-	code.insert("import numpy as np");
-	code.insert("\n")
-	code.insert("from keras.models import Sequential, Model, model_from_json");
-	code.insert("\n");
 
 	var opened = 0;
 	var chain = [];
@@ -94,9 +90,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
 				console.log(chain);
 				console.log(compileParams);
+				console.log(importChain);
 
 				chain = [];
 				compileParams = [];
+
+				writeCode(code, importChain, chain, compileParams);
 
 			} else {
 				alert("Canceling model export.");
@@ -153,61 +152,61 @@ document.addEventListener("DOMContentLoaded", function() {
 	input.addEventListener('click', function() {
 		chain.push("input");
 		addBlock("input", chain);
-		writeImports(code, "input");
+		writeImports(code, "input", importChain);
 	});
 
 	dense.addEventListener('click', function() {
 		chain.push("dense");
 		addBlock("dense", chain);
-		writeImports(code, "dense");
+		writeImports(code, "dense", importChain);
 	});
 
 	conv2d.addEventListener('click', function() {
 		chain.push("conv2d");
 		addBlock("conv2d", chain);
-		writeImports(code, "conv2d");
+		writeImports(code, "conv2d", importChain);
 	});
 
 	mp2d.addEventListener('click', function() {
 		chain.push("mp2d");
 		addBlock("mp2d", chain);
-		writeImports(code, "mp2d");
+		writeImports(code, "mp2d", importChain);
 	});
 
 	flatten.addEventListener('click', function() {
 		chain.push("flatten");
 		addBlock("flatten", chain);
-		writeImports(code, "flatten");
+		writeImports(code, "flatten", importChain);
 	});
 
 	activation.addEventListener('click', function() {
 		chain.push("activation");
 		addBlock("activation", chain);
-		writeImports(code, "activation");
+		writeImports(code, "activation", importChain);
 	});
 
 	reshape.addEventListener('click', function() {
 		chain.push("reshape");
 		addBlock("reshape", chain);
-		writeImports(code, "reshape");
+		writeImports(code, "reshape", importChain);
 	});
 
 	dropout.addEventListener('click', function() {
 		chain.push("dropout");
 		addBlock("dropout", chain);
-		writeImports(code, "dropout");
+		writeImports(code, "dropout", importChain);
 	});
 
 	lstm.addEventListener('click', function() {
 		chain.push("lstm");
 		addBlock("lstm", chain);
-		writeImports(code, "lstm");
+		writeImports(code, "lstm", importChain);
 	});
 
 	batchnorm.addEventListener('click', function() {
 		chain.push("batchnorm");
 		addBlock("batchnorm", chain);
-		writeImports(code, "input");
+		writeImports(code, "batchnorm", importChain);
 	});
 
 });
@@ -252,10 +251,6 @@ function clearPlayground(code) {
 	code.setValue("");
 	code.insert("# Export model to finish writing code...");
 	code.insert("\n")
-	code.insert("import numpy as np");
-	code.insert("\n")
-	code.insert("from keras.models import Sequential, Model, model_from_json");
-	code.insert("\n");
 };
 
 function removeBlock(playground, type, block, chain) {
@@ -265,58 +260,61 @@ function removeBlock(playground, type, block, chain) {
 	chain.splice(i,1);
 };
 
-function writeImports(code, type) {
+function writeImports(code, type, chain) {
 	if (type == "input") {
-		code.insert("from keras.layers import Input");
-		code.insert("\n");
+		chain.push("Input");
 	};
 
 	if (type == "dense") {
-		code.insert("from keras.layers import Dense");
-		code.insert("\n");
+		chain.push("Dense");
 	};
 
 	if (type == "conv2d") {
-		code.insert("from keras.layers import Conv2D");
-		code.insert("\n");
+		chain.push("Conv2D");
 	};
 
 	if (type == "mp2d") {
-		code.insert("from keras.layers import MaxPooling2D");
-		code.insert("\n");
+		chain.push("MaxPooling2D");
 	};
 
 	if (type == "flatten") {
-		code.insert("from keras.layers import Flatten");
-		code.insert("\n");
+		chain.push("Flatten");
 	};
 
 	if (type == "activation") {
-		code.insert("from keras.layers import Activation");
-		code.insert("\n");
+		chain.push("Activation");
 	};
 
 	if (type == "dropout") {
-		code.insert("from keras.layers import Dropout");
-		code.insert("\n");
-	};
-
-	if (type == "reshape") {
-		code.insert("from keras.layers import Reshape");
-		code.insert("\n");
+		chain.push("Dropout");
 	};
 
 	if (type == "lstm") {
-		code.insert("from keras.layers import LSTM");
-		code.insert("\n");
+		chain.push("LSTM");
 	};
 
 	if (type == "batchnorm") {
-		code.insert("from keras.layers import BatchNormalization");
-		code.insert("\n");
+		chain.push("BatchNormalization");
+	};
+
+	if (type == "reshape") {
+		chain.push("Reshape");
 	};
 };
 
-function addToImportChain(importChain, type) {
-	importChain.push(type);
+function writeCode(code, importChain, layerChain, compileParams) {
+
+	code.insert("import numpy as np");
+	code.insert("import keras");
+	code.insert("from keras.models import Sequential, Model, model_from_json");
+
+	var imports = new Set(importChain);
+	var finalImports = Array.from(imports);
+
+	for (i = 0; i < finalImports.length; i++) {
+		code.insert("from keras.layers import " + String(finalImports[i]));
+		code.insert("\n");
+	};
+
+	
 };
