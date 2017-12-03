@@ -231,7 +231,7 @@ select:focus {
 /*------------------------------------------------------------------------------------------------------------------------*/
 
 #scroller {
-	width: 220px;
+	width: 225px;
 	height: 100%;
 	background-color: lightgray;
 	box-shadow: 1px 2px 4px rgba(0,0,0,.15);
@@ -319,7 +319,7 @@ select:focus {
 	position: absolute;
 	top: 115px;
 	right: 0;
-	left: 220px;
+	left: 225px;
 	bottom: 0;
 	overflow: auto;
 	background-color: #ecf0f1;
@@ -378,51 +378,51 @@ select:focus {
 
 /*------------------------------------------------------------------------------------------------------------------------*/
 
-#input {
+#Input {
 	background-color: #ECECEC;
 }
 
-#dense {
+#Dense {
 	background-color: #2ecc71;
 	color: white;
 }
 
-#conv2d {
+#Conv2D {
 	background-color: #3498db;
 	color: white;
 }
 
-#mp2d {
+#MaxPooling2D {
 	background-color: #9b59b6;
 	color: white;
 }
 
-#flatten {
+#Flatten {
 	background-color: #34495e;
 	color: white;
 }
 
-#activation {
+#Activation {
 	background-color: #f1c40f;
 	color: white;
 }
 
-#reshape {
+#Reshape {
 	background-color: #1abc9c;
 	color: white;
 }
 
-#dropout {
+#Dropout {
 	background-color: #e67e22;
 	color: white;
 }
 
-#lstm {
+#LSTM {
 	background-color: #1abc9c;
 	color: white;
 }
 
-#batchnorm {
+#BatchNormalization {
 	background-color: #95a5a6;
 	color: white;
 }

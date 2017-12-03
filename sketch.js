@@ -18,16 +18,16 @@ document.addEventListener("DOMContentLoaded", function() {
 	var sandbox = document.getElementById("sandbox");
 	var closesb = document.getElementById("closesb");
 
-	var input = document.getElementById("input");
-	var dense = document.getElementById("dense");
-	var conv2d = document.getElementById("conv2d");
-	var mp2d = document.getElementById("mp2d");
-	var flatten = document.getElementById("flatten");
-	var activation = document.getElementById("activation");
-	var reshape = document.getElementById("reshape");
-	var dropout = document.getElementById("dropout");
-	var lstm = document.getElementById("lstm");
-	var batchnorm = document.getElementById("batchnorm");
+	var input = document.getElementById("Input");
+	var dense = document.getElementById("Dense");
+	var conv2d = document.getElementById("Conv2D");
+	var mp2d = document.getElementById("MaxPooling2D");
+	var flatten = document.getElementById("Flatten");
+	var activation = document.getElementById("Activation");
+	var reshape = document.getElementById("Reshape");
+	var dropout = document.getElementById("Dropout");
+	var lstm = document.getElementById("LSTM");
+	var batchnorm = document.getElementById("BatchNormalization");
 
 	var loss = document.getElementById('lossfunc');
 	var optimizer = document.getElementById('opt');
@@ -44,7 +44,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	var opened = 0;
 	var chain = [];
-	var importChain = [];
 	var compileParams = [];
 
 	menu.addEventListener("click", function() {
@@ -88,14 +87,19 @@ document.addEventListener("DOMContentLoaded", function() {
 				compileParams.push(clipnorm);
 				compileParams.push(clipvalue);
 
+				imports = yieldImports(chain);
+
 				console.log(chain);
 				console.log(compileParams);
-				console.log(importChain);
+				console.log(imports);
+
+				writeImports(code, imports);
+				writeModel(code, chain);
+				compileModel(code, compileParams);
+				fitModel(code);
 
 				chain = [];
 				compileParams = [];
-
-				writeCode(code, importChain, chain, compileParams);
 
 			} else {
 				alert("Canceling model export.");
@@ -150,97 +154,75 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	input.addEventListener('click', function() {
-		chain.push("input");
-		addBlock("input", chain, importChain);
-		writeImports(code, "input", importChain);
+		chain.push("Input");
+		addBlock("Input", chain);
 	});
 
 	dense.addEventListener('click', function() {
-		chain.push("dense");
-		addBlock("dense", chain, importChain);
-		writeImports(code, "dense", importChain);
+		chain.push("Dense");
+		addBlock("Dense", chain);
 	});
 
 	conv2d.addEventListener('click', function() {
-		chain.push("conv2d");
-		addBlock("conv2d", chain, importChain);
-		writeImports(code, "conv2d", importChain);
+		chain.push("Conv2D");
+		addBlock("Conv2D", chain);
 	});
 
 	mp2d.addEventListener('click', function() {
-		chain.push("mp2d");
-		addBlock("mp2d", chain, importChain);
-		writeImports(code, "mp2d", importChain);
+		chain.push("MaxPooling2D");
+		addBlock("MaxPooling2D", chain);
 	});
 
 	flatten.addEventListener('click', function() {
-		chain.push("flatten");
-		addBlock("flatten", chain, importChain);
-		writeImports(code, "flatten", importChain);
+		chain.push("Flatten");
+		addBlock("Flatten", chain);
 	});
 
 	activation.addEventListener('click', function() {
-		chain.push("activation");
-		addBlock("activation", chain, importChain);
-		writeImports(code, "activation", importChain);
+		chain.push("Activation");
+		addBlock("Activation", chain);
 	});
 
 	reshape.addEventListener('click', function() {
-		chain.push("reshape");
-		addBlock("reshape", chain, importChain);
-		writeImports(code, "reshape", importChain);
+		chain.push("Reshape");
+		addBlock("Reshape", chain);
 	});
 
 	dropout.addEventListener('click', function() {
-		chain.push("dropout");
-		addBlock("dropout", chain, importChain);
-		writeImports(code, "dropout", importChain);
+		chain.push("Dropout");
+		addBlock("Dropout", chain);
 	});
 
 	lstm.addEventListener('click', function() {
-		chain.push("lstm");
-		addBlock("lstm", chain, importChain);
-		writeImports(code, "lstm", importChain);
+		chain.push("LSTM");
+		addBlock("LSTM", chain);
 	});
 
 	batchnorm.addEventListener('click', function() {
-		chain.push("batchnorm");
-		addBlock("batchnorm", chain, importChain);
-		writeImports(code, "batchnorm", importChain);
+		chain.push("BatchNormalization");
+		addBlock("BatchNormalization", chain);
 	});
 
 });
 
-function addBlock(type, chain, importChain) {
+function addBlock(type, chain) {
 	var playground = document.getElementById('playground');
 	var block = document.createElement("DIV");
 	var category = document.createElement("P");
 	var text = document.createTextNode(type);
-	var rhook = document.createElement("DIV");
-	var shook = document.createElement("DIV");
-	rhook.id = "rhook";
-	shook.id = "shook";
 
 	category.appendChild(text);
 	category.id = "edit_type";
 
-	// block.appendChild(rhook);
 	block.appendChild(category);
-	// block.appendChild(shook);
 
 	block.id = type;
 	block.className += "editable_block";
 
 	playground.appendChild(block);
 
-	rhook.addEventListener('click', function() {
-		console.log('Receiving synapse from previous block');
-	});
-	shook.addEventListener('click', function() {
-		console.log('Sending synapse from', type);
-	});
 	block.addEventListener('dblclick', function() {
-		removeBlock(playground, type, block, chain, importChain);
+		removeBlock(playground, type, block, chain);
 	});
 };
 
@@ -253,71 +235,96 @@ function clearPlayground(code) {
 	code.insert("\n")
 };
 
-function removeBlock(playground, type, block, chain, importChain) {
-	console.log('closing block type:', type);
+function removeBlock(palyground, type, block, chain) {
+	console.log('Removing block of type:', type);
 	playground.removeChild(block);
 	var i = chain.indexOf(type);
-	var j = importChain.indexOf(type);
 	chain.splice(i,1);
-	importChain.splice(j,1);
 };
 
-function writeImports(code, type, chain) {
-	if (type == "input") {
-		chain.push("Input");
-	};
-
-	if (type == "dense") {
-		chain.push("Dense");
-	};
-
-	if (type == "conv2d") {
-		chain.push("Conv2D");
-	};
-
-	if (type == "mp2d") {
-		chain.push("MaxPooling2D");
-	};
-
-	if (type == "flatten") {
-		chain.push("Flatten");
-	};
-
-	if (type == "activation") {
-		chain.push("Activation");
-	};
-
-	if (type == "dropout") {
-		chain.push("Dropout");
-	};
-
-	if (type == "lstm") {
-		chain.push("LSTM");
-	};
-
-	if (type == "batchnorm") {
-		chain.push("BatchNormalization");
-	};
-
-	if (type == "reshape") {
-		chain.push("Reshape");
-	};
+function yieldImports(layerChain) {
+	var importChain = new Set(layerChain);
+	var	importChain = Array.from(importChain);
+	return importChain;
 };
 
-function writeCode(code, importChain, layerChain, compileParams) {
-
+function writeImports(code, importChain) {
 	code.insert("import numpy as np");
 	code.insert("\n");
 	code.insert("import keras");
 	code.insert("\n");
+	code.insert("import keras.backend as K");
+	code.insert("\n");
 	code.insert("from keras.models import Sequential, Model, model_from_json");
 	code.insert("\n");
-
-	var imports = new Set(importChain);
-	var finalImports = Array.from(imports);
-
-	for (i = 0; i < finalImports.length; i++) {
-		code.insert("from keras.layers import " + String(finalImports[i]));
+	code.insert("\n");
+	for (i = 0; i < importChain.length; i++) {
+		code.insert("from keras.layers import " + String(importChain[i]));
 		code.insert("\n");
 	};
 };
+
+function writeModel(code, chain) {
+	code.insert("\n");
+	code.insert("model = Sequential()");
+	code.insert("\n");
+	for (i = 0; i < chain.length; i++) {
+		var current = chain[i];
+		if (current == "Input") {
+			code.insert("model.add(Input(shape=[]))");
+			code.insert("\n");
+		};
+		if (current == "Dense") {
+			code.insert("model.add(Dense(100))");
+			code.insert("\n");
+		};
+		if (current == "Conv2D") {
+			code.insert("model.add(Conv2D(32, (3,3)))");
+			code.insert("\n");
+		};
+		if (current == "MaxPooling2D") {
+			code.insert("model.add(MaxPooling2D(pool_size=(2,2)))");
+			code.insert("\n");
+		};
+		if (current == "Flatten") {
+			code.insert("model.add(Flatten())");
+			code.insert("\n");
+		};
+		if (current == "Activation") {
+			code.insert("model.add(Activation('relu'))");
+			code.insert("\n");
+		};
+		if (current == "Reshape") {
+			code.insert("model.add(Reshape())");
+			code.insert("\n");
+		};
+		if (current == "Dropout") {
+			code.insert("model.add(Dropout(0.25))");
+			code.insert("\n");
+		};
+		if (current == "LSTM") {
+			code.insert("model.add(LSTM(100))");
+			code.insert("\n");
+		};
+		if (current == "BatchNormalization") {
+			code.insert("model.add(BatchNormalization())");
+			code.insert("\n");
+		};
+	};
+};
+
+function compileModel(code, compileParams) {
+	var loss = compileParams[0];
+	var optimizer = 'keras.optimizers.' + compileParams[1] + '()';
+	code.insert(`model.compile(loss='${loss}', optimizer=${optimizer})`);
+	code.insert("\n");
+};
+
+function fitModel(code) {
+	var verbose = 1;
+	var epochs = 10;
+	var batch_size = 128;
+	code.insert("\n");
+	code.insert(`model.fit(X_train, y_train, verbose=${verbose}, epochs=${epochs}, batch_size=${batch_size})`);
+	code.insert("\n");
+}
