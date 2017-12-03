@@ -2,6 +2,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	console.log("Loaded");
 
+	var ISSUE = {
+		desc:"",
+		color:""
+	};
+
 	var clear = document.getElementById("newProject");
 	var type = document.getElementById("type");
 	var playground = document.getElementById('playground');
@@ -175,6 +180,12 @@ document.addEventListener("DOMContentLoaded", function() {
 		layerPanel.style.display = "block";
 		issuesPanel.style.display = "none";
 	});
+
+	function getBlockInfo(type, chain) {
+		var index = chain.indexOf(type);
+		var category = type;
+		var neurones;
+	};
 
 	function showBlockInfo(type, chain) {
 		layerInfo.style.backgroundColor = "#89C4F4";
@@ -374,4 +385,4 @@ function fitModel(code) {
 	code.insert("\n");
 	code.insert(`model.fit(X_train, y_train, verbose=${verbose}, epochs=${epochs}, batch_size=${batch_size})`);
 	code.insert("\n");
-}
+};
