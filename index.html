@@ -36,10 +36,15 @@
 
 		<div id="header">
 			<a href="#"><img src="./images/ML.png" alt="logo"></a>
+			<ul id="headerNav">
+				<li id='help'>Info</li>
+				<li id="newProject">New</li>
+			</ul>
 		</div>
 
 		<div id="hyperparams">
 			<select name="Loss" id="lossfunc">
+				 <option disabled selected value>Select Loss function</option>
 				<option value="binary_crossentropy">Binary Crossentropy</option>
 				<option value="categorical_crossentropy">Categorical Crossentropy</option>
 				<option value="sparse_categorical_crossentropy">Sparse Categorical Crossentropy</option>
@@ -56,38 +61,30 @@
 				<option value="cosine_proximity">Cosine Proximity</option>
 			</select>
 
-			<select name="optimizer" id="opt">
-				<option value="SGD">SGD</option>
-				<option value="RMSprop">RMSprop</option>
-				<option value="Adagrad">Adagrad</option>
-				<option value="Adadelta">Adadelta</option>
-				<option value="Adam">Adam</option>
-				<option value="Adamax">Adamax</option>
-				<option value="Nadam">Nadam</option>
-				<option value="TFOptimizer">TFOptimizer</option>
-			</select>
-
-			<input type="text" placeholder="Learning rate" id="alpha">
-			<input type="text" placeholder="Momentum" id="momentum">
-			<input type="text" placeholder="Clip norm" id="clipnorm">
-			<input type="text" placeholder="Clip value" id="clipvalue">
-
-			<i class="fa fa-caret-down" aria-hidden="true" id="menu"></i>
+			<button id="apply" type="button">Apply</button>
 
 			<ul id="menuNav">
-				<li id="help"><i class="fa fa-info-circle" style="padding-right: 10px;" aria-hidden="true"></i>Help</li>
-				<li id="export"><i class="fa fa-upload" style="padding-right: 10px;" aria-hidden="true"></i>Export</li>
-				<li id="import"><i class="fa fa-download" style="padding-right: 10px;" aria-hidden="true"></i>Import</li>
-				<li id="delete"><i class="fa fa-trash-o" style="padding-right: 10px;" aria-hidden="true"></i>Clear</li>
-				<li id="editor"><i class="fa fa-code" style="padding-right: 10px;" aria-hidden="true"></i>Editor</li>
+				<li id="export">Export</li>
+				<li id="import">Import</li>
+				<li id="palette">Palette</li>
+				<li id="editor">Editor</li>
+				<li id="control">Control Panel</li>
 			</ul>
 
 		</div>
 
 		<div id="scroller">
+			<div id="palheader">
+				<p id="filename">Layer Blocks</p>
+				<button type="button" id="closepal"><i class="fa fa-times" aria-hidden="true"></i></button>
+			</div>
 
 			<div class="block" id="Input">
 				<p id="type">Input</p>
+			</div>
+
+			<div class="block" id="Optimizer">
+				<p id="type">Optimizer</p>
 			</div>
 
 			<div class="block" id="Dense">
@@ -135,6 +132,26 @@
 				<button type="button" id="closesb"><i class="fa fa-times" aria-hidden="true"></i></button>
 			</div>
 			<div id="code"></div>
+		</div>
+
+		<div id="controlPanel">
+			<div id="cpheader">
+				<p id="filename">Control Panel</p>
+				<button type="button" id="closecp"><i class="fa fa-times" aria-hidden="true"></i></button>
+			</div>
+			<div id="controls">
+				<p id="issues">Issues</p>
+				<div id="sep"></div>
+				<p id="layerInfo">Layer Info</p>
+			</div>
+			<div id="issuesPanel">
+				<div id="issue">
+					<p id="issueDesc">No input block.</p>
+				</div>
+			</div>
+			<div id="layerPanel">
+
+			</div>
 		</div>
 
 	</body>

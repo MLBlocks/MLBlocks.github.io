@@ -2,9 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	console.log("Loaded");
 
-	var clear = document.getElementById("delete");
-	var menu = document.getElementById("menu");
-	var menuNav = document.getElementById("menuNav");
+	var clear = document.getElementById("newProject");
 	var type = document.getElementById("type");
 	var playground = document.getElementById('playground');
 
@@ -14,11 +12,23 @@ document.addEventListener("DOMContentLoaded", function() {
 	var Help = document.getElementById("help");
 	var Export = document.getElementById("export");
 	var Import = document.getElementById("import");
+	var Palette = document.getElementById("palette");
 	var Editor = document.getElementById("editor");
+	var Control = document.getElementById("control");
 	var sandbox = document.getElementById("sandbox");
+	var controlPanel = document.getElementById("controlPanel");
+	var scroller = document.getElementById("scroller");
 	var closesb = document.getElementById("closesb");
+	var closecp = document.getElementById("closecp");
+	var closepal = document.getElementById("closepal");
+
+	var issues = document.getElementById("issues");
+	var layers = document.getElementById("layerInfo");
+	var issuesPanel = document.getElementById("issuesPanel");
+	var layerPanel = document.getElementById("layerPanel");
 
 	var input = document.getElementById("Input");
+	var optimizer = document.getElementById("Optimizer");
 	var dense = document.getElementById("Dense");
 	var conv2d = document.getElementById("Conv2D");
 	var mp2d = document.getElementById("MaxPooling2D");
@@ -30,11 +40,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	var batchnorm = document.getElementById("BatchNormalization");
 
 	var loss = document.getElementById('lossfunc');
-	var optimizer = document.getElementById('opt');
-	var alpha = document.getElementById('alpha');
-	var momentum = document.getElementById('momentum');
-	var cn = document.getElementById('clipnorm');
-	var cv = document.getElementById('clipvalue');
 
 	var code = ace.edit("code");
   code.setTheme("ace/theme/xcode");
@@ -46,22 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	var chain = [];
 	var compileParams = [];
 
-	menu.addEventListener("click", function() {
-		if (opened == 0){
-			menu.style.transform = "rotate(-90deg)";
-			menuNav.style.display = "block";
-			opened = 1;
-		} else {
-			opened = 0;
-			menu.style.transform = "rotate(0deg)";
-			menuNav.style.display = "none";
-		}
-	});
-
 	Export.addEventListener('click', function() {
-		opened = 0;
-		menu.style.transform = "rotate(0deg)";
-		menuNav.style.display = "none";
 
 		if (chain.length != 0) {
 			var msg = confirm("Are you sure you want to export this model?");
@@ -112,40 +102,36 @@ document.addEventListener("DOMContentLoaded", function() {
 	help.addEventListener('click', function() {
 		console.log("Help");
 		modal.style.display = "block";
-		opened = 0;
-		menu.style.transform = "rotate(0deg)";
-		menuNav.style.display = "none";
 	});
 
 	span.onclick = function() {
 	    modal.style.display = "none";
-			opened = 0;
-			menu.style.transform = "rotate(0deg)";
-			menuNav.style.display = "none";
 	}
 
 	clear.addEventListener('click', function() {
 		msg = confirm("Are you sure you want to clear the sandbox?");
 		if (msg == true) {
 			clearPlayground(code);
-			opened = 0;
-			menu.style.transform = "rotate(0deg)";
-			menuNav.style.display = "none";
 			chain = [];
 			compileParams = [];
 		} else {
-			opened = 0;
-			menu.style.transform = "rotate(0deg)";
-			menuNav.style.display = "none";
 		};
+	});
+
+	Palette.addEventListener('click', function() {
+		console.log('Opening palette');
+		scroller.style.visibility = "visible";
+		playground.style.left = "225px";
 	});
 
 	Editor.addEventListener('click', function() {
 		console.log('Opening editor');
 		sandbox.style.visibility = "visible";
-		opened = 0;
-		menu.style.transform = "rotate(0deg)";
-		menuNav.style.display = "none";
+	});
+
+	Control.addEventListener('click', function() {
+		console.log('Opening control panel');
+		controlPanel.style.visibility = "visible";
 	});
 
 	closesb.addEventListener('click', function() {
@@ -153,9 +139,91 @@ document.addEventListener("DOMContentLoaded", function() {
 		sandbox.style.visibility = "hidden";
 	});
 
+	closecp.addEventListener('click', function() {
+		console.log('Closing control panel');
+		controlPanel.style.visibility = "hidden";
+	});
+
+	closepal.addEventListener('click', function() {
+		console.log('Closing control panel');
+		scroller.style.visibility = "hidden";
+		playground.style.left = "0";
+	});
+
+	issues.addEventListener('click', function() {
+		issues.style.backgroundColor = "#89C4F4";
+		issues.style.color = "white";
+		issues.style.opacity = "1.0";
+
+		layerInfo.style.color = "white";
+		layerInfo.style.opacity = "0.8";
+		layerInfo.style.background = "none";
+
+		issuesPanel.style.display = "block";
+		layerPanel.style.display = "none";
+	});
+
+	layerInfo.addEventListener('click', function() {
+		layerInfo.style.backgroundColor = "#89C4F4";
+		layerInfo.style.color = "white";
+		layerInfo.style.opacity = "1.0";
+
+		issues.style.color = "white";
+		issues.style.opacity = "0.8";
+		issues.style.background = "none";
+
+		layerPanel.style.display = "block";
+		issuesPanel.style.display = "none";
+	});
+
+	function showBlockInfo(type, chain) {
+		layerInfo.style.backgroundColor = "#89C4F4";
+		layerInfo.style.color = "white";
+		layerInfo.style.opacity = "1.0";
+
+		issues.style.color = "white";
+		issues.style.opacity = "0.8";
+		issues.style.background = "none";
+
+		layerPanel.style.display = "block";
+		issuesPanel.style.display = "none";
+	};
+
+	function addBlock(type, chain) {
+		var playground = document.getElementById('playground');
+		var block = document.createElement("DIV");
+		var category = document.createElement("P");
+		var text = document.createTextNode(type);
+
+		category.appendChild(text);
+		category.id = "edit_type";
+
+		block.appendChild(category);
+
+		block.id = type;
+		block.className += "editable_block";
+
+		playground.appendChild(block);
+
+		block.addEventListener('click', function() {
+			showBlockInfo(type, chain)
+			if (controlPanel.style.visibility = "hidden") {
+				controlPanel.style.visibility = "visible";
+			};
+		});
+		block.addEventListener('dblclick', function() {
+			removeBlock(playground, type, block, chain);
+		});
+	};
+
 	input.addEventListener('click', function() {
 		chain.push("Input");
 		addBlock("Input", chain);
+	});
+
+	optimizer.addEventListener('click', function() {
+		chain.push("Optimizer");
+		addBlock("Optimizer", chain);
 	});
 
 	dense.addEventListener('click', function() {
@@ -204,27 +272,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 });
-
-function addBlock(type, chain) {
-	var playground = document.getElementById('playground');
-	var block = document.createElement("DIV");
-	var category = document.createElement("P");
-	var text = document.createTextNode(type);
-
-	category.appendChild(text);
-	category.id = "edit_type";
-
-	block.appendChild(category);
-
-	block.id = type;
-	block.className += "editable_block";
-
-	playground.appendChild(block);
-
-	block.addEventListener('dblclick', function() {
-		removeBlock(playground, type, block, chain);
-	});
-};
 
 function clearPlayground(code) {
 	var playground = document.getElementById('playground');

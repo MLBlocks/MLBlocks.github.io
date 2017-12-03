@@ -7,7 +7,7 @@ html {
 body {
 	margin: 0;
 	padding: 0;
-	font-family: Avenir Next;
+	font-family: Avenir Next, Helvetica;
 	overflow: scroll;
 }
 
@@ -98,6 +98,19 @@ select:focus {
 	float: left;
 }
 
+#header #headerNav {
+	display: inline-flex;
+	float: right;
+	list-style: none;
+	margin-right: 40px;
+}
+
+#header #headerNav li {
+	margin: 8px 30px;
+	font-weight: 500;
+	font-size: 17px;
+}
+
 /*------------------------------------------------------------------------------------------------------------------------*/
 
 #hyperparams {
@@ -121,22 +134,25 @@ select:focus {
 	box-shadow: 1px 2px 4px rgba(0,0,0,.2);
 	margin: 10px 20px;
 	margin-left: 12px;
+	margin-top: 12px;
 	font-family: Avenir Next;
 	font-size: 12px;
 	font-weight: 500;
 }
 
-#hyperparams #opt {
-	position: relative;
-	width: 100px;
-	height: 27px;
-	border: 1px solid rgba(0,0,0,0.4);
-	border-radius: 0;
-	box-shadow: 1px 2px 4px rgba(0,0,0,.2);
-	margin: 10px 20px;
+#hyperparams #apply {
+	width: 130px;
+	height: 37px;
+	background-color: gold;
+	color: white;
 	font-family: Avenir Next;
-	font-size: 12px;
-	font-weight: 500;
+	font-size: 15px;
+	border: none;
+	border-radius: 100px;
+	font-weight: bold;
+	margin-top: 7px;
+	margin-left: 20px;
+	margin-right: 20px;
 }
 
 #hyperparams #alpha {
@@ -204,24 +220,19 @@ select:focus {
 }
 
 #hyperparams #menuNav {
-	display: none;
-	width: 75px;
-	height: 170px;
-	background-color: white;
 	list-style: none;
-	text-align: center;
-	box-shadow: 1px 2px 4px rgba(0,0,0,.2);
-	border-radius: 5px;
 	position: relative;
 	z-index: 5000;
 	margin-left: -40px;
+	display: inline-flex;
 }
 
 #hyperparams #menuNav li {
-	margin: 10px 5px;
 	padding: 0;
 	text-align: left;
-	margin-left: -20px;
+	margin-right: 30px;
+	margin-left: 30px;
+	font-weight: 500;
 }
 
 #hyperparams #menuNav li:hover {
@@ -241,6 +252,41 @@ select:focus {
 	top: 115px;
 	bottom: 0;
 	overflow: scroll;
+	visibility: visible;
+}
+
+#scroller #palheader {
+	position: relative;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 40px;
+	background-color: #95a5a6;
+}
+
+#scroller #palheader #filename {
+	padding: 0;
+	margin: 0;
+	float: left;
+	padding-top: 10px;
+	font-weight: 600;
+	font-family: Helvetica;
+	font-size: 15px;
+	margin-left: 10px;
+	color: white;
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+#scroller #palheader #closepal {
+	font-size: 19px;
+	color: white;
+	border: none;
+	background: none;
+	margin-top: 10px;
+	margin-right: 10px;
+	float: right;
+	color: white;
 }
 
 .block {
@@ -357,6 +403,7 @@ select:focus {
 	font-weight: 500;
 	font-family: Monaco;
 	font-size: 14px;
+	color: white;
 }
 
 #sandbox #closesb {
@@ -378,8 +425,140 @@ select:focus {
 
 /*------------------------------------------------------------------------------------------------------------------------*/
 
+#controlPanel {
+	min-height: 500px;
+	position: absolute;
+	top: 115px;
+	right: 0;
+	left: 1000px;
+	bottom: 0;
+	overflow: hidden;
+	background-color: white;
+	box-shadow: 1px 2px 4px rgba(0,0,0,.3);
+}
+
+#controlPanel #cpheader {
+	position: relative;
+	width: 100%;
+	height: 40px;
+	background-color: #95a5a6;
+	/*text-align: center;*/
+}
+
+#controlPanel #cpheader #filename {
+	padding: 0;
+	margin: 0;
+	float: left;
+	padding-top: 10px;
+	font-weight: 600;
+	font-family: Helvetica;
+	font-size: 15px;
+	margin-left: 10px;
+	color: white;
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+#controlPanel #closecp {
+	font-size: 19px;
+	color: white;
+	border: none;
+	background: none;
+	margin-top: 10px;
+	margin-right: 10px;
+	float: right;
+	color: white;
+}
+
+#controlPanel #controls {
+	position: relative;
+	width: 100%;
+	height: 40px;
+	background-color: #DADFE1;
+	padding: 0;
+	margin: 0;
+	display: inline-flex;
+}
+
+#controlPanel #controls #layerInfo {
+	padding: 0;
+	margin: 0;
+	font-size: 15px;
+	width: 50%;
+	height: 100%;
+	text-align: center;
+	padding-top: 10px;
+	font-weight: 600;
+	font-family: Helvetica;
+	color: white;
+}
+
+#controlPanel #controls #issues {
+	padding: 0;
+	margin: 0;
+	font-size: 15px;
+	width: 50%;
+	height: 100%;
+	text-align: center;
+	padding-top: 10px;
+	font-weight: 600;
+	font-family: Helvetica;
+	color: white;
+	background-color: #89C4F4;
+}
+
+#controlPanel #controls #sep {
+	width: 1px;
+	height: 100%;
+	position: relative;
+	background-color: gray;
+	opacity: 0.7;
+	margin: 0;
+	padding: 0
+}
+
+#controlPanel #issuesPanel {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-color: #eeeeee;
+	overflow: scroll;
+	display: block;
+}
+
+#controlPanel #layerPanel {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-color: #eeeeee;
+	overflow: scroll;
+	display: none;
+}
+
+#issue {
+	width: 90%;
+	height: 40px;
+	border: 2px solid #2ECC71;
+	margin: 15px auto;
+	border-radius: 5px;
+	text-align: left;
+}
+
+#issue #issueDesc {
+	color: #2ECC71;
+	padding: 10px;
+	margin: 0;
+}
+
+/*------------------------------------------------------------------------------------------------------------------------*/
+
 #Input {
 	background-color: #ECECEC;
+}
+
+#Optimizer {
+	background-color: #DCC6E0;
+	color: white;
 }
 
 #Dense {
