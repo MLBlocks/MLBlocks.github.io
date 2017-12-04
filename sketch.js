@@ -53,36 +53,40 @@ document.addEventListener("DOMContentLoaded", function() {
 	Export.addEventListener('click', function() {
 
 		if (chain.length != 0) {
-			var msg = confirm("Are you sure you want to export this model?");
-			if (msg == true) {
-				var lossChoice = loss.value;
-				var optimizerChoice = optimizer.value;
+			if (issuesChain.length == 0) {
+				var msg = confirm("Are you sure you want to export this model?");
+				if (msg == true) {
+					var lossChoice = loss.value;
+					var optimizerChoice = optimizer.value;
 
-				if (lossChoice == "" || optimizerChoice == "") {
-					lossChoice = "binary_crossentropy";
-					optimizerChoice = "Adam";
+					if (lossChoice == "" || optimizerChoice == "") {
+						lossChoice = "binary_crossentropy";
+						optimizerChoice = "Adam";
+					};
+
+					compileParams.push(lossChoice);
+					compileParams.push(optimizerChoice);
+
+					imports = yieldImports(chain);
+
+					console.log(chain);
+					console.log(compileParams);
+					console.log(imports);
+
+					writeImports(code, imports);
+					writeModel(code, chain);
+					compileModel(code, compileParams);
+					fitModel(code);
+
+					chain = [];
+					compileParams = [];
+					issuesChain = [];
+
+				} else {
+					alert("Canceling model export.");
 				};
-
-				compileParams.push(lossChoice);
-				compileParams.push(optimizerChoice);
-
-				imports = yieldImports(chain);
-
-				console.log(chain);
-				console.log(compileParams);
-				console.log(imports);
-
-				writeImports(code, imports);
-				writeModel(code, chain);
-				compileModel(code, compileParams);
-				fitModel(code);
-
-				chain = [];
-				compileParams = [];
-				issuesChain = [];
-
 			} else {
-				alert("Canceling model export.");
+				alert("Fix all issues in the model architecture before exporting.")
 			};
 		} else {
 			alert("Model has to be built before being exported.");
@@ -101,9 +105,18 @@ document.addEventListener("DOMContentLoaded", function() {
 	clear.addEventListener('click', function() {
 		msg = confirm("Are you sure you want to clear the sandbox?");
 		if (msg == true) {
+			$('#lossfunc option').prop('selected', function() {
+				return this.defaultSelected;
+			});
+
+			$('#optimizer option').prop('selected', function() {
+				return this.defaultSelected;
+			});
+
 			clearPlayground(code);
 			chain = [];
 			compileParams = [];
+			issuesChain = [];
 		} else {
 		};
 	});
