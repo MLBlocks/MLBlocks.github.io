@@ -25,11 +25,11 @@
 				<p>A project by <a href="https://github.com/rish-16/" target="_blank">Rishabh Anand</a></p>
 				<p style="font-size: 19px;"><strong>Instructions:</strong></p>
 				<ul>
-					<li>Drag and drop Layer Blocks onto the sandbox space.</li>
-					<li>Hold on a card and produce line to another card for Synapse.</li>
-					<li>Tweak layer parameters by clicking a card in the sandbox.</li>
-					<li>When the model is complete, export model in C++ or Python.</li>
-					<li>Click the arrow in the nav bar for more options.</li>
+					<li>Click a Layer Block to place it in the sandbox space.</li>
+					<li>Tweak layer parameters by clicking a block in the sandbox.</li>
+					<li>Pay attention to the issues that pop up in the Control Panel.</li>
+					<li>Select Loss function and optimizer before exporting model.</li>
+					<li>Export completed model in Python by clicking the <strong>Apply</strong> button.</li>
 				</ul>
 		  </div>
 		</div>
@@ -44,7 +44,7 @@
 
 		<div id="hyperparams">
 			<select name="Loss" id="lossfunc">
-				 <option disabled selected value>Select Loss function</option>
+				<option disabled selected value>Select Loss function</option>
 				<option value="binary_crossentropy">Binary Crossentropy</option>
 				<option value="categorical_crossentropy">Categorical Crossentropy</option>
 				<option value="sparse_categorical_crossentropy">Sparse Categorical Crossentropy</option>
@@ -61,11 +61,21 @@
 				<option value="cosine_proximity">Cosine Proximity</option>
 			</select>
 
+			<select name="Optimizer" id="optimizer">
+				<option disabled selected value>Select Optimizer</option>
+				<option value="SGD">SGD</option>
+				<option value="RMSprop">RMSprop</option>
+				<option value="Adagrad">Adagrad</option>
+				<option value="Adadelta">Adadelta</option>
+				<option value="Adam">Adam</option>
+				<option value="Adamax">Adamax</option>
+				<option value="Nadam">Nadam</option>
+				<option value="TFOptimizer">TFOptimizer</option>
+			</select>
+
 			<button id="apply" type="button">Apply</button>
 
 			<ul id="menuNav">
-				<li id="export">Export</li>
-				<li id="import">Import</li>
 				<li id="palette">Palette</li>
 				<li id="editor">Editor</li>
 				<li id="control">Control Panel</li>
@@ -81,10 +91,6 @@
 
 			<div class="block" id="Input">
 				<p id="type">Input</p>
-			</div>
-
-			<div class="block" id="Optimizer">
-				<p id="type">Optimizer</p>
 			</div>
 
 			<div class="block" id="Dense">
@@ -147,15 +153,19 @@
 				<p id="layerInfo">Layer Info</p>
 			</div>
 
-			<div id="issuesPanel">
-				<div id="issue">
-					<p id="issueDesc">No input block.</p>
-				</div>
-			</div>
+			<div id="issuesPanel"></div>
 
 			<div id="layerPanel">
-				<p id="neurones">Neurones/Filters:</p>
-				
+				<div id="params">
+					<p id="cptitle">Parameters</p>
+					<br>
+
+					<div id="param">
+						<p id="paramtitle">Neurones:</p>
+						<input type="text" id="paramfield">
+					</div>
+
+				</div>
 			</div>
 
 		</div>

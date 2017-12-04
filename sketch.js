@@ -2,11 +2,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	console.log("Loaded");
 
-	var ISSUE = {
-		desc:"",
-		color:""
-	};
-
 	var clear = document.getElementById("newProject");
 	var type = document.getElementById("type");
 	var playground = document.getElementById('playground');
@@ -15,8 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	var span = document.getElementsByClassName("close")[0];
 
 	var Help = document.getElementById("help");
-	var Export = document.getElementById("export");
-	var Import = document.getElementById("import");
+	var Export = document.getElementById("apply");
 	var Palette = document.getElementById("palette");
 	var Editor = document.getElementById("editor");
 	var Control = document.getElementById("control");
@@ -33,7 +27,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	var layerPanel = document.getElementById("layerPanel");
 
 	var input = document.getElementById("Input");
-	var optimizer = document.getElementById("Optimizer");
 	var dense = document.getElementById("Dense");
 	var conv2d = document.getElementById("Conv2D");
 	var mp2d = document.getElementById("MaxPooling2D");
@@ -45,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	var batchnorm = document.getElementById("BatchNormalization");
 
 	var loss = document.getElementById('lossfunc');
+	var optimizer = document.getElementById('optimizer');
 
 	var code = ace.edit("code");
   code.setTheme("ace/theme/xcode");
@@ -52,9 +46,9 @@ document.addEventListener("DOMContentLoaded", function() {
 	code.insert("# Export model to generate code...");
 	code.insert("\n")
 
-	var opened = 0;
 	var chain = [];
 	var compileParams = [];
+	var issuesChain = [];
 
 	Export.addEventListener('click', function() {
 
@@ -62,25 +56,15 @@ document.addEventListener("DOMContentLoaded", function() {
 			var msg = confirm("Are you sure you want to export this model?");
 			if (msg == true) {
 				var lossChoice = loss.value;
-				var optChoice = optimizer.value;
-				var lr = alpha.value;
-				var mom = momentum.value;
-				var clipnorm = cn.value;
-				var clipvalue = cv.value;
+				var optimizerChoice = optimizer.value;
 
-				if (lr == "" || mom == "" || clipnorm == "" || clipvalue == "") {
-					lr = 0.01;
-					mom = 0.9;
-					clipnorm = 1.0;
-					clipvalue = 0.5;
-				}
+				if (lossChoice == "" || optimizerChoice == "") {
+					lossChoice = "binary_crossentropy";
+					optimizerChoice = "Adam";
+				};
 
 				compileParams.push(lossChoice);
-				compileParams.push(optChoice);
-				compileParams.push(lr);
-				compileParams.push(mom);
-				compileParams.push(clipnorm);
-				compileParams.push(clipvalue);
+				compileParams.push(optimizerChoice);
 
 				imports = yieldImports(chain);
 
@@ -95,6 +79,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 				chain = [];
 				compileParams = [];
+				issuesChain = [];
 
 			} else {
 				alert("Canceling model export.");
@@ -198,6 +183,46 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		layerPanel.style.display = "block";
 		issuesPanel.style.display = "none";
+
+		if (type == "Input") {
+			console.log('Editing Input');
+		};
+
+		if (type == "Dense") {
+			console.log('Editing Dense');
+		};
+
+		if (type == "Conv2D") {
+			console.log('Editing Conv2D');
+		};
+
+		if (type == "MaxPooling2D") {
+			console.log('Editing MaxPooling2D');
+		};
+
+		if (type == "Flatten") {
+			console.log('Editing Flatten');
+		};
+
+		if (type == "Dropout") {
+			console.log('Editing Dropout');
+		};
+
+		if (type == "LSTM") {
+			console.log('Editing LSTM');
+		};
+
+		if (type == "BatchNormalization") {
+			console.log('Editing BatchNormalization');
+		};
+
+		if (type == "Reshape") {
+			console.log('Editing Reshape');
+		};
+
+		if (type == "Activation") {
+			console.log('Editing Activation');
+		};
 	};
 
 	function addBlock(type, chain) {
@@ -215,26 +240,19 @@ document.addEventListener("DOMContentLoaded", function() {
 		block.className += "editable_block";
 
 		playground.appendChild(block);
+		console.log(chain);
 
 		block.addEventListener('click', function() {
-			showBlockInfo(type, chain)
-			if (controlPanel.style.visibility = "hidden") {
-				controlPanel.style.visibility = "visible";
-			};
+			showBlockInfo(type, chain);
+			controlPanel.style.visibility = "visible";
 		});
-		block.addEventListener('dblclick', function() {
-			removeBlock(playground, type, block, chain);
-		});
+
+		raiseIssue(issuesPanel, chain, issuesChain);
 	};
 
 	input.addEventListener('click', function() {
 		chain.push("Input");
 		addBlock("Input", chain);
-	});
-
-	optimizer.addEventListener('click', function() {
-		chain.push("Optimizer");
-		addBlock("Optimizer", chain);
 	});
 
 	dense.addEventListener('click', function() {
@@ -291,13 +309,6 @@ function clearPlayground(code) {
 	code.setValue("");
 	code.insert("# Export model to finish writing code...");
 	code.insert("\n")
-};
-
-function removeBlock(palyground, type, block, chain) {
-	console.log('Removing block of type:', type);
-	playground.removeChild(block);
-	var i = chain.indexOf(type);
-	chain.splice(i,1);
 };
 
 function yieldImports(layerChain) {
@@ -385,4 +396,37 @@ function fitModel(code) {
 	code.insert("\n");
 	code.insert(`model.fit(X_train, y_train, verbose=${verbose}, epochs=${epochs}, batch_size=${batch_size})`);
 	code.insert("\n");
+};
+
+function raiseIssue(container, chain, issuesChain) {
+
+	if (chain[0] != "Input") {
+		if (issuesChain.includes("No input block at beginning.") == false) {
+			issue = document.createElement("DIV");
+			issueDesc = document.createElement("P");
+			issueTXT = document.createTextNode("No input block at beginning.");
+			issueDesc.appendChild(issueTXT);
+			issueDesc.id = "inputIssueDesc";
+			issue.appendChild(issueDesc);
+			issue.id = "inputIssue";
+			container.appendChild(issue);
+			issuesChain.push("No input block at beginning.");
+		};
+	};
+
+	for (i = 0; i < chain.length; i++) {
+		if (chain[i] == chain[i+1]) {
+			if (issuesChain.includes(`Illegal synapse at block ${i+1} and ${i+2}`) == false) {
+				issue = document.createElement("DIV");
+				issueDesc = document.createElement("P");
+				issueTXT = document.createTextNode(`Illegal synapse at block ${i+1} and ${i+2}`);
+				issueDesc.appendChild(issueTXT);
+				issueDesc.id = "illegalIssueDesc";
+				issue.appendChild(issueDesc);
+				issue.id = "illegalIssue";
+				container.appendChild(issue);
+				issuesChain.push(`Illegal synapse at block ${i+1} and ${i+2}`);
+			};
+		};
+	};
 };
