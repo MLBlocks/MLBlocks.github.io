@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // this would test for whichever key is 40 and the ctrl key at the same time
     if (e.ctrlKey && e.keyCode == 69) {
         // call your function to do the thing
-			if (ediOpen == 0) {
+			if (ediOpen == 0 && conOpen == 0) {
 				console.log('Opening editor');
 				sandbox.style.visibility = "visible";
 				controlPanel.style.visibility = "hidden";
@@ -295,23 +295,29 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	Palette.addEventListener('click', function() {
-		console.log('Opening palette');
-		scroller.style.visibility = "visible";
-		playground.style.left = "235px";
-		palOpen = 1;
+		if (palOpen == 0) {
+			console.log('Opening palette');
+			scroller.style.visibility = "visible";
+			playground.style.left = "235px";
+			palOpen = 1;
+		};
 	});
 
 	Editor.addEventListener('click', function() {
-		console.log('Opening editor');
-		sandbox.style.visibility = "visible";
-		controlPanel.style.visibility = "hidden";
-		ediOpen = 1;
+		if (ediOpen == 0 && conOpen == 0) {
+			console.log('Opening editor');
+			sandbox.style.visibility = "visible";
+			controlPanel.style.visibility = "hidden";
+			ediOpen = 1;
+		};
 	});
 
 	Control.addEventListener('click', function() {
-		console.log('Opening control panel');
-		controlPanel.style.visibility = "visible";
-		conOpen = 1;
+		if (conOpen == 0 && ediOpen == 0) {
+			console.log('Opening control panel');
+			controlPanel.style.visibility = "visible";
+			conOpen = 1;
+		};
 	});
 
 	Load.addEventListener('click', function() {
