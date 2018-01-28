@@ -147,6 +147,58 @@ document.addEventListener("DOMContentLoaded", function() {
 	// register the handler
 	document.addEventListener('keyup', doc_E, false);
 
+	function doc_D(e) {
+    // this would test for whichever key is 40 and the ctrl key at the same time
+    if (e.ctrlKey && e.keyCode == 68) {
+        // call your function to do the thing
+				if (chain.length != 0) {
+					if (issuesChain.length == 0) {
+						var msg = confirm("Are you sure you want to export this model?");
+						if (msg == true) {
+							var lossChoice = loss.value;
+							var optimizerChoice = optimizer.value;
+
+							if (lossChoice == "" || optimizerChoice == "") {
+								lossChoice = "binary_crossentropy";
+								optimizerChoice = "Adam";
+							};
+
+							compileParams.push(lossChoice);
+							compileParams.push(optimizerChoice);
+
+							imports = yieldImports(chain);
+
+							console.log(chain);
+							console.log(compileParams);
+							console.log(imports);
+
+							writeImports(code, imports);
+							writeModel(code, chain);
+							compileModel(code, compileParams);
+							fitModel(code);
+
+							text = code.getValue();
+
+							download("model.py", text);
+
+							chain = [];
+							compileParams = [];
+							issuesChain = [];
+
+						} else {
+							alert("Canceling model export.");
+						};
+					} else {
+						alert("Fix all issues in the model architecture before exporting.")
+					};
+				} else {
+					alert("Model has to be built before being exported.");
+				};
+    };
+	};
+	// register the handler
+	document.addEventListener('keyup', doc_D, false);
+
 	function download(filename, text) {
 	  var element = document.createElement('a');
 	  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
