@@ -16,6 +16,10 @@ document.addEventListener("DOMContentLoaded", function() {
 	var Control = document.getElementById("control");
 	var Load = document.getElementById("load");
 
+	var palOpen = 0;
+	var conOpen = 0;
+	var ediOpen = 0;
+
 	var sandbox = document.getElementById("sandbox");
 	var controlPanel = document.getElementById("controlPanel");
 	var scroller = document.getElementById("scroller");
@@ -56,6 +60,92 @@ document.addEventListener("DOMContentLoaded", function() {
 	var issuesChain = [];
 
 	showIntro(modal);
+
+	function doc_N(e) {
+    if (e.ctrlKey && e.keyCode == 78) {
+			msg = confirm("Are you sure you want to clear the sandbox?");
+			if (msg == true) {
+				$('#lossfunc option').prop('selected', function() {
+					return this.defaultSelected;
+				});
+
+				$('#optimizer option').prop('selected', function() {
+					return this.defaultSelected;
+				});
+
+				clearPlayground(code);
+				chain = [];
+				compileParams = [];
+				issuesChain = [];
+			} else {};
+    }
+	}
+	document.addEventListener('keyup', doc_N, false);
+
+	function doc_I(e) {
+    if (e.ctrlKey && e.keyCode == 73) {
+			showIntro(modal);
+    }
+	}
+	document.addEventListener('keyup', doc_I, false);
+
+	function doc_P(e) {
+    // this would test for whichever key is 40 and the ctrl key at the same time
+    if (e.ctrlKey && e.keyCode == 80) {
+        // call your function to do the thing
+			if (palOpen == 0) {
+				console.log('Opening control panel');
+				scroller.style.visibility = "visible";
+				playground.style.left = "235px";
+				palOpen = 1;
+			} else if (palOpen == 1) {
+				console.log('Closing control panel');
+				scroller.style.visibility = "hidden";
+				playground.style.left = "0";
+				palOpen = 0;
+			};
+    };
+	};
+	// register the handler
+	document.addEventListener('keyup', doc_P, false);
+
+	function doc_C(e) {
+    // this would test for whichever key is 40 and the ctrl key at the same time
+    if (e.ctrlKey && e.keyCode == 67) {
+        // call your function to do the thing
+			if (conOpen == 0 && ediOpen == 0) {
+				console.log('Opening control panel');
+				controlPanel.style.visibility = "visible";
+				conOpen = 1;
+			} else if (conOpen == 1) {
+				console.log('Closing control panel');
+				controlPanel.style.visibility = "hidden";
+				conOpen = 0;
+			};
+    };
+	};
+	// register the handler
+	document.addEventListener('keyup', doc_C, false);
+
+	function doc_E(e) {
+    // this would test for whichever key is 40 and the ctrl key at the same time
+    if (e.ctrlKey && e.keyCode == 69) {
+        // call your function to do the thing
+			if (ediOpen == 0) {
+				console.log('Opening editor');
+				sandbox.style.visibility = "visible";
+				controlPanel.style.visibility = "hidden";
+				ediOpen = 1;
+			} else if (ediOpen == 1) {
+				console.log('Closing editor');
+				sandbox.style.visibility = "hidden";
+				controlPanel.style.visibility = "visible";
+				ediOpen = 0;
+			};
+    };
+	};
+	// register the handler
+	document.addEventListener('keyup', doc_E, false);
 
 	function download(filename, text) {
 	  var element = document.createElement('a');
@@ -156,38 +246,44 @@ document.addEventListener("DOMContentLoaded", function() {
 		console.log('Opening palette');
 		scroller.style.visibility = "visible";
 		playground.style.left = "235px";
+		palOpen = 1;
 	});
 
 	Editor.addEventListener('click', function() {
 		console.log('Opening editor');
 		sandbox.style.visibility = "visible";
 		controlPanel.style.visibility = "hidden";
+		ediOpen = 1;
 	});
 
 	Control.addEventListener('click', function() {
 		console.log('Opening control panel');
 		controlPanel.style.visibility = "visible";
+		conOpen = 1;
 	});
 
 	Load.addEventListener('click', function() {
-
+		console.log('Loading model...');
 	});
 
 	closesb.addEventListener('click', function() {
 		console.log('Closing editor');
 		sandbox.style.visibility = "hidden";
 		controlPanel.style.visibility = "visible";
+		ediOpen = 0;
 	});
 
 	closecp.addEventListener('click', function() {
 		console.log('Closing control panel');
 		controlPanel.style.visibility = "hidden";
+		conOpen = 0;
 	});
 
 	closepal.addEventListener('click', function() {
 		console.log('Closing control panel');
 		scroller.style.visibility = "hidden";
 		playground.style.left = "0";
+		palOpen = 0;
 	});
 
 	issues.addEventListener('click', function() {
