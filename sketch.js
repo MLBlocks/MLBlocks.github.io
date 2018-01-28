@@ -14,17 +14,22 @@ document.addEventListener("DOMContentLoaded", function() {
 	var Palette = document.getElementById("palette");
 	var Editor = document.getElementById("editor");
 	var Control = document.getElementById("control");
+	var Load = document.getElementById("load");
+
 	var sandbox = document.getElementById("sandbox");
 	var controlPanel = document.getElementById("controlPanel");
 	var scroller = document.getElementById("scroller");
 	var closesb = document.getElementById("closesb");
 	var closecp = document.getElementById("closecp");
 	var closepal = document.getElementById("closepal");
+	var tutorial = document.getElementById("tutorial");
+	var tutInfo = document.getElementById("tutInfo");
 
 	var issues = document.getElementById("issues");
 	var layers = document.getElementById("layerInfo");
 	var issuesPanel = document.getElementById("issuesPanel");
 	var layerPanel = document.getElementById("layerPanel");
+	var deleteBTN = document.getElementById("delete");
 
 	var input = document.getElementById("Input");
 	var dense = document.getElementById("Dense");
@@ -49,6 +54,21 @@ document.addEventListener("DOMContentLoaded", function() {
 	var chain = [];
 	var compileParams = [];
 	var issuesChain = [];
+
+	showIntro(modal);
+
+	function download(filename, text) {
+	  var element = document.createElement('a');
+	  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+	  element.setAttribute('download', filename);
+
+	  element.style.display = 'none';
+	  document.body.appendChild(element);
+
+	  element.click();
+
+	  document.body.removeChild(element);
+	}
 
 	Export.addEventListener('click', function() {
 
@@ -78,6 +98,10 @@ document.addEventListener("DOMContentLoaded", function() {
 					compileModel(code, compileParams);
 					fitModel(code);
 
+					text = code.getValue();
+
+					download("model.py", text);
+
 					chain = [];
 					compileParams = [];
 					issuesChain = [];
@@ -91,6 +115,11 @@ document.addEventListener("DOMContentLoaded", function() {
 		} else {
 			alert("Model has to be built before being exported.");
 		};
+	});
+
+	tutorial.addEventListener('click', function() {
+		modal.style.display = "none";
+		showTutorial(tutInfo);
 	});
 
 	help.addEventListener('click', function() {
@@ -117,19 +146,19 @@ document.addEventListener("DOMContentLoaded", function() {
 			chain = [];
 			compileParams = [];
 			issuesChain = [];
-		} else {
-		};
+		} else {};
 	});
 
 	Palette.addEventListener('click', function() {
 		console.log('Opening palette');
 		scroller.style.visibility = "visible";
-		playground.style.left = "225px";
+		playground.style.left = "235px";
 	});
 
 	Editor.addEventListener('click', function() {
 		console.log('Opening editor');
 		sandbox.style.visibility = "visible";
+		controlPanel.style.visibility = "hidden";
 	});
 
 	Control.addEventListener('click', function() {
@@ -137,9 +166,14 @@ document.addEventListener("DOMContentLoaded", function() {
 		controlPanel.style.visibility = "visible";
 	});
 
+	Load.addEventListener('click', function() {
+
+	});
+
 	closesb.addEventListener('click', function() {
 		console.log('Closing editor');
 		sandbox.style.visibility = "hidden";
+		controlPanel.style.visibility = "visible";
 	});
 
 	closecp.addEventListener('click', function() {
@@ -177,6 +211,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		layerPanel.style.display = "block";
 		issuesPanel.style.display = "none";
+	});
+
+	deleteBTN.addEventListener('click', function() {
+		removeBlock(chain)
 	});
 
 	function getBlockInfo(type, chain) {
@@ -260,8 +298,14 @@ document.addEventListener("DOMContentLoaded", function() {
 			controlPanel.style.visibility = "visible";
 		});
 
-		raiseIssue(issuesPanel, chain, issuesChain);
+		raiseIssue(controlPanel, issuesPanel, chain, issuesChain);
 	};
+
+	function removeBlock(chain) {
+		// chain.push(type);
+		var playground = document.getElementById('playground');
+		console.log('Remove block');
+	}
 
 	input.addEventListener('click', function() {
 		chain.push("Input");
@@ -317,8 +361,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function clearPlayground(code) {
 	var playground = document.getElementById('playground');
+	var issuesPanel = document.getElementById('issuesPanel');
 	playground.style.minHeight = "400px";
 	playground.innerHTML = "";
+	issuesPanel.innerHTML = "";
 	code.setValue("");
 	code.insert("# Export model to finish writing code...");
 	code.insert("\n")
@@ -328,6 +374,10 @@ function yieldImports(layerChain) {
 	var importChain = new Set(layerChain);
 	var	importChain = Array.from(importChain);
 	return importChain;
+};
+
+function showIntro(modal) {
+	modal.style.display = "block";
 };
 
 function writeImports(code, importChain) {
@@ -411,7 +461,26 @@ function fitModel(code) {
 	code.insert("\n");
 };
 
-function raiseIssue(container, chain, issuesChain) {
+
+function showTutorial() {
+	console.log('Starting tutorial');
+	intro = document.getElementById('introTut');
+	intro.style.visibility = 'visible';
+	messages = ["Starting tutorial. Let's build a simple 3 layer Neural Network!",
+							"To begin, click the Input block. Neural Networks always begin with an Input layer.",
+							"Now, click the Dense block followed by an Activation block.",
+							"Repeat this 3 times.",
+							"You should have something that looks like Input>Dense>Activation>Dense>Activation>Dense>Activation",
+							"Congratulations, You have built a Neural Network!",
+							"With the Load button on top, load pre-built architectures in a jiffy!"];
+
+	var counter = 0;
+	setInterval(change(tutInfoPara, counter, messages), 5000);
+};
+
+function raiseIssue(parent, container, chain, issuesChain) {
+
+	parent.style.visibility = 'visible';
 
 	if (chain[0] != "Input") {
 		if (issuesChain.includes("No input block at beginning.") == false) {

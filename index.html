@@ -21,9 +21,9 @@
 		<div id="myModal" class="modal">
 		  <div class="modal-content">
 		    <span class="close">&times;</span>
-		    <h3 style="padding-left: 30px;">Welcome to MLBlocks 1.4!</h3>
-				<p>A project by <a href="https://github.com/rish-16/" target="_blank">Rishabh Anand</a></p>
-				<p>Check the GitHub <a href="https://github.com/MLBlocks/MLBlocks.github.io" target="_blank">repo</a></p>
+		    <h3 style="padding-left: 30px;">Welcome to MLBlocks!</h3>
+				<p>A project by Rishabh Anand, Jivesh Mohan, Rahul and Yash Chellani</p>
+				<p>Check the GitHub <a style="color:#84817a;" href="https://github.com/MLBlocks/MLBlocks.github.io" target="_blank">repo</a></p>
 				<p style="font-size: 19px;"><strong>Instructions:</strong></p>
 				<ul>
 					<li>Click a Layer Block to place it in the sandbox space.</li>
@@ -32,11 +32,13 @@
 					<li>Select Loss function and optimizer before exporting model.</li>
 					<li>Export completed models in Python by clicking the <strong>Apply</strong> button.</li>
 				</ul>
+				<strong><p id="tutorial"><u>See tutorial</u></p></strong>
 		  </div>
 		</div>
 
 		<div id="header">
 			<a href="#"><img src="./images/ML.png" alt="logo"></a>
+			<!-- <strong><p style="margin-top:20px;" id="tutInfo"></p></strong> -->
 			<ul id="headerNav">
 				<li id='help'>Info</li>
 				<li id="newProject">New</li>
@@ -80,6 +82,7 @@
 				<li id="palette">Palette</li>
 				<li id="editor">Editor</li>
 				<li id="control">Control Panel</li>
+				<li id="load">Load</li>
 			</ul>
 
 		</div>
@@ -131,7 +134,30 @@
 			</div>
 		</div>
 
-		<div id="playground"></div>
+		<div id="playground">
+			<div id="introTut" style="visibility:hidden;margin-left:20px;">
+				<p style="line-height:35px;">
+					Starting tutorial. Let's build a simple 3 layer Neural Network!
+					<br>
+					To begin, click the Input block. Neural Networks always begin with an Input layer
+					<br>
+					Now, click the Dense block followed by an Activation block
+					<br>
+					Repeat this 3 times
+					<br>
+					You should have something like this: Input>Dense>Activation>Dense>Activation>Dense>Activation
+					<br>
+					Congratulations, You have built a Neural Network!
+					<br>
+					With the Load button on top, load pre-built architectures in a jiffy!
+					<br>
+				</p>
+				<button type="button" onclick="removeTut()" style="width:90px;height:40px;background:none;border:1px #2ecc71 solid;color:#2ecc71;padding:10px;font-family:Avenir Next;font-size:15px;">Got it!</button>
+				<br>
+				<br>
+				<div style="margin-left:0;width:720px;height:2px;background-color:lightgray;opacity:0.5;position:relative;"></div>
+			</div>
+		</div>
 
 		<div id="sandbox">
 			<div id="sbheader">
@@ -165,6 +191,8 @@
 						<p id="paramtitle">Neurones:</p>
 						<input type="text" id="paramfield">
 					</div>
+
+					<button type="button" id="delete">Delete Block</button>
 
 				</div>
 			</div>

@@ -34,24 +34,23 @@ select:focus {
   position: fixed;
   z-index: 6000;
 	left: 25%;
-  top: 50;
+  top: 150;
   width: 600px;
-  height: 365px;
+  height: 390px;
   overflow: auto;
-  background-color: #34495e;
-	border-radius: 7px;
-	box-shadow: 1px 2px 4px rgba(0,0,0,.6);
+  background-color: #f7f1e3;
+	border-radius: 2px;
+	box-shadow: 1px 2px 4px rgba(0,0,0,.3);
 	margin: 0 auto;
 }
 
 .modal-content {
-  background-color: #34495e;
+  background-color: #f7f1e3;
   margin: 0 auto;
   width: 100%;
-	border-radius: 10px;
-	height: 97%;
+	height: 98%;
 	overflow: auto;
-	color: white;
+	color: #84817a;
 }
 
 .modal-content p {
@@ -63,7 +62,7 @@ select:focus {
 }
 
 .close {
-  color: white;
+  color: #84817a;
   float: right;
   font-size: 28px;
   font-weight: bold;
@@ -74,6 +73,10 @@ select:focus {
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+
+#tutorial:hover {
+	cursor: pointer;
 }
 
 /*------------------------------------------------------------------------------------------------------------------------*/
@@ -96,6 +99,10 @@ select:focus {
 	margin-right: 0;
 	margin-bottom: 0;
 	float: left;
+}
+
+#header #tutInfo {
+	visibility: hidden;
 }
 
 #header #headerNav {
@@ -261,7 +268,7 @@ select:focus {
 /*------------------------------------------------------------------------------------------------------------------------*/
 
 #scroller {
-	width: 225px;
+	width: 235px;
 	height: 100%;
 	background-color: lightgray;
 	box-shadow: 1px 2px 4px rgba(0,0,0,.15);
@@ -312,7 +319,7 @@ select:focus {
 	width: 85px;
 	height: 90px;
 	border-radius: 5px;
-	box-shadow: 1px 2px 4px rgba(0,0,0,.3);
+	/* box-shadow: 1px 2px 4px rgba(0,0,0,.3); */
 	margin: 10px;
 	padding: 0;
 	display: inline-table;
@@ -321,16 +328,23 @@ select:focus {
 
 .editable_block {
 	width: 120px;
-	height: 100px;
+	height: 50px;
 	border-radius: 5px;
-	box-shadow: 1px 2px 4px rgba(0,0,0,.3);
+	/* box-shadow: 1px 2px 4px rgba(0,0,0,.3); */
 	margin: 22px;
 	padding: 0;
 	text-align: center;
 }
 
 .block:hover {
-	transform: scale(1.05);
+	/* transform: scale(1.05); */
+	border: #81ecec solid 1px;
+	transition: 0.5s;
+}
+
+.editable_block:hover {
+	/* transform: scale(1.05); */
+	border: #81ecec solid 1px;
 	transition: 0.5s;
 }
 
@@ -348,7 +362,7 @@ select:focus {
 	text-align: center;
 	padding: 0;
 	margin: 0;
-	padding-top: 37%;
+	padding-top: 15%;
 }
 
 #closeBTN {
@@ -366,10 +380,14 @@ select:focus {
 	position: absolute;
 	top: 115px;
 	right: 0;
-	left: 225px;
+	left: 235px;
 	bottom: 0;
-	overflow: auto;
-	background-color: #ecf0f1;
+	/* overflow: auto; */
+	background-color: #f5f6fa;
+}
+
+#introTut {
+	display: none;
 }
 
 /*------------------------------------------------------------------------------------------------------------------------*/
@@ -565,7 +583,6 @@ select:focus {
 	margin: 0;
 }
 
-
 #layerPanel #params {
 	position: relative;
 	width: 100%;
@@ -618,9 +635,23 @@ select:focus {
 	background: none;
 	font-family: Avenir Next;
 	font-size: 15px;
-	background-color: #F2F1EF;
 	text-align: center;
 	margin-top: 7px;
+}
+
+#delete {
+	width: 90%;
+	min-height: 40px;
+	border: 2px solid #e74c3c;
+	position: relative;
+	margin: 15px auto;
+	border-radius: 5px;
+	text-align: center;
+	background: none;
+	color: #e74c3c;
+	font-size: 17px;
+	padding: 10px;
+	margin-left: 12px;
 }
 
 /*------------------------------------------------------------------------------------------------------------------------*/
@@ -673,3 +704,5 @@ select:focus {
 	background-color: #95a5a6;
 	color: white;
 }
+
+/*------------------------------------------------------------------------------------------------------------------------*/
