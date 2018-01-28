@@ -30,9 +30,10 @@
 					<li>Tweak layer parameters by clicking a block in the sandbox.</li>
 					<li>Pay attention to the issues that pop up in the Control Panel.</li>
 					<li>Select Loss function and optimizer before exporting model.</li>
-					<li>Export completed models in Python by clicking the <strong>Apply</strong> button.</li>
+					<li>Export completed models in Python by clicking the <strong>Export</strong> button.</li>
+					<li>With the Load button on top, load pre-built architectures in a jiffy!</li>
 				</ul>
-				<strong><p id="tutorial"><u>See tutorial</u></p></strong>
+				<strong><p id="tutorial" onclick="showTut()"><u>See tutorial</u></p></strong>
 		  </div>
 		</div>
 
@@ -76,7 +77,7 @@
 				<option value="TFOptimizer">TFOptimizer</option>
 			</select>
 
-			<button id="apply" type="button">Apply</button>
+			<button id="apply" type="button">Export</button>
 
 			<ul id="menuNav">
 				<li id="palette">Palette</li>
@@ -139,20 +140,18 @@
 				<p style="line-height:35px;">
 					Starting tutorial. Let's build a simple 3 layer Neural Network!
 					<br>
-					To begin, click the Input block. Neural Networks always begin with an Input layer
+					To begin, click the <strong><em>Input</em></strong> block. Neural Networks always begin with an Input layer
 					<br>
-					Now, click the Dense block followed by an Activation block
+					Now, click the <strong><em>Dense</em></strong> block followed by an <strong><em>Activation</em></strong> block
 					<br>
-					Repeat this 3 times
+					Repeat this 3 times. You should have something like this:
 					<br>
-					You should have something like this: Input>Dense>Activation>Dense>Activation>Dense>Activation
+					<strong>Input>Dense>Activation>Dense>Activation>Dense>Activation</strong>
 					<br>
 					Congratulations, You have built a Neural Network!
 					<br>
-					With the Load button on top, load pre-built architectures in a jiffy!
-					<br>
 				</p>
-				<button type="button" onclick="removeTut()" style="width:90px;height:40px;background:none;border:1px #2ecc71 solid;color:#2ecc71;padding:10px;font-family:Avenir Next;font-size:15px;">Got it!</button>
+				<button type="button" onclick="removeTut()" style="border-radius:2px;width:110px;height:40px;background:none;border:1px #2ecc71 solid;color:#2ecc71;padding:10px;font-family:Avenir Next;font-size:15px;">Got it!</button>
 				<br>
 				<br>
 				<div style="margin-left:0;width:720px;height:2px;background-color:lightgray;opacity:0.5;position:relative;"></div>

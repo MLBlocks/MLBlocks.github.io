@@ -117,18 +117,21 @@ document.addEventListener("DOMContentLoaded", function() {
 		};
 	});
 
-	tutorial.addEventListener('click', function() {
-		modal.style.display = "none";
-		showTutorial(tutInfo);
-	});
-
 	help.addEventListener('click', function() {
 		console.log("Help");
 		modal.style.display = "block";
+		intro = document.getElementById('introTut');
+		intro.style.display='block';
+		intro.style.visibility = 'hidden';
 	});
 
 	span.onclick = function() {
-	    modal.style.display = "none";
+		console.log('Starting tutorial');
+    modal.style.display = "none";
+		intro = document.getElementById('introTut');
+		modal.style.display = "none";
+		intro.style.visibility = 'hidden';
+		intro.style.display = "none";
 	}
 
 	clear.addEventListener('click', function() {
@@ -461,21 +464,19 @@ function fitModel(code) {
 	code.insert("\n");
 };
 
-
-function showTutorial() {
+function showTut() {
 	console.log('Starting tutorial');
+	modal = document.getElementById('myModal');
 	intro = document.getElementById('introTut');
+	modal.style.display = "none";
 	intro.style.visibility = 'visible';
-	messages = ["Starting tutorial. Let's build a simple 3 layer Neural Network!",
-							"To begin, click the Input block. Neural Networks always begin with an Input layer.",
-							"Now, click the Dense block followed by an Activation block.",
-							"Repeat this 3 times.",
-							"You should have something that looks like Input>Dense>Activation>Dense>Activation>Dense>Activation",
-							"Congratulations, You have built a Neural Network!",
-							"With the Load button on top, load pre-built architectures in a jiffy!"];
+};
 
-	var counter = 0;
-	setInterval(change(tutInfoPara, counter, messages), 5000);
+function removeTut() {
+	console.log('Ending tutorial');
+	intro = document.getElementById('introTut');
+	intro.style.visibility = 'hidden';
+	intro.style.display = "none";
 };
 
 function raiseIssue(parent, container, chain, issuesChain) {
