@@ -1,7 +1,6 @@
 # MLBlocks.github.io
 Neural Network construction playground and toolkit for Web. <br>
-Project by Rishabh Anand, Jivesh Mohan, Sai Rahul and Yash Chellani. <br>
-Final submission for the NUS Hack&Roll, January 27-28, 2018. <br>
+Project by Rishabh Anand
 
 Visit the [MLBlocks]("https://mlblocks.github.io/") website to use the app.
 
