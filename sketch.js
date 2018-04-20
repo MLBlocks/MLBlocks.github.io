@@ -1,669 +1,891 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener('DOMContentLoaded', function() {
 
-	console.log("Loaded");
+	console.log('Beginning session...');
 
-	var clear = document.getElementById("newProject");
-	var type = document.getElementById("type");
+	var num_input = 0;
+	var num_compile = 0;
+	var num_dense = 0;
+	var num_activation = 0;
+	var num_conv2d = 0;
+	var num_maxpool2d = 0;
+	var num_lstm = 0;
+	var num_dropout = 0;
+	var num_batchnorm = 0;
+
+	// -----------------------------------------------------------------------------------------------
+
+	var inputBlock = document.getElementById('Input');
+	var compileBlock = document.getElementById('Compile');
+	var denseBlock = document.getElementById('Dense');
+	var activationBlock = document.getElementById('Activation');
+	var conv2dBlock = document.getElementById('Conv2D');
+	var maxpool2dBlock = document.getElementById('MaxPool2D');
+	var lstmBlock = document.getElementById('LSTM');
+	var dropoutBlock = document.getElementById('Dropout');
+	var batchnormBlock = document.getElementById('BatchNorm');
 	var playground = document.getElementById('playground');
 
-	var modal = document.getElementById('myModal');
-	var span = document.getElementsByClassName("close")[0];
+	// -----------------------------------------------------------------------------------------------
 
-	var Help = document.getElementById("help");
-	var Export = document.getElementById("apply");
-	var Palette = document.getElementById("palette");
-	var Editor = document.getElementById("editor");
-	var Control = document.getElementById("control");
-	var Load = document.getElementById("load");
+	var palette = document.getElementById('palette');
+	var paletteClose = document.getElementById('paletteHead');
+	var paletteOpen = document.getElementById('openPalette');
 
-	var palOpen = 0;
-	var conOpen = 0;
-	var ediOpen = 0;
+	var controlPanel = document.getElementById('control');
+	var controlClose = document.getElementById('controlHead');
+	var controlOpen = document.getElementById('openControl');
+	var tracker = document.getElementById('tracker');
 
-	var sandbox = document.getElementById("sandbox");
-	var controlPanel = document.getElementById("controlPanel");
-	var scroller = document.getElementById("scroller");
-	var closesb = document.getElementById("closesb");
-	var closecp = document.getElementById("closecp");
-	var closepal = document.getElementById("closepal");
-	var tutorial = document.getElementById("tutorial");
-	var tutInfo = document.getElementById("tutInfo");
+	var editor = document.getElementById('editor');
+	var editorClose = document.getElementById('editorHead');
 
-	var issues = document.getElementById("issues");
-	var layers = document.getElementById("layerInfo");
-	var issuesPanel = document.getElementById("issuesPanel");
-	var layerPanel = document.getElementById("layerPanel");
-	var deleteBTN = document.getElementById("delete");
+	// -----------------------------------------------------------------------------------------------
 
-	var input = document.getElementById("Input");
-	var dense = document.getElementById("Dense");
-	var conv2d = document.getElementById("Conv2D");
-	var mp2d = document.getElementById("MaxPooling2D");
-	var flatten = document.getElementById("Flatten");
-	var activation = document.getElementById("Activation");
-	var reshape = document.getElementById("Reshape");
-	var dropout = document.getElementById("Dropout");
-	var lstm = document.getElementById("LSTM");
-	var batchnorm = document.getElementById("BatchNormalization");
+	var exportBTN = document.getElementById('exportBTN');
 
-	var loss = document.getElementById('lossfunc');
-	var optimizer = document.getElementById('optimizer');
+	var newBTN = document.getElementById('newBTN');
+	var editorBTN = document.getElementById('editorBTN');
+	var panelBTN = document.getElementById('panelBTN');
+	var aboutBTN = document.getElementById('aboutBTN');
 
-	var code = ace.edit("code");
-  code.setTheme("ace/theme/xcode");
-  code.getSession().setMode("ace/mode/python");
-	code.insert("# Export model to generate code...");
-	code.insert("\n")
+	var downloadBTN = document.getElementById('downloadCode');
 
-	var chain = [];
-	var compileParams = [];
-	var issuesChain = [];
+	// -----------------------------------------------------------------------------------------------
 
-	showIntro(modal);
+	var blocks = [];
+	var layers = [];
 
-	function doc_N(e) {
-    if (e.ctrlKey && e.keyCode == 78) {
-			msg = confirm("Are you sure you want to clear the sandbox?");
-			if (msg == true) {
-				$('#lossfunc option').prop('selected', function() {
-					return this.defaultSelected;
-				});
+	// -----------------------------------------------------------------------------------------------
 
-				$('#optimizer option').prop('selected', function() {
-					return this.defaultSelected;
-				});
+	var codeEditor = ace.edit("codeEditor");
+  codeEditor.setTheme("ace/theme/xcode");
+  codeEditor.getSession().setMode("ace/mode/python");
+	codeEditor.insert("# Export model to generate code...");
+	codeEditor.insert("\n")
 
-				clearPlayground(code);
-				chain = [];
-				compileParams = [];
-				issuesChain = [];
-			} else {};
-    }
-	}
-	document.addEventListener('keyup', doc_N, false);
+	// -----------------------------------------------------------------------------------------------
 
-	function doc_I(e) {
-    if (e.ctrlKey && e.keyCode == 73) {
-			showIntro(modal);
-    }
-	}
-	document.addEventListener('keyup', doc_I, false);
+	paletteClose.addEventListener('click', function() {
+		console.log('Closing Palette');
+		palette.style.display = 'none';
 
-	function doc_P(e) {
-    // this would test for whichever key is 40 and the ctrl key at the same time
-    if (e.ctrlKey && e.keyCode == 80) {
-        // call your function to do the thing
-			if (palOpen == 0) {
-				console.log('Opening control panel');
-				scroller.style.visibility = "visible";
-				playground.style.left = "235px";
-				palOpen = 1;
-			} else if (palOpen == 1) {
-				console.log('Closing control panel');
-				scroller.style.visibility = "hidden";
-				playground.style.left = "0";
-				palOpen = 0;
-			};
-    };
-	};
-	// register the handler
-	document.addEventListener('keyup', doc_P, false);
+		playground.style.left = '65px';
+		playground.style.right = '300px';
 
-	function doc_C(e) {
-    // this would test for whichever key is 40 and the ctrl key at the same time
-    if (e.ctrlKey && e.keyCode == 67) {
-        // call your function to do the thing
-			if (conOpen == 0 && ediOpen == 0) {
-				console.log('Opening control panel');
-				controlPanel.style.visibility = "visible";
-				conOpen = 1;
-			} else if (conOpen == 1) {
-				console.log('Closing control panel');
-				controlPanel.style.visibility = "hidden";
-				conOpen = 0;
-			};
-    };
-	};
-	// register the handler
-	document.addEventListener('keyup', doc_C, false);
+		paletteOpen.style.display = 'block';
+	})
 
-	function doc_E(e) {
-    // this would test for whichever key is 40 and the ctrl key at the same time
-    if (e.ctrlKey && e.keyCode == 69) {
-        // call your function to do the thing
-			if (ediOpen == 0 && conOpen == 0) {
-				console.log('Opening editor');
-				sandbox.style.visibility = "visible";
-				controlPanel.style.visibility = "hidden";
-				ediOpen = 1;
-			} else if (ediOpen == 1) {
-				console.log('Closing editor');
-				sandbox.style.visibility = "hidden";
-				controlPanel.style.visibility = "visible";
-				ediOpen = 0;
-			};
-    };
-	};
-	// register the handler
-	document.addEventListener('keyup', doc_E, false);
+	controlClose.addEventListener('click', function() {
+		console.log('Closing Control Panel');
+		controlPanel.style.display = 'none';
+		playground.style.right = '0';
+	})
 
-	function doc_D(e) {
-    // this would test for whichever key is 40 and the ctrl key at the same time
-    if (e.ctrlKey && e.keyCode == 68) {
-        // call your function to do the thing
-				if (chain.length != 0) {
-					if (issuesChain.length == 0) {
-						var msg = confirm("Are you sure you want to export this model?");
-						if (msg == true) {
-							var lossChoice = loss.value;
-							var optimizerChoice = optimizer.value;
+	editorClose.addEventListener('click', function() {
+		console.log('Closing Editor');
+		editor.style.display = 'none';
+		controlPanel.style.display = 'block';
+		playground.style.right = '300px';
+	})
 
-							if (lossChoice == "" || optimizerChoice == "") {
-								lossChoice = "binary_crossentropy";
-								optimizerChoice = "Adam";
-							};
+	// -----------------------------------------------------------------------------------------------
 
-							compileParams.push(lossChoice);
-							compileParams.push(optimizerChoice);
+	openPalette.addEventListener('click', function() {
+		console.log('Opening Palette');
 
-							imports = yieldImports(chain);
+		palette.style.display = 'block';
+		paletteOpen.style.display = 'none';
 
-							console.log(chain);
-							console.log(compileParams);
-							console.log(imports);
+		playground.style.left = '220px';
+	})
 
-							writeImports(code, imports);
-							writeModel(code, chain);
-							compileModel(code, compileParams);
-							fitModel(code);
+	openControl.addEventListener('click', function() {
+		console.log('Opening Control Panel');
 
-							text = code.getValue();
+		controlPanel.style.display = 'block';
 
-							download("model.py", text);
+		playground.style.right = '300px';
+		editor.style.display = 'none';
+	})
 
-							chain = [];
-							compileParams = [];
-							issuesChain = [];
+  newBTN.addEventListener('click', function() {
+		prompt = window.confirm('Are you sure you want to start afresh?')
+		if (prompt) {
+			console.log('Creating new project');
 
-						} else {
-							alert("Canceling model export.");
-						};
-					} else {
-						alert("Fix all issues in the model architecture before exporting.")
-					};
-				} else {
-					alert("Model has to be built before being exported.");
-				};
-    };
-	};
-	// register the handler
-	document.addEventListener('keyup', doc_D, false);
+			blocks = [];
+			layers = [];
+			
+			palette.style.display = 'block';
+			paletteOpen.style.display = 'none';
 
-	function download(filename, text) {
-	  var element = document.createElement('a');
-	  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-	  element.setAttribute('download', filename);
+			playground.style.left = '220px';
+			playground.style.bottom = '0';
+			playground.style.right = '300px';
 
-	  element.style.display = 'none';
-	  document.body.appendChild(element);
+			codeEditor.setValue("");
+			codeEditor.insert("# Export model to generate code...");
+			editor.style.display = 'none';
 
-	  element.click();
+			controlPanel.style.display = 'block';
 
-	  document.body.removeChild(element);
-	}
-
-	Export.addEventListener('click', function() {
-
-		if (chain.length != 0) {
-			if (issuesChain.length == 0) {
-				var msg = confirm("Are you sure you want to export this model?");
-				if (msg == true) {
-					var lossChoice = loss.value;
-					var optimizerChoice = optimizer.value;
-
-					if (lossChoice == "" || optimizerChoice == "") {
-						lossChoice = "binary_crossentropy";
-						optimizerChoice = "Adam";
-					};
-
-					compileParams.push(lossChoice);
-					compileParams.push(optimizerChoice);
-
-					imports = yieldImports(chain);
-
-					console.log(chain);
-					console.log(compileParams);
-					console.log(imports);
-
-					writeImports(code, imports);
-					writeModel(code, chain);
-					compileModel(code, compileParams);
-					fitModel(code);
-
-					text = code.getValue();
-
-					download("model.py", text);
-
-					chain = [];
-					compileParams = [];
-					issuesChain = [];
-
-				} else {
-					alert("Canceling model export.");
-				};
-			} else {
-				alert("Fix all issues in the model architecture before exporting.")
-			};
-		} else {
-			alert("Model has to be built before being exported.");
-		};
-	});
-
-	help.addEventListener('click', function() {
-		console.log("Help");
-		modal.style.display = "block";
-		intro = document.getElementById('introTut');
-		intro.style.display='block';
-		intro.style.visibility = 'hidden';
-	});
-
-	span.onclick = function() {
-		console.log('Starting tutorial');
-    modal.style.display = "none";
-		intro = document.getElementById('introTut');
-		modal.style.display = "none";
-		intro.style.visibility = 'hidden';
-		intro.style.display = "none";
-	}
-
-	clear.addEventListener('click', function() {
-		msg = confirm("Are you sure you want to clear the sandbox?");
-		if (msg == true) {
-			$('#lossfunc option').prop('selected', function() {
-				return this.defaultSelected;
-			});
-
-			$('#optimizer option').prop('selected', function() {
-				return this.defaultSelected;
-			});
-
-			clearPlayground(code);
-			chain = [];
-			compileParams = [];
-			issuesChain = [];
+			playground.innerHTML = '';
+			tracker.innerHTML = '';
 		} else {};
-	});
+	})
 
-	Palette.addEventListener('click', function() {
-		if (palOpen == 0) {
-			console.log('Opening palette');
-			scroller.style.visibility = "visible";
-			playground.style.left = "235px";
-			palOpen = 1;
-		};
-	});
+	editorBTN.addEventListener('click', function() {
+		console.log('Opening Editor');
+		editor.style.display = 'block';
+		controlPanel.style.display = 'none';
+		playground.style.right = '500px';
+	})
 
-	Editor.addEventListener('click', function() {
-		if (ediOpen == 0 && conOpen == 0) {
-			console.log('Opening editor');
-			sandbox.style.visibility = "visible";
-			controlPanel.style.visibility = "hidden";
-			ediOpen = 1;
-		};
-	});
+	exportBTN.addEventListener('click', function() {
+		codeEditor.setValue("");
+		console.log('Exporting code');
+		var prompt = window.confirm('Are you sure you want to export the model?');
+		if (prompt) {
+			if (blocks.length == 0) {
+				window.alert('Model must be completed and compiled before exporting...')
+			} else {
+				writeImports(blocks, codeEditor);
+				setParams(blocks, layers);
+				writeModel(blocks, layers, codeEditor);
+				window.alert('Check the editor to see the code for your model!')
+			}
+		}
+	})
 
-	Control.addEventListener('click', function() {
-		if (conOpen == 0 && ediOpen == 0) {
-			console.log('Opening control panel');
-			controlPanel.style.visibility = "visible";
-			conOpen = 1;
-		};
-	});
+	// -----------------------------------------------------------------------------------------------
 
-	Load.addEventListener('click', function() {
-		console.log('Loading model...');
-	});
+	downloadBTN.addEventListener('click', function() {
+		console.log('Downloading code...');
+	})
 
-	closesb.addEventListener('click', function() {
-		console.log('Closing editor');
-		sandbox.style.visibility = "hidden";
-		controlPanel.style.visibility = "visible";
-		ediOpen = 0;
-	});
+	// -----------------------------------------------------------------------------------------------
 
-	closecp.addEventListener('click', function() {
-		console.log('Closing control panel');
-		controlPanel.style.visibility = "hidden";
-		conOpen = 0;
-	});
+	inputBlock.addEventListener('click', function() {
+		num_input += 1;
+		var input = new Input();
+		input.addBlock(playground);
+		var inputID = input.blockID;
+		blocks.push(input.blockID);
+		layers.push(input);
+		console.log(blocks);
+		trackerLogs(tracker, 'Adding Input block with ID ' + inputID);
 
-	closepal.addEventListener('click', function() {
-		console.log('Closing control panel');
-		scroller.style.visibility = "hidden";
-		playground.style.left = "0";
-		palOpen = 0;
-	});
+		input.newBlock.addEventListener('dblclick', function() {
+			console.log(inputID + ' deleted');
+			trackerLogs(tracker, 'Removing Input block with ID ' + inputID);
+			var index = blocks.indexOf(inputID);
+			blocks.splice(index, 1);
+			layers.splice(index, 1);
+			num_input -= 1;
+			playground.removeChild(input.newBlock);
+			console.log(blocks);
+		})
+	})
 
-	issues.addEventListener('click', function() {
-		issues.style.backgroundColor = "#89C4F4";
-		issues.style.color = "white";
-		issues.style.opacity = "1.0";
+	compileBlock.addEventListener('click', function() {
+		num_compile += 1;
+		var compile = new Compile();
+		compile.addBlock(playground);
+		var compileID = compile.blockID;
+		blocks.push(compileID);
+		layers.push(compile);
+		console.log(blocks);
+		trackerLogs(tracker, 'Adding Compile block with ID ' + compileID);
 
-		layerInfo.style.color = "white";
-		layerInfo.style.opacity = "0.8";
-		layerInfo.style.background = "none";
+		compile.newBlock.addEventListener('dblclick', function() {
+			console.log(compileID + ' deleted');
+			trackerLogs(tracker, 'Removing compile block with ID ' + compileID);
+			var index = blocks.indexOf(compileID);
+			blocks.splice(index, 1);
+			layers.splice(index, 1);
+			num_compile -= 1;
+			playground.removeChild(compile.newBlock);
+			console.log(blocks);
+		})
+	})
 
-		issuesPanel.style.display = "block";
-		layerPanel.style.display = "none";
-	});
+	denseBlock.addEventListener('click', function() {
+		num_dense += 1;
+		var dense = new Dense();
+		dense.addBlock(playground);
+		var denseID = dense.blockID;
+		blocks.push(denseID);
+		layers.push(dense);
+		console.log(blocks);
+		trackerLogs(tracker, 'Adding Dense block with ID ' + denseID);
 
-	layerInfo.addEventListener('click', function() {
-		layerInfo.style.backgroundColor = "#89C4F4";
-		layerInfo.style.color = "white";
-		layerInfo.style.opacity = "1.0";
+		dense.newBlock.addEventListener('dblclick', function() {
+			console.log(denseID + ' deleted');
+			trackerLogs(tracker, 'Removing Dense block with ID ' + denseID);
+			var index = blocks.indexOf(denseID);
+			blocks.splice(index, 1);
+			layers.splice(index, 1);
+			num_dense -= 1;
+			playground.removeChild(dense.newBlock);
+			console.log(blocks);
+		})
+	})
 
-		issues.style.color = "white";
-		issues.style.opacity = "0.8";
-		issues.style.background = "none";
+	activationBlock.addEventListener('click', function() {
+		num_activation += 1
+		var activation = new Activation();
+		activation.addBlock(playground);
+		var activationID = activation.blockID;
+		blocks.push(activationID);
+		layers.push(activation);
+		console.log(blocks);
+		trackerLogs(tracker, 'Adding Activation block with ID ' + activationID);
 
-		layerPanel.style.display = "block";
-		issuesPanel.style.display = "none";
-	});
+		activation.newBlock.addEventListener('dblclick', function() {
+			console.log(activationID + ' deleted');
+			trackerLogs(tracker, 'Removing Activation block with ID ' + activationID);
+			var index = blocks.indexOf(activationID);
+			blocks.splice(index, 1);
+			layers.splice(index, 1);
+			num_activation -= 1
+			playground.removeChild(activation.newBlock);
+			console.log(blocks);
+		})
+	})
 
-	deleteBTN.addEventListener('click', function() {
-		removeBlock(chain)
-	});
+	conv2dBlock.addEventListener('click', function() {
+		num_conv2d += 1;
+		var conv2d = new Conv2D();
+		conv2d.addBlock(playground);
+		var conv2dID = conv2d.blockID;
+		blocks.push(conv2d.blockID);
+		layers.push(conv2d);
+		console.log(blocks);
+		trackerLogs(tracker, 'Adding Convolution2D block with ID ' + conv2dID);
 
-	function getBlockInfo(type, chain) {
-		var index = chain.indexOf(type);
-		var category = type;
-		var neurones;
-	};
+		conv2d.newBlock.addEventListener('dblclick', function() {
+			console.log(conv2dID + ' deleted');
+			trackerLogs(tracker, 'Removing Convolution2D block with ID ' + conv2dID);
+			var index = blocks.indexOf(conv2dID);
+			blocks.splice(index, 1);
+			layers.splice(index, 1);
+			num_conv2d -= 1;
+			playground.removeChild(conv2d.newBlock);
+			console.log(blocks);
+		})
+	})
 
-	function showBlockInfo(type, chain) {
-		layerInfo.style.backgroundColor = "#89C4F4";
-		layerInfo.style.color = "white";
-		layerInfo.style.opacity = "1.0";
+	maxpool2dBlock.addEventListener('click', function() {
+		num_maxpool2d += 1;
+		var maxpool2d = new MaxPool2D();
+		maxpool2d.addBlock(playground);
+		var maxpool2dID = maxpool2d.blockID;
+		blocks.push(maxpool2dID);
+		layers.push(maxpool2d);
+		console.log(blocks);
+		trackerLogs(tracker, 'Adding MaxPool2D block with ID ' + maxpool2dID);
 
-		issues.style.color = "white";
-		issues.style.opacity = "0.8";
-		issues.style.background = "none";
+		maxpool2d.newBlock.addEventListener('dblclick', function() {
+			console.log(maxpool2d + ' deleted');
+			trackerLogs(tracker, 'Removing MaxPool2D block with ID ' + maxpool2dID);
+			var index = blocks.indexOf(maxpool2dID);
+			blocks.splice(index, 1);
+			layers.splice(index, 1);
+			num_maxpool2d -= 1;
+			playground.removeChild(maxpool2d.newBlock);
+			console.log(blocks);
+		})
+	})
 
-		layerPanel.style.display = "block";
-		issuesPanel.style.display = "none";
+	lstmBlock.addEventListener('click', function() {
+		console.log('LSTM');
+	})
 
-		if (type == "Input") {
-			console.log('Editing Input');
-		};
+	dropoutBlock.addEventListener('click', function() {
+		num_dropout += 1;
+		var dropout = new Dropout();
+		dropout.addBlock(playground);
+		var dropoutID = dropout.blockID;
+		blocks.push(dropoutID);
+		layers.push(dropout);
+		console.log(blocks);
+		trackerLogs(tracker, 'Adding Dropout block with ID ' + dropoutID);
 
-		if (type == "Dense") {
-			console.log('Editing Dense');
-		};
+		dropout.newBlock.addEventListener('dblclick', function() {
+			console.log(dropout + ' deleted');
+			trackerLogs(tracker, 'Removing Dropout block with ID ' + dropoutID);
+			var index = blocks.indexOf(dropoutID);
+			blocks.splice(index, 1);
+			layers.splice(index, 1);
+			num_dropout -= 1;
+			playground.removeChild(dropout.newBlock);
+			console.log(blocks);
+		})
+	})
 
-		if (type == "Conv2D") {
-			console.log('Editing Conv2D');
-		};
+	batchnormBlock.addEventListener('click', function() {
+		console.log('BatchNorm');
+	})
 
-		if (type == "MaxPooling2D") {
-			console.log('Editing MaxPooling2D');
-		};
+	// -----------------------------------------------------------------------------------------------
 
-		if (type == "Flatten") {
-			console.log('Editing Flatten');
-		};
+	function writeImports(blocks, editor) {
+		raw_blocks = [];
+		editor.insert('# Writing Imports\n')
+		editor.insert('import numpy as np\n')
+		editor.insert('import keras\n')
+		editor.insert('from keras.models import Sequential\n')
 
-		if (type == "Dropout") {
-			console.log('Editing Dropout');
-		};
+		for (i = 0; i < blocks.length; i++) {
+			if (blocks[i].includes('Input')) {
+				if (raw_blocks.includes('Input') == false) {
+					raw_blocks.push('Input');
+				}
+			}
+			else if (blocks[i].includes('Dense')) {
+				if (raw_blocks.includes('Dense') == false) {
+					raw_blocks.push('Dense');
+				}
+			}
+			else if (blocks[i].includes('Activation')) {
+				if (raw_blocks.includes('Activation') == false) {
+					raw_blocks.push('Activation');
+				}
+			}
+			else if (blocks[i].includes('Conv2D')) {
+				if (raw_blocks.includes('Conv2D') == false) {
+					raw_blocks.push('Conv2D');
+				}
+			}
+			else if (blocks[i].includes('MaxPool2D')) {
+				if (raw_blocks.includes('MaxPool2D') == false) {
+					raw_blocks.push('MaxPool2D');
+				}
+			}
+		}
 
-		if (type == "LSTM") {
-			console.log('Editing LSTM');
-		};
+		console.log(raw_blocks);
 
-		if (type == "BatchNormalization") {
-			console.log('Editing BatchNormalization');
-		};
+		for (j = 0; j < raw_blocks.length; j++) {
+			if (raw_blocks[j] == 'Input') {
+				editor.insert('from keras.layers import Input\n')
+			}
+			else if (raw_blocks[j] == 'Dense') {
+				editor.insert('from keras.layers import Dense\n')
+			}
+			else if (raw_blocks[j] == 'Activation') {
+				editor.insert('from keras.layers import Activation\n')
+			}
+			else if (raw_blocks[j] == 'Conv2D') {
+				editor.insert('from keras.layers import Conv2D\n')
+			}
+			else if (raw_blocks[j] == 'MaxPool2D') {
+				editor.insert('from keras.layers import MaxPool2D\n')
+			}
+		}
 
-		if (type == "Reshape") {
-			console.log('Editing Reshape');
-		};
-
-		if (type == "Activation") {
-			console.log('Editing Activation');
-		};
-	};
-
-	function addBlock(type, chain) {
-		var playground = document.getElementById('playground');
-		var block = document.createElement("DIV");
-		var category = document.createElement("P");
-		var text = document.createTextNode(type);
-
-		category.appendChild(text);
-		category.id = "edit_type";
-
-		block.appendChild(category);
-
-		block.id = type;
-		block.className += "editable_block";
-
-		playground.appendChild(block);
-		console.log(chain);
-
-		block.addEventListener('click', function() {
-			showBlockInfo(type, chain);
-			controlPanel.style.visibility = "visible";
-		});
-
-		raiseIssue(controlPanel, issuesPanel, chain, issuesChain);
-	};
-
-	function removeBlock(chain) {
-		// chain.push(type);
-		var playground = document.getElementById('playground');
-		console.log('Remove block');
+		editor.insert('\n');
 	}
 
-	input.addEventListener('click', function() {
-		chain.push("Input");
-		addBlock("Input", chain);
-	});
+	// -----------------------------------------------------------------------------------------------
 
-	dense.addEventListener('click', function() {
-		chain.push("Dense");
-		addBlock("Dense", chain);
-	});
+	function setParams(blocks, layers) {
 
-	conv2d.addEventListener('click', function() {
-		chain.push("Conv2D");
-		addBlock("Conv2D", chain);
-	});
+		console.log(blocks);
+		console.log(layers);
 
-	mp2d.addEventListener('click', function() {
-		chain.push("MaxPooling2D");
-		addBlock("MaxPooling2D", chain);
-	});
+		for (i = 0; i < blocks.length; i++) {
+			if (blocks[i].includes('Input')) {
+				var inputDims = layers[i].newBlock.childNodes[1].value;
+				layers[i].setInputDim(inputDims);
+			}
+			else if (blocks[i].includes('Dense')) {
+				var noUnits = layers[i].newBlock.childNodes[1].value;
+				layers[i].setUnits(noUnits);
+			}
+			else if (blocks[i].includes('Activation')) {
+				var actFunc = layers[i].newBlock.childNodes[1].value;
+				layers[i].setActivationFunction(actFunc);
+			}
+			else if (blocks[i].includes('Compile')) {
+				var lossFunc = layers[i].newBlock.childNodes[1].value;
+				var optimizer = layers[i].newBlock.childNodes[2].value;
+				layers[i].setLoss(lossFunc);
+				layers[i].setOptimizer(optimizer);
+			}
+			else if (blocks[i].includes('Conv2D')) {
+				var filter = layers[i].newBlock.childNodes[1].value;
+				var kernel = layers[i].newBlock.childNodes[2].value;
+				layers[i].setFilter(filter);
+				layers[i].setKernel(kernel);
+			}
+			else if (blocks[i].includes('MaxPool2D')) {
+				var kernel = layers[i].newBlock.childNodes[1].value;
+				layers[i].setKernel(kernel);
+			}
+		}
+	}
 
-	flatten.addEventListener('click', function() {
-		chain.push("Flatten");
-		addBlock("Flatten", chain);
-	});
+	// -----------------------------------------------------------------------------------------------
 
-	activation.addEventListener('click', function() {
-		chain.push("Activation");
-		addBlock("Activation", chain);
-	});
+	function writeModel(blocks, layers, editor) {
+		editor.insert('# Writing model\n');
+		editor.insert('model = Sequential()\n');
 
-	reshape.addEventListener('click', function() {
-		chain.push("Reshape");
-		addBlock("Reshape", chain);
-	});
+		for (i = 0; i < blocks.length; i++) {
+			if (blocks[i].includes('Input')) {
+				var inputDims = layers[i].inputDim;
+				editor.insert('model.add(Input(' + inputDims + '))\n');
+			}
+			else if (blocks[i].includes('Dense')) {
+				var units = layers[i].units;
+				editor.insert('model.add(Dense(' + units + '))\n');
+			}
+			else if (blocks[i].includes('Activation')) {
+				var actFunc = layers[i].activationFunc;
+				editor.insert('model.add(Activation("' + actFunc + '"))\n');
+			}
+			else if (blocks[i].includes('Conv2D')) {
+				var kernel = layers[i].kernel;
+				var filter = layers[i].filter;
+				editor.insert('model.add(Conv2D(' + filter + ', ' + kernel + '))\n');
+			}
+			else if (blocks[i].includes('MaxPool2D')) {
+				var kernel = layers[i].kernel;
+				editor.insert('model.add(MaxPool2D(pool_size=' + kernel + '))\n');
+			}
+			else if (blocks[i].includes('Compile')) {
+				var lossFunc = layers[i].lossFunction;
+				var optimizer = layers[i].optimizer;
+				editor.insert('model.compile(loss="' + lossFunc + '", optimizer="' + optimizer + '")\n');
+			}
+		}
 
-	dropout.addEventListener('click', function() {
-		chain.push("Dropout");
-		addBlock("Dropout", chain);
-	});
+		console.log(blocks);
+		console.log(layers);
+	}
 
-	lstm.addEventListener('click', function() {
-		chain.push("LSTM");
-		addBlock("LSTM", chain);
-	});
+	// -----------------------------------------------------------------------------------------------
 
-	batchnorm.addEventListener('click', function() {
-		chain.push("BatchNormalization");
-		addBlock("BatchNormalization", chain);
-	});
+	function Input() {
+		this.title = 'Input';
+		this.inputDim = 0;
+	}
 
-});
+	Input.prototype.setInputDim = function(inputDim) {
+		this.inputDim = inputDim;
+	}
 
-function clearPlayground(code) {
-	var playground = document.getElementById('playground');
-	var issuesPanel = document.getElementById('issuesPanel');
-	playground.style.minHeight = "400px";
-	playground.innerHTML = "";
-	issuesPanel.innerHTML = "";
-	code.setValue("");
-	code.insert("# Export model to finish writing code...");
-	code.insert("\n")
-};
-
-function yieldImports(layerChain) {
-	var importChain = new Set(layerChain);
-	var	importChain = Array.from(importChain);
-	return importChain;
-};
-
-function showIntro(modal) {
-	modal.style.display = "block";
-};
-
-function writeImports(code, importChain) {
-	code.insert("import numpy as np");
-	code.insert("\n");
-	code.insert("import keras");
-	code.insert("\n");
-	code.insert("import keras.backend as K");
-	code.insert("\n");
-	code.insert("from keras.models import Sequential, Model, model_from_json");
-	code.insert("\n");
-	code.insert("\n");
-	for (i = 0; i < importChain.length; i++) {
-		code.insert("from keras.layers import " + String(importChain[i]));
-		code.insert("\n");
-	};
-};
-
-function writeModel(code, chain) {
-	code.insert("\n");
-	code.insert("model = Sequential()");
-	code.insert("\n");
-	for (i = 0; i < chain.length; i++) {
-		var current = chain[i];
-		if (current == "Input") {
-			code.insert("model.add(Input(shape=[]))");
-			code.insert("\n");
-		};
-		if (current == "Dense") {
-			code.insert("model.add(Dense(100))");
-			code.insert("\n");
-		};
-		if (current == "Conv2D") {
-			code.insert("model.add(Conv2D(32, (3,3)))");
-			code.insert("\n");
-		};
-		if (current == "MaxPooling2D") {
-			code.insert("model.add(MaxPooling2D(pool_size=(2,2)))");
-			code.insert("\n");
-		};
-		if (current == "Flatten") {
-			code.insert("model.add(Flatten())");
-			code.insert("\n");
-		};
-		if (current == "Activation") {
-			code.insert("model.add(Activation('relu'))");
-			code.insert("\n");
-		};
-		if (current == "Reshape") {
-			code.insert("model.add(Reshape())");
-			code.insert("\n");
-		};
-		if (current == "Dropout") {
-			code.insert("model.add(Dropout(0.25))");
-			code.insert("\n");
-		};
-		if (current == "LSTM") {
-			code.insert("model.add(LSTM(100))");
-			code.insert("\n");
-		};
-		if (current == "BatchNormalization") {
-			code.insert("model.add(BatchNormalization())");
-			code.insert("\n");
-		};
-	};
-};
-
-function compileModel(code, compileParams) {
-	var loss = compileParams[0];
-	var optimizer = 'keras.optimizers.' + compileParams[1] + '()';
-	code.insert(`model.compile(loss='${loss}', optimizer=${optimizer})`);
-	code.insert("\n");
-};
-
-function fitModel(code) {
-	var verbose = 1;
-	var epochs = 10;
-	var batch_size = 128;
-	code.insert("\n");
-	code.insert(`model.fit(X_train, y_train, verbose=${verbose}, epochs=${epochs}, batch_size=${batch_size})`);
-	code.insert("\n");
-};
-
-function showTut() {
-	console.log('Starting tutorial');
-	modal = document.getElementById('myModal');
-	intro = document.getElementById('introTut');
-	modal.style.display = "none";
-	intro.style.visibility = 'visible';
-};
-
-function removeTut() {
-	console.log('Ending tutorial');
-	intro = document.getElementById('introTut');
-	intro.style.visibility = 'hidden';
-	intro.style.display = "none";
-};
-
-function raiseIssue(parent, container, chain, issuesChain) {
-
-	parent.style.visibility = 'visible';
-
-	if (chain[0] != "Input") {
-		if (issuesChain.includes("No input block at beginning.") == false) {
-			issue = document.createElement("DIV");
-			issueDesc = document.createElement("P");
-			issueTXT = document.createTextNode("No input block at beginning.");
-			issueDesc.appendChild(issueTXT);
-			issueDesc.id = "inputIssueDesc";
-			issue.appendChild(issueDesc);
-			issue.id = "inputIssue";
-			container.appendChild(issue);
-			issuesChain.push("No input block at beginning.");
-		};
+	Input.prototype.getInputDim = function() {
+		return this.inputDim;
 	};
 
-	for (i = 0; i < chain.length; i++) {
-		if (chain[i] == chain[i+1]) {
-			if (issuesChain.includes(`Illegal synapse at block ${i+1} and ${i+2}`) == false) {
-				issue = document.createElement("DIV");
-				issueDesc = document.createElement("P");
-				issueTXT = document.createTextNode(`Illegal synapse at block ${i+1} and ${i+2}`);
-				issueDesc.appendChild(issueTXT);
-				issueDesc.id = "illegalIssueDesc";
-				issue.appendChild(issueDesc);
-				issue.id = "illegalIssue";
-				container.appendChild(issue);
-				issuesChain.push(`Illegal synapse at block ${i+1} and ${i+2}`);
-			};
-		};
+	Input.prototype.addBlock = function(playground) {
+		this.newBlock = document.createElement('div');
+		this.newBlock.style.width = '150px';
+		this.newBlock.style.borderRadius = '5px';
+		this.newBlock.style.height = '90px';
+		this.newBlock.style.margin = '20px';
+		this.newBlock.style.textAlign = 'center';
+		this.newBlock.style.color = 'white';
+		this.newBlock.style.opacity = '0.7';
+		this.newBlock.style.backgroundColor = '#10ac84';
+
+		this.newTitleNode = document.createElement('p');
+		this.newTitleNode.style.paddingTop = '20px';
+		this.newTitleNode.style.fontSize = '15px';
+
+		this.newInput = document.createElement('input');
+		this.newInput.setAttribute('type', 'text');
+		this.newInput.setAttribute('placeholder', 'set input dims');
+		this.newInput.style.width = '140px';
+		this.newInput.style.height = '30px';
+		this.newInput.style.marginTop = '-5px';
+		this.newInput.style.textAlign = 'center';
+		this.newInput.style.border = 'none';
+		this.newInput.style.fontSize = '12px';
+		this.newInput.style.fontFamily = 'Avenir Next';
+		this.newInput.style.borderRadius = '15px';
+
+		this.blockID = this.title + '_' + num_input
+		this.newTitle = document.createTextNode(this.title);
+		this.newTitleNode.appendChild(this.newTitle);
+
+		this.newBlock.appendChild(this.newTitleNode);
+		this.newBlock.appendChild(this.newInput)
+		playground.appendChild(this.newBlock);
+		console.log('Added Input block');
+	}
+
+	// -----------------------------------------------------------------------------------------------
+
+	function Dense() {
+		this.title = 'Dense';
+		this.units = 0;
+	}
+
+	Dense.prototype.setUnits = function(units) {
+		this.units = units;
+	}
+
+	Dense.prototype.getUnits = function() {
+		return this.units;
 	};
-};
+
+	Dense.prototype.addBlock = function(playground) {
+		this.newBlock = document.createElement('div');
+		this.newBlock.style.width = '150px';
+		this.newBlock.style.height = '90px';
+		this.newBlock.style.borderRadius = '5px';
+		this.newBlock.style.margin = '20px';
+		this.newBlock.style.textAlign = 'center';
+		this.newBlock.style.opacity = '0.7';
+		this.newBlock.style.color = 'white';
+		this.newBlock.style.backgroundColor = '#40739e';
+
+		this.newTitleNode = document.createElement('p');
+		this.blockID = this.title + '_' + num_dense
+		this.newTitle = document.createTextNode(this.title);
+		this.newTitleNode.style.color = 'white';
+		this.newTitleNode.style.paddingTop = '20px';
+		this.newTitleNode.style.fontSize = '15px';
+
+		this.newInput = document.createElement('input');
+		this.newInput.setAttribute('type', 'text');
+		this.newInput.setAttribute('placeholder', 'set num. units');
+		this.newInput.style.width = '140px';
+		this.newInput.style.height = '30px';
+		this.newInput.style.marginTop = '-5px';
+		this.newInput.style.textAlign = 'center';
+		this.newInput.style.border = 'none';
+		this.newInput.style.fontSize = '12px';
+		this.newInput.style.fontFamily = 'Avenir Next';
+		this.newInput.style.borderRadius = '15px';
+
+		this.newTitleNode.appendChild(this.newTitle);
+		this.newBlock.appendChild(this.newTitleNode);
+		this.newBlock.appendChild(this.newInput);
+		playground.appendChild(this.newBlock);
+		console.log('Added Dense block');
+	}
+
+	// -----------------------------------------------------------------------------------------------
+
+	function Activation() {
+		this.title = 'Activation';
+		this.activationFunc = 'relu';
+	}
+
+	Activation.prototype.setActivationFunction = function(actFunc) {
+		this.activationFunc = actFunc;
+	}
+
+	Activation.prototype.getActivationFunction = function() {
+		return this.activationFunc;
+	};
+
+	Activation.prototype.addBlock = function(playground) {
+		this.newBlock = document.createElement('div');
+		this.newBlock.style.width = '150px';
+		this.newBlock.style.height = '90px';
+		this.newBlock.style.borderRadius = '5px';
+		this.newBlock.style.margin = '20px';
+		this.newBlock.style.textAlign = 'center';
+		this.newBlock.style.opacity = '0.7';
+		this.newBlock.style.color = 'white';
+		this.newBlock.style.backgroundColor = '#ffd32a';
+
+		this.newTitleNode = document.createElement('p');
+		this.blockID = this.title + '_' + num_activation
+		this.newTitle = document.createTextNode(this.title);
+		this.newTitleNode.style.color = 'white';
+		this.newTitleNode.style.paddingTop = '20px';
+		this.newTitleNode.style.fontSize = '15px';
+
+		this.newInput = document.createElement('input');
+		this.newInput.setAttribute('type', 'text');
+		this.newInput.setAttribute('placeholder', 'set activation function');
+		this.newInput.style.width = '140px';
+		this.newInput.style.height = '30px';
+		this.newInput.style.marginTop = '-5px';
+		this.newInput.style.textAlign = 'center';
+		this.newInput.style.border = 'none';
+		this.newInput.style.fontFamily = 'Avenir Next';
+		this.newInput.style.fontSize = '12px';
+		this.newInput.style.borderRadius = '15px';
+
+		this.newTitleNode.appendChild(this.newTitle);
+		this.newBlock.appendChild(this.newTitleNode);
+		this.newBlock.appendChild(this.newInput);
+		playground.appendChild(this.newBlock);
+		console.log('Added Activation block');
+	};
+
+	// -----------------------------------------------------------------------------------------------
+
+	function Compile() {
+		this.title = 'Compile';
+		this.lossFunction = 'categorical_crossentropy';
+		this.optimizer = 'adam';
+	}
+
+	Compile.prototype.setLoss = function(lossFunc) {
+		this.lossFunction = lossFunc;
+	};
+
+	Compile.prototype.setOptimizer = function(opt) {
+		this.optimizer = opt;
+	};
+
+	Compile.prototype.getLoss = function() {
+		return this.lossFunction;
+	}
+
+	Compile.prototype.getOptimizer = function() {
+		return this.optimizer;
+	}
+
+	Compile.prototype.addBlock = function(playground) {
+		this.newBlock = document.createElement('div');
+		this.newBlock.style.width = '150px';
+		this.newBlock.style.height = '120px';
+		this.newBlock.style.borderRadius = '5px';
+		this.newBlock.style.margin = '20px';
+		this.newBlock.style.textAlign = 'center';
+		this.newBlock.style.opacity = '0.7';
+		this.newBlock.style.color = 'white';
+		this.newBlock.style.backgroundColor = '#fc5c65';
+
+		this.newTitleNode = document.createElement('p');
+		this.blockID = this.title + '_' + num_compile
+		this.newTitle = document.createTextNode(this.title);
+		this.newTitleNode.style.color = 'white';
+		this.newTitleNode.style.paddingTop = '20px';
+		this.newTitleNode.style.fontSize = '15px';
+
+		this.newInput = document.createElement('input');
+		this.newInput.setAttribute('type', 'text');
+		this.newInput.setAttribute('placeholder', 'set loss function');
+		this.newInput.style.width = '140px';
+		this.newInput.style.height = '30px';
+		this.newInput.style.marginTop = '-5px';
+		this.newInput.style.textAlign = 'center';
+		this.newInput.style.border = 'none';
+		this.newInput.style.fontFamily = 'Avenir Next';
+		this.newInput.style.fontSize = '12px';
+		this.newInput.style.borderRadius = '15px';
+
+		this.newInput2 = document.createElement('input');
+		this.newInput2.setAttribute('type', 'text');
+		this.newInput2.setAttribute('placeholder', 'set optimizer');
+		this.newInput2.style.width = '140px';
+		this.newInput2.style.height = '30px';
+		this.newInput2.style.marginTop = '5px';
+		this.newInput2.style.textAlign = 'center';
+		this.newInput2.style.border = 'none';
+		this.newInput2.style.fontFamily = 'Avenir Next';
+		this.newInput2.style.fontSize = '12px';
+		this.newInput2.style.borderRadius = '15px';
+
+		this.newTitleNode.appendChild(this.newTitle);
+		this.newBlock.appendChild(this.newTitleNode);
+		this.newBlock.appendChild(this.newInput);
+		this.newBlock.appendChild(this.newInput2);
+		playground.appendChild(this.newBlock);
+		console.log('Added Compile block');
+	};
+	
+	// -----------------------------------------------------------------------------------------------
+	
+	function Conv2D() {
+		this.title = 'Conv2D';
+		this.filter = 32;
+		this.kernel = [2,2];
+	}
+	
+	Conv2D.prototype.setFilter = function(fil) {
+		this.filter = fil;
+	}
+	
+	Conv2D.prototype.setKernel = function(ker) {
+		this.kernel = ker;
+	}
+	
+	Conv2D.prototype.getFilter = function() {
+		return this.filter;
+	}
+	
+	Conv2D.prototype.getKernel = function() {
+		return this.kernel;
+	}
+	
+	Conv2D.prototype.addBlock = function(playground) {
+		this.newBlock = document.createElement('div');
+		this.newBlock.style.width = '150px';
+		this.newBlock.style.height = '120px';
+		this.newBlock.style.borderRadius = '5px';
+		this.newBlock.style.margin = '20px';
+		this.newBlock.style.textAlign = 'center';
+		this.newBlock.style.opacity = '0.7';
+		this.newBlock.style.color = 'white';
+		this.newBlock.style.backgroundColor = '#fc5c65';
+
+		this.newTitleNode = document.createElement('p');
+		this.blockID = this.title + '_' + num_conv2d
+		this.newTitle = document.createTextNode(this.title);
+		this.newTitleNode.style.color = 'white';
+		this.newTitleNode.style.paddingTop = '20px';
+		this.newTitleNode.style.fontSize = '15px';
+
+		this.newInput = document.createElement('input');
+		this.newInput.setAttribute('type', 'text');
+		this.newInput.setAttribute('placeholder', 'set filters');
+		this.newInput.style.width = '140px';
+		this.newInput.style.height = '30px';
+		this.newInput.style.marginTop = '-5px';
+		this.newInput.style.textAlign = 'center';
+		this.newInput.style.border = 'none';
+		this.newInput.style.fontFamily = 'Avenir Next';
+		this.newInput.style.fontSize = '12px';
+		this.newInput.style.borderRadius = '15px';
+
+		this.newInput2 = document.createElement('input');
+		this.newInput2.setAttribute('type', 'text');
+		this.newInput2.setAttribute('placeholder', 'set kernel size');
+		this.newInput2.style.width = '140px';
+		this.newInput2.style.height = '30px';
+		this.newInput2.style.marginTop = '5px';
+		this.newInput2.style.textAlign = 'center';
+		this.newInput2.style.border = 'none';
+		this.newInput2.style.fontFamily = 'Avenir Next';
+		this.newInput2.style.fontSize = '12px';
+		this.newInput2.style.borderRadius = '15px';
+
+		this.newTitleNode.appendChild(this.newTitle);
+		this.newBlock.appendChild(this.newTitleNode);
+		this.newBlock.appendChild(this.newInput);
+		this.newBlock.appendChild(this.newInput2);
+		playground.appendChild(this.newBlock);
+		console.log('Added Convolution2D block');
+	}
+	
+	// -----------------------------------------------------------------------------------------------
+	
+	function MaxPool2D() {
+		this.title = 'MaxPool2D';
+		this.kernel = [2,2];
+	}
+
+	MaxPool2D.prototype.setKernel = function(ker) {
+		this.kernel = ker;
+	}
+
+	MaxPool2D.prototype.getKernel = function() {
+		return this.kernel;
+	};
+
+	MaxPool2D.prototype.addBlock = function(playground) {
+		this.newBlock = document.createElement('div');
+		this.newBlock.style.width = '150px';
+		this.newBlock.style.height = '90px';
+		this.newBlock.style.borderRadius = '5px';
+		this.newBlock.style.margin = '20px';
+		this.newBlock.style.textAlign = 'center';
+		this.newBlock.style.opacity = '0.7';
+		this.newBlock.style.color = 'white';
+		this.newBlock.style.backgroundColor = '#40739e';
+
+		this.newTitleNode = document.createElement('p');
+		this.blockID = this.title + '_' + num_maxpool2d
+		this.newTitle = document.createTextNode(this.title);
+		this.newTitleNode.style.color = 'white';
+		this.newTitleNode.style.paddingTop = '20px';
+		this.newTitleNode.style.fontSize = '15px';
+
+		this.newInput = document.createElement('input');
+		this.newInput.setAttribute('type', 'text');
+		this.newInput.setAttribute('placeholder', 'set pooling kernel');
+		this.newInput.style.width = '140px';
+		this.newInput.style.height = '30px';
+		this.newInput.style.marginTop = '-5px';
+		this.newInput.style.textAlign = 'center';
+		this.newInput.style.border = 'none';
+		this.newInput.style.fontSize = '12px';
+		this.newInput.style.fontFamily = 'Avenir Next';
+		this.newInput.style.borderRadius = '15px';
+
+		this.newTitleNode.appendChild(this.newTitle);
+		this.newBlock.appendChild(this.newTitleNode);
+		this.newBlock.appendChild(this.newInput);
+		playground.appendChild(this.newBlock);
+		console.log('Added MaxPool2D block');
+	}
+
+	// -----------------------------------------------------------------------------------------------
+	
+	function Dropout() {
+		this.title = 'Dropout';
+		this.dropoutValue = 0.5;
+	}
+	
+	Dropout.prototype.setDropoutValue = function(dropoutVal) {
+		this.dropoutValue = dropoutVal;
+	}
+	
+	Dropout.prototype.getDropoutValue = function() {
+		return this.dropoutValue;
+	}
+	
+	Dropout.prototype.addBlock = function(playground) {
+		this.newBlock = document.createElement('div');
+		this.newBlock.style.width = '150px';
+		this.newBlock.style.height = '90px';
+		this.newBlock.style.borderRadius = '5px';
+		this.newBlock.style.margin = '20px';
+		this.newBlock.style.textAlign = 'center';
+		this.newBlock.style.opacity = '0.7';
+		this.newBlock.style.color = 'white';
+		this.newBlock.style.backgroundColor = '#40739e';
+
+		this.newTitleNode = document.createElement('p');
+		this.blockID = this.title + '_' + num_dropout
+		this.newTitle = document.createTextNode(this.title);
+		this.newTitleNode.style.color = 'white';
+		this.newTitleNode.style.paddingTop = '20px';
+		this.newTitleNode.style.fontSize = '15px';
+
+		this.newInput = document.createElement('input');
+		this.newInput.setAttribute('type', 'text');
+		this.newInput.setAttribute('placeholder', 'Set Dropout value');
+		this.newInput.style.width = '140px';
+		this.newInput.style.height = '30px';
+		this.newInput.style.marginTop = '-5px';
+		this.newInput.style.textAlign = 'center';
+		this.newInput.style.border = 'none';
+		this.newInput.style.fontSize = '12px';
+		this.newInput.style.fontFamily = 'Avenir Next';
+		this.newInput.style.borderRadius = '15px';
+
+		this.newTitleNode.appendChild(this.newTitle);
+		this.newBlock.appendChild(this.newTitleNode);
+		this.newBlock.appendChild(this.newInput);
+		playground.appendChild(this.newBlock);
+		console.log('Added Dropout block');
+	}
+	
+	// -----------------------------------------------------------------------------------------------
+
+	function trackerLogs(tracker, message) {
+		var bash = document.createElement('p');
+		var bashMsg = message;
+		var bashNode = document.createTextNode(bashMsg);
+		bash.style.width = '80%';
+		bash.style.margin = '20px auto';
+		bash.style.borderRadius = '5px';
+		bash.style.border = '1px solid #218c74';
+		bash.style.padding = '10px';
+		bash.appendChild(bashNode);
+		tracker.appendChild(bash);
+	}
+
+})
