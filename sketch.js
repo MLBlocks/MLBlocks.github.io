@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	var num_activation = 0;
 	var num_conv2d = 0;
 	var num_maxpool2d = 0;
+	var num_flatten = 0;
 	var num_lstm = 0;
 	var num_dropout = 0;
 	var num_batchnorm = 0;
@@ -20,12 +21,15 @@ document.addEventListener('DOMContentLoaded', function() {
 	var activationBlock = document.getElementById('Activation');
 	var conv2dBlock = document.getElementById('Conv2D');
 	var maxpool2dBlock = document.getElementById('MaxPool2D');
+	var flattenBlock = document.getElementById('Flatten');
 	var lstmBlock = document.getElementById('LSTM');
 	var dropoutBlock = document.getElementById('Dropout');
 	var batchnormBlock = document.getElementById('BatchNorm');
 	var playground = document.getElementById('playground');
 
 	// -----------------------------------------------------------------------------------------------
+	
+	var programName = document.getElementById('programName');
 
 	var palette = document.getElementById('palette');
 	var paletteClose = document.getElementById('paletteHead');
@@ -37,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	var tracker = document.getElementById('tracker');
 
 	var editor = document.getElementById('editor');
+	var programTitle = document.getElementById('programTitle');
 	var editorClose = document.getElementById('editorHead');
 
 	// -----------------------------------------------------------------------------------------------
@@ -131,6 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			playground.innerHTML = '';
 			tracker.innerHTML = '';
+			programName.innerHTML = '';
 		} else {};
 	})
 
@@ -146,7 +152,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		console.log('Exporting code');
 		var prompt = window.confirm('Are you sure you want to export the model?');
 		if (prompt) {
-			if (blocks.length == 0) {
+			var title = programName.value;
+			
+			if (title == "") {
+				window.alert('Name your model before exporting...');
+			}
+			
+			if (blocks.length == 0){
 				window.alert('Model must be completed and compiled before exporting...')
 			} else {
 				writeImports(blocks, codeEditor);
@@ -161,6 +173,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	downloadBTN.addEventListener('click', function() {
 		console.log('Downloading code...');
+	})
+	
+	programName.addEventListener('change', function() {
+		var title = programName.value;
+		setTitle(title);
 	})
 
 	// -----------------------------------------------------------------------------------------------
@@ -296,6 +313,28 @@ document.addEventListener('DOMContentLoaded', function() {
 			console.log(blocks);
 		})
 	})
+	
+	flattenBlock.addEventListener('click', function() {
+		num_flatten += 1;
+		var flatten = new Flatten();
+		flatten.addBlock(playground);
+		var flattenID = flatten.blockID;
+		blocks.push(flattenID);
+		layers.push(flatten);
+		console.log(blocks);
+		trackerLogs(tracker, 'Adding Flatten block with ID ' + flattenID);
+
+		flatten.newBlock.addEventListener('dblclick', function() {
+			console.log(flatten + ' deleted');
+			trackerLogs(tracker, 'Removing Flatten block with ID ' + flattenID);
+			var index = blocks.indexOf(flattenID);
+			blocks.splice(index, 1);
+			layers.splice(index, 1);
+			num_flatten -= 1;
+			playground.removeChild(flatten.newBlock);
+			console.log(blocks);
+		})
+	})
 
 	lstmBlock.addEventListener('click', function() {
 		console.log('LSTM');
@@ -382,6 +421,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			else if (raw_blocks[j] == 'MaxPool2D') {
 				editor.insert('from keras.layers import MaxPool2D\n')
 			}
+			else if (raw_blocks[j] == 'Flatten') {
+				editor.insert('from keras.layers import Flatten\n')
+			}
 		}
 
 		editor.insert('\n');
@@ -453,6 +495,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			else if (blocks[i].includes('MaxPool2D')) {
 				var kernel = layers[i].kernel;
 				editor.insert('model.add(MaxPool2D(pool_size=' + kernel + '))\n');
+			}
+			else if (blocks[i].includes('Flatten')) {
+				editor.insert('model.add(Flatten())');
 			}
 			else if (blocks[i].includes('Compile')) {
 				var lossFunc = layers[i].lossFunction;
@@ -648,7 +693,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	Compile.prototype.addBlock = function(playground) {
 		this.newBlock = document.createElement('div');
 		this.newBlock.style.width = '150px';
-		this.newBlock.style.height = '120px';
+		this.newBlock.style.height = '125px';
 		this.newBlock.style.borderRadius = '5px';
 		this.newBlock.style.margin = '20px';
 		this.newBlock.style.textAlign = 'center';
@@ -722,7 +767,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	Conv2D.prototype.addBlock = function(playground) {
 		this.newBlock = document.createElement('div');
 		this.newBlock.style.width = '150px';
-		this.newBlock.style.height = '120px';
+		this.newBlock.style.height = '125px';
 		this.newBlock.style.borderRadius = '5px';
 		this.newBlock.style.margin = '20px';
 		this.newBlock.style.textAlign = 'center';
@@ -874,10 +919,48 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 	
 	// -----------------------------------------------------------------------------------------------
+	
+	function Flatten() {
+		this.title = 'Flatten';
+	}
+	
+	Flatten.prototype.addBlock = function(playground) {
+		this.newBlock = document.createElement('div');
+		this.newBlock.style.width = '150px';
+		this.newBlock.style.height = '50px';
+		this.newBlock.style.borderRadius = '5px';
+		this.newBlock.style.margin = '20px';
+		this.newBlock.style.textAlign = 'center';
+		this.newBlock.style.opacity = '0.7';
+		this.newBlock.style.color = 'white';
+		this.newBlock.style.backgroundColor = '#40739e';
 
-	function trackerLogs(tracker, message) {
+		this.newTitleNode = document.createElement('p');
+		this.blockID = this.title + '_' + num_dropout
+		this.newTitle = document.createTextNode(this.title);
+		this.newTitleNode.style.color = 'white';
+		this.newTitleNode.style.paddingTop = '15px';
+		this.newTitleNode.style.fontSize = '15px';
+
+		this.newTitleNode.appendChild(this.newTitle);
+		this.newBlock.appendChild(this.newTitleNode);
+		playground.appendChild(this.newBlock);
+		console.log('Added Flatten block');
+	}
+	
+	// -----------------------------------------------------------------------------------------------
+	
+	function setTitle(title) {
+		title = title.split(" ");
+		title = title.join("_");
+		var message = 'Renaming model to "' + title + '"';
+		trackerLogs(tracker, message);
+		title = title + '.py'
+		programTitle.innerHTML = title;
+	}
+
+	function trackerLogs(tracker, bashMsg) {
 		var bash = document.createElement('p');
-		var bashMsg = message;
 		var bashNode = document.createTextNode(bashMsg);
 		bash.style.width = '80%';
 		bash.style.margin = '20px auto';
