@@ -32,17 +32,17 @@ document.addEventListener('DOMContentLoaded', function() {
 	var programName = document.getElementById('programName');
 
 	var palette = document.getElementById('palette');
-	var paletteClose = document.getElementById('paletteHead');
+	var paletteClose = document.getElementById('closePalette');
 	var paletteOpen = document.getElementById('openPalette');
 
 	var controlPanel = document.getElementById('control');
-	var controlClose = document.getElementById('controlHead');
+	var controlClose = document.getElementById('closeControl');
 	var controlOpen = document.getElementById('openControl');
 	var tracker = document.getElementById('tracker');
 
 	var editor = document.getElementById('editor');
 	var programTitle = document.getElementById('programTitle');
-	var editorClose = document.getElementById('editorHead');
+	var editorClose = document.getElementById('closeEditor');
 
 	// -----------------------------------------------------------------------------------------------
 
@@ -63,8 +63,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	// -----------------------------------------------------------------------------------------------
 
 	var codeEditor = ace.edit("codeEditor");
-  codeEditor.setTheme("ace/theme/xcode");
-  codeEditor.getSession().setMode("ace/mode/python");
+	codeEditor.setTheme("ace/theme/xcode");
+	codeEditor.getSession().setMode("ace/mode/python");
 	codeEditor.insert("# Export model to generate code...");
 	codeEditor.insert("\n")
 
@@ -136,8 +136,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			playground.innerHTML = '';
 			tracker.innerHTML = '';
-			programName.innerHTML = '';
-		} else {};
+			programName.innerText = '';
+		}
 	})
 
 	editorBTN.addEventListener('click', function() {
@@ -148,23 +148,22 @@ document.addEventListener('DOMContentLoaded', function() {
 	})
 
 	exportBTN.addEventListener('click', function() {
-		codeEditor.setValue("");
 		console.log('Exporting code');
 		var prompt = window.confirm('Are you sure you want to export the model?');
 		if (prompt) {
 			var title = programName.value;
 			
-			if (title == "") {
-				window.alert('Name your model before exporting...');
-			}
-			
 			if (blocks.length == 0){
 				window.alert('Model must be completed and compiled before exporting...')
 			} else {
-				writeImports(blocks, codeEditor);
-				setParams(blocks, layers);
-				writeModel(blocks, layers, codeEditor);
-				window.alert('Check the editor to see the code for your model!')
+				if (title == "") {
+					window.alert('Name your model before exporting...');
+				} else {
+					writeImports(blocks, codeEditor);
+					setParams(blocks, layers);
+					writeModel(blocks, layers, codeEditor);
+					window.alert('Check the editor to see the code for your model!')
+				}
 			}
 		}
 	})
@@ -194,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		input.newBlock.addEventListener('dblclick', function() {
 			console.log(inputID + ' deleted');
-			trackerLogs(tracker, 'Removing Input block with ID ' + inputID);
+			trackerLogs(tracker, 'Removing Input block with ID ' + inputID, "neg");
 			var index = blocks.indexOf(inputID);
 			blocks.splice(index, 1);
 			layers.splice(index, 1);
@@ -216,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		compile.newBlock.addEventListener('dblclick', function() {
 			console.log(compileID + ' deleted');
-			trackerLogs(tracker, 'Removing compile block with ID ' + compileID);
+			trackerLogs(tracker, 'Removing compile block with ID ' + compileID, "neg");
 			var index = blocks.indexOf(compileID);
 			blocks.splice(index, 1);
 			layers.splice(index, 1);
@@ -238,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		dense.newBlock.addEventListener('dblclick', function() {
 			console.log(denseID + ' deleted');
-			trackerLogs(tracker, 'Removing Dense block with ID ' + denseID);
+			trackerLogs(tracker, 'Removing Dense block with ID ' + denseID, "neg");
 			var index = blocks.indexOf(denseID);
 			blocks.splice(index, 1);
 			layers.splice(index, 1);
@@ -260,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		activation.newBlock.addEventListener('dblclick', function() {
 			console.log(activationID + ' deleted');
-			trackerLogs(tracker, 'Removing Activation block with ID ' + activationID);
+			trackerLogs(tracker, 'Removing Activation block with ID ' + activationID, "neg");
 			var index = blocks.indexOf(activationID);
 			blocks.splice(index, 1);
 			layers.splice(index, 1);
@@ -282,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		conv2d.newBlock.addEventListener('dblclick', function() {
 			console.log(conv2dID + ' deleted');
-			trackerLogs(tracker, 'Removing Convolution2D block with ID ' + conv2dID);
+			trackerLogs(tracker, 'Removing Convolution2D block with ID ' + conv2dID), "neg";
 			var index = blocks.indexOf(conv2dID);
 			blocks.splice(index, 1);
 			layers.splice(index, 1);
@@ -304,7 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		maxpool2d.newBlock.addEventListener('dblclick', function() {
 			console.log(maxpool2d + ' deleted');
-			trackerLogs(tracker, 'Removing MaxPool2D block with ID ' + maxpool2dID);
+			trackerLogs(tracker, 'Removing MaxPool2D block with ID ' + maxpool2dID, "neg");
 			var index = blocks.indexOf(maxpool2dID);
 			blocks.splice(index, 1);
 			layers.splice(index, 1);
@@ -326,7 +325,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		flatten.newBlock.addEventListener('dblclick', function() {
 			console.log(flatten + ' deleted');
-			trackerLogs(tracker, 'Removing Flatten block with ID ' + flattenID);
+			trackerLogs(tracker, 'Removing Flatten block with ID ' + flattenID, "neg");
 			var index = blocks.indexOf(flattenID);
 			blocks.splice(index, 1);
 			layers.splice(index, 1);
@@ -352,7 +351,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		dropout.newBlock.addEventListener('dblclick', function() {
 			console.log(dropout + ' deleted');
-			trackerLogs(tracker, 'Removing Dropout block with ID ' + dropoutID);
+			trackerLogs(tracker, 'Removing Dropout block with ID ' + dropoutID, "neg");
 			var index = blocks.indexOf(dropoutID);
 			blocks.splice(index, 1);
 			layers.splice(index, 1);
@@ -369,6 +368,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	// -----------------------------------------------------------------------------------------------
 
 	function writeImports(blocks, editor) {
+		editor.setValue("");
 		raw_blocks = [];
 		editor.insert('# Writing Imports\n')
 		editor.insert('import numpy as np\n')
@@ -399,6 +399,11 @@ document.addEventListener('DOMContentLoaded', function() {
 			else if (blocks[i].includes('MaxPool2D')) {
 				if (raw_blocks.includes('MaxPool2D') == false) {
 					raw_blocks.push('MaxPool2D');
+				}
+			}
+			else if (blocks[i].includes('Flatten')) {
+				if (raw_blocks.includes('Flatten') == false) {
+					raw_blocks.push('Flatten');
 				}
 			}
 		}
@@ -497,7 +502,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				editor.insert('model.add(MaxPool2D(pool_size=' + kernel + '))\n');
 			}
 			else if (blocks[i].includes('Flatten')) {
-				editor.insert('model.add(Flatten())');
+				editor.insert('model.add(Flatten())\n');
 			}
 			else if (blocks[i].includes('Compile')) {
 				var lossFunc = layers[i].lossFunction;
@@ -535,6 +540,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		this.newBlock.style.color = 'white';
 		this.newBlock.style.opacity = '0.7';
 		this.newBlock.style.backgroundColor = '#10ac84';
+		this.newBlock.style.cursor = "move"
 
 		this.newTitleNode = document.createElement('p');
 		this.newTitleNode.style.paddingTop = '20px';
@@ -555,11 +561,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		this.blockID = this.title + '_' + num_input
 		this.newTitle = document.createTextNode(this.title);
 		this.newTitleNode.appendChild(this.newTitle);
+		this.newBlock.id = this.blockID;
 
 		this.newBlock.appendChild(this.newTitleNode);
 		this.newBlock.appendChild(this.newInput)
 		playground.appendChild(this.newBlock);
 		console.log('Added Input block');
+		// draggable(this.newBlock.id);
 	}
 
 	// -----------------------------------------------------------------------------------------------
@@ -586,11 +594,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		this.newBlock.style.textAlign = 'center';
 		this.newBlock.style.opacity = '0.7';
 		this.newBlock.style.color = 'white';
-		this.newBlock.style.backgroundColor = '#40739e';
+		this.newBlock.style.backgroundColor = '#2e86de';
+		this.newBlock.style.cursor = "move"
 
 		this.newTitleNode = document.createElement('p');
 		this.blockID = this.title + '_' + num_dense
 		this.newTitle = document.createTextNode(this.title);
+		this.newBlock.id = this.blockID;
 		this.newTitleNode.style.color = 'white';
 		this.newTitleNode.style.paddingTop = '20px';
 		this.newTitleNode.style.fontSize = '15px';
@@ -638,10 +648,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		this.newBlock.style.textAlign = 'center';
 		this.newBlock.style.opacity = '0.7';
 		this.newBlock.style.color = 'white';
-		this.newBlock.style.backgroundColor = '#ffd32a';
+		this.newBlock.style.backgroundColor = '#feca57';
+		this.newBlock.style.cursor = "move"
 
 		this.newTitleNode = document.createElement('p');
 		this.blockID = this.title + '_' + num_activation
+		this.newBlock.id = this.blockID;
 		this.newTitle = document.createTextNode(this.title);
 		this.newTitleNode.style.color = 'white';
 		this.newTitleNode.style.paddingTop = '20px';
@@ -699,10 +711,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		this.newBlock.style.textAlign = 'center';
 		this.newBlock.style.opacity = '0.7';
 		this.newBlock.style.color = 'white';
-		this.newBlock.style.backgroundColor = '#fc5c65';
+		this.newBlock.style.backgroundColor = '#5f27cd';
+		this.newBlock.style.cursor = "move"
 
 		this.newTitleNode = document.createElement('p');
 		this.blockID = this.title + '_' + num_compile
+		this.newBlock.id = this.blockID;
 		this.newTitle = document.createTextNode(this.title);
 		this.newTitleNode.style.color = 'white';
 		this.newTitleNode.style.paddingTop = '20px';
@@ -773,10 +787,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		this.newBlock.style.textAlign = 'center';
 		this.newBlock.style.opacity = '0.7';
 		this.newBlock.style.color = 'white';
-		this.newBlock.style.backgroundColor = '#fc5c65';
+		this.newBlock.style.backgroundColor = '#0abde3';
+		this.newBlock.style.cursor = "move"
 
 		this.newTitleNode = document.createElement('p');
 		this.blockID = this.title + '_' + num_conv2d
+		this.newBlock.id = this.blockID;
 		this.newTitle = document.createTextNode(this.title);
 		this.newTitleNode.style.color = 'white';
 		this.newTitleNode.style.paddingTop = '20px';
@@ -838,10 +854,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		this.newBlock.style.textAlign = 'center';
 		this.newBlock.style.opacity = '0.7';
 		this.newBlock.style.color = 'white';
-		this.newBlock.style.backgroundColor = '#40739e';
+		this.newBlock.style.backgroundColor = '#ff9f43';
+		this.newBlock.style.cursor = "move"
 
 		this.newTitleNode = document.createElement('p');
 		this.blockID = this.title + '_' + num_maxpool2d
+		this.newBlock.id = this.blockID;
 		this.newTitle = document.createTextNode(this.title);
 		this.newTitleNode.style.color = 'white';
 		this.newTitleNode.style.paddingTop = '20px';
@@ -890,10 +908,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		this.newBlock.style.textAlign = 'center';
 		this.newBlock.style.opacity = '0.7';
 		this.newBlock.style.color = 'white';
-		this.newBlock.style.backgroundColor = '#40739e';
+		this.newBlock.style.backgroundColor = '#58B19F';
+		this.newBlock.style.cursor = "move"
 
 		this.newTitleNode = document.createElement('p');
 		this.blockID = this.title + '_' + num_dropout
+		this.newBlock.id = this.blockID;
 		this.newTitle = document.createTextNode(this.title);
 		this.newTitleNode.style.color = 'white';
 		this.newTitleNode.style.paddingTop = '20px';
@@ -933,10 +953,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		this.newBlock.style.textAlign = 'center';
 		this.newBlock.style.opacity = '0.7';
 		this.newBlock.style.color = 'white';
-		this.newBlock.style.backgroundColor = '#40739e';
+		this.newBlock.style.backgroundColor = '#778beb';
+		this.newBlock.style.cursor = "move"
 
 		this.newTitleNode = document.createElement('p');
 		this.blockID = this.title + '_' + num_dropout
+		this.newBlock.id = this.blockID;
 		this.newTitle = document.createTextNode(this.title);
 		this.newTitleNode.style.color = 'white';
 		this.newTitleNode.style.paddingTop = '15px';
@@ -951,24 +973,35 @@ document.addEventListener('DOMContentLoaded', function() {
 	// -----------------------------------------------------------------------------------------------
 	
 	function setTitle(title) {
-		title = title.split(" ");
-		title = title.join("_");
-		var message = 'Renaming model to "' + title + '"';
-		trackerLogs(tracker, message);
-		title = title + '.py'
-		programTitle.innerHTML = title;
+		if (title == "") {
+			trackerLogs(tracker, "Please name your model...", "neg");
+		} else {
+			var message = 'Renaming model to "' + title + '"';
+			title = title.split(" ");
+			title = title.join("_");
+			trackerLogs(tracker, message);
+			title = title + '.py'
+			programTitle.innerHTML = title;
+		}
 	}
 
-	function trackerLogs(tracker, bashMsg) {
+	function trackerLogs(tracker, bashMsg, side="pos") {
 		var bash = document.createElement('p');
 		var bashNode = document.createTextNode(bashMsg);
 		bash.style.width = '80%';
 		bash.style.margin = '20px auto';
+
+		if (side == "pos") {
+			bash.style.border = '1px solid #218c74';
+			bash.style.color = "#218c74";
+		} else if (side == "neg") {
+			bash.style.border = '1px solid #ee5253';
+			bash.style.color = "#ee5253";
+		}
+
 		bash.style.borderRadius = '5px';
-		bash.style.border = '1px solid #218c74';
 		bash.style.padding = '10px';
 		bash.appendChild(bashNode);
 		tracker.appendChild(bash);
 	}
-
 })

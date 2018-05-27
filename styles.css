@@ -9,6 +9,12 @@ body {
 	padding: 0;
 	font-family: Montserrat, Avenir Next, Arial;
 	overflow: scroll;
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 input:focus {
@@ -32,7 +38,6 @@ img {
 	-khtml-user-drag: none;
 	-moz-user-drag: none;
 	-o-user-drag: none;
-	user-drag: none;
 }
 
 /*------------------------------------------------------------------------------------------------------------------------*/
@@ -290,7 +295,7 @@ img {
 #control #tracker {
 	position: relative;
 	width: 100%;
-	height: 90%;
+	height: 95%;
 	background-color: #ecf0f1;
 	color: #218c74;
 	overflow: scroll;
