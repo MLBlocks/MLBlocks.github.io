@@ -295,13 +295,26 @@ img {
 #control #tracker {
 	position: relative;
 	width: 100%;
-	height: 95%;
+	height: 50%;
 	background-color: #ecf0f1;
 	color: #218c74;
 	overflow: scroll;
 }
 
 #control #tracker p {
+	font-size: 12px;
+	padding-left: 10px;
+}
+
+#control #errors {
+	position: relative;
+	width: 100%;
+	height: 50%;
+	background-color: #ecf0f1;
+	overflow: scroll;
+}
+
+#control #errors p {
 	font-size: 12px;
 	padding-left: 10px;
 }
@@ -401,3 +414,5 @@ img {
 #editor #editorHead #downloadCode:hover {
 	opacity: 0.6;
 }
+
+/*------------------------------------------------------------------------------------------------------------------------*/

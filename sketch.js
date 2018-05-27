@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	var controlClose = document.getElementById('closeControl');
 	var controlOpen = document.getElementById('openControl');
 	var tracker = document.getElementById('tracker');
+	var errors = document.getElementById('errors');
 
 	var editor = document.getElementById('editor');
 	var programTitle = document.getElementById('programTitle');
@@ -136,7 +137,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			playground.innerHTML = '';
 			tracker.innerHTML = '';
-			programName.innerText = '';
+			errors.innerHTML = "";
+			programTitle.innerText = 'main.py';
+			programName.value = "";
 		}
 	})
 
@@ -188,8 +191,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		var inputID = input.blockID;
 		blocks.push(input.blockID);
 		layers.push(input);
-		console.log(blocks);
+		console.log("blocks: " + blocks);
+		console.log("layers: " + layers);
 		trackerLogs(tracker, 'Adding Input block with ID ' + inputID);
+		trackErrors();
 
 		input.newBlock.addEventListener('dblclick', function() {
 			console.log(inputID + ' deleted');
@@ -199,7 +204,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			layers.splice(index, 1);
 			num_input -= 1;
 			playground.removeChild(input.newBlock);
-			console.log(blocks);
+			console.log("blocks: " + blocks);
+			console.log("layers: " + layers);
 		})
 	})
 
@@ -210,8 +216,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		var compileID = compile.blockID;
 		blocks.push(compileID);
 		layers.push(compile);
-		console.log(blocks);
+		console.log("blocks: " + blocks);
+		console.log("layers: " + layers);
 		trackerLogs(tracker, 'Adding Compile block with ID ' + compileID);
+		trackErrors();
 
 		compile.newBlock.addEventListener('dblclick', function() {
 			console.log(compileID + ' deleted');
@@ -221,7 +229,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			layers.splice(index, 1);
 			num_compile -= 1;
 			playground.removeChild(compile.newBlock);
-			console.log(blocks);
+			console.log("blocks: " + blocks);
+			console.log("layers: " + layers);
 		})
 	})
 
@@ -232,8 +241,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		var denseID = dense.blockID;
 		blocks.push(denseID);
 		layers.push(dense);
-		console.log(blocks);
+		console.log("blocks: " + blocks);
+		console.log("layers: " + layers);
 		trackerLogs(tracker, 'Adding Dense block with ID ' + denseID);
+		trackErrors();
 
 		dense.newBlock.addEventListener('dblclick', function() {
 			console.log(denseID + ' deleted');
@@ -243,7 +254,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			layers.splice(index, 1);
 			num_dense -= 1;
 			playground.removeChild(dense.newBlock);
-			console.log(blocks);
+			console.log("blocks: " + blocks);
+			console.log("layers: " + layers);
 		})
 	})
 
@@ -254,8 +266,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		var activationID = activation.blockID;
 		blocks.push(activationID);
 		layers.push(activation);
-		console.log(blocks);
+		console.log("blocks: " + blocks);
+		console.log("layers: " + layers);
 		trackerLogs(tracker, 'Adding Activation block with ID ' + activationID);
+		trackErrors();
 
 		activation.newBlock.addEventListener('dblclick', function() {
 			console.log(activationID + ' deleted');
@@ -265,7 +279,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			layers.splice(index, 1);
 			num_activation -= 1
 			playground.removeChild(activation.newBlock);
-			console.log(blocks);
+			console.log("blocks: " + blocks);
+			console.log("layers: " + layers);
 		})
 	})
 
@@ -276,8 +291,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		var conv2dID = conv2d.blockID;
 		blocks.push(conv2d.blockID);
 		layers.push(conv2d);
-		console.log(blocks);
+		console.log("blocks: " + blocks);
+		console.log("layers: " + layers);
 		trackerLogs(tracker, 'Adding Convolution2D block with ID ' + conv2dID);
+		trackErrors();
 
 		conv2d.newBlock.addEventListener('dblclick', function() {
 			console.log(conv2dID + ' deleted');
@@ -287,7 +304,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			layers.splice(index, 1);
 			num_conv2d -= 1;
 			playground.removeChild(conv2d.newBlock);
-			console.log(blocks);
+			console.log("blocks: " + blocks);
+			console.log("layers: " + layers);
 		})
 	})
 
@@ -298,8 +316,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		var maxpool2dID = maxpool2d.blockID;
 		blocks.push(maxpool2dID);
 		layers.push(maxpool2d);
-		console.log(blocks);
+		console.log("blocks: " + blocks);
+		console.log("layers: " + layers);
 		trackerLogs(tracker, 'Adding MaxPool2D block with ID ' + maxpool2dID);
+		trackErrors();
 
 		maxpool2d.newBlock.addEventListener('dblclick', function() {
 			console.log(maxpool2d + ' deleted');
@@ -309,7 +329,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			layers.splice(index, 1);
 			num_maxpool2d -= 1;
 			playground.removeChild(maxpool2d.newBlock);
-			console.log(blocks);
+			console.log("blocks: " + blocks);
+			console.log("layers: " + layers);
 		})
 	})
 	
@@ -320,8 +341,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		var flattenID = flatten.blockID;
 		blocks.push(flattenID);
 		layers.push(flatten);
-		console.log(blocks);
+		console.log("blocks: " + blocks);
+		console.log("layers: " + layers);
 		trackerLogs(tracker, 'Adding Flatten block with ID ' + flattenID);
+		trackErrors();
 
 		flatten.newBlock.addEventListener('dblclick', function() {
 			console.log(flatten + ' deleted');
@@ -331,11 +354,13 @@ document.addEventListener('DOMContentLoaded', function() {
 			layers.splice(index, 1);
 			num_flatten -= 1;
 			playground.removeChild(flatten.newBlock);
-			console.log(blocks);
+			console.log("blocks: " + blocks);
+			console.log("layers: " + layers);
 		})
 	})
 
 	lstmBlock.addEventListener('click', function() {
+		trackErrors();
 		console.log('LSTM');
 	})
 
@@ -346,8 +371,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		var dropoutID = dropout.blockID;
 		blocks.push(dropoutID);
 		layers.push(dropout);
-		console.log(blocks);
+		console.log("blocks: " + blocks);
+		console.log("layers: " + layers);
 		trackerLogs(tracker, 'Adding Dropout block with ID ' + dropoutID);
+		trackErrors();
 
 		dropout.newBlock.addEventListener('dblclick', function() {
 			console.log(dropout + ' deleted');
@@ -357,11 +384,13 @@ document.addEventListener('DOMContentLoaded', function() {
 			layers.splice(index, 1);
 			num_dropout -= 1;
 			playground.removeChild(dropout.newBlock);
-			console.log(blocks);
+			console.log("blocks: " + blocks);
+			console.log("layers: " + layers);
 		})
 	})
 
 	batchnormBlock.addEventListener('click', function() {
+		trackErrors();
 		console.log('BatchNorm');
 	})
 
@@ -566,7 +595,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		this.newBlock.appendChild(this.newTitleNode);
 		this.newBlock.appendChild(this.newInput)
 		playground.appendChild(this.newBlock);
-		console.log('Added Input block');
 		// draggable(this.newBlock.id);
 	}
 
@@ -621,7 +649,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		this.newBlock.appendChild(this.newTitleNode);
 		this.newBlock.appendChild(this.newInput);
 		playground.appendChild(this.newBlock);
-		console.log('Added Dense block');
 	}
 
 	// -----------------------------------------------------------------------------------------------
@@ -659,23 +686,76 @@ document.addEventListener('DOMContentLoaded', function() {
 		this.newTitleNode.style.paddingTop = '20px';
 		this.newTitleNode.style.fontSize = '15px';
 
-		this.newInput = document.createElement('input');
-		this.newInput.setAttribute('type', 'text');
-		this.newInput.setAttribute('placeholder', 'set activation function');
-		this.newInput.style.width = '140px';
-		this.newInput.style.height = '30px';
-		this.newInput.style.marginTop = '-5px';
-		this.newInput.style.textAlign = 'center';
-		this.newInput.style.border = 'none';
-		this.newInput.style.fontFamily = 'Avenir Next';
-		this.newInput.style.fontSize = '12px';
-		this.newInput.style.borderRadius = '15px';
+		this.newSelect = document.createElement("select");
+		this.newSelect.style.border = "none";
+		this.newSelect.style.width = "140px";
+		this.newSelect.style.height = "30px";	
 
+		var z1 = document.createElement("option");
+		z1.setAttribute("value", "softmax");
+		var t1 = document.createTextNode("softmax");
+		z1.appendChild(t1);
+
+		var z2 = document.createElement("option");
+		z2.setAttribute("value", "elu");
+		var t2 = document.createTextNode("elu");
+		z2.appendChild(t2);
+
+		var z3 = document.createElement("option");
+		z3.setAttribute("value", "selu");
+		var t3 = document.createTextNode("selu");
+		z3.appendChild(t3);	
+		
+		var z4 = document.createElement("option");
+		z4.setAttribute("value", "softplus");
+		var t4 = document.createTextNode("softplus");
+		z4.appendChild(t4);	
+
+		var z5 = document.createElement("option");
+		z5.setAttribute("value", "softsign");
+		var t5 = document.createTextNode("softsign");
+		z5.appendChild(t5);	
+
+		var z6 = document.createElement("option");
+		z6.setAttribute("value", "relu");
+		var t6 = document.createTextNode("relu");
+		z6.appendChild(t6);	
+
+		var z7 = document.createElement("option");
+		z7.setAttribute("value", "tanh");
+		var t7 = document.createTextNode("tanh");
+		z7.appendChild(t7);	
+
+		var z8 = document.createElement("option");
+		z8.setAttribute("value", "sigmoid");
+		var t8 = document.createTextNode("sigmoid");
+		z8.appendChild(t8);	
+
+		var z9 = document.createElement("option");
+		z9.setAttribute("value", "linear");
+		var t9 = document.createTextNode("linear");
+		z9.appendChild(t9);	
+
+		var z10 = document.createElement("option");
+		z10.setAttribute("value", "hard_sigmoid");
+		var t10 = document.createTextNode("hard_sigmoid");
+		z10.appendChild(t10);	
+		
 		this.newTitleNode.appendChild(this.newTitle);
 		this.newBlock.appendChild(this.newTitleNode);
-		this.newBlock.appendChild(this.newInput);
+		this.newSelect.appendChild(z1);
+		this.newSelect.appendChild(z2);
+		this.newSelect.appendChild(z3);
+		this.newSelect.appendChild(z4);
+		this.newSelect.appendChild(z5);
+		this.newSelect.appendChild(z6);
+		this.newSelect.appendChild(z7);
+		this.newSelect.appendChild(z8);
+		this.newSelect.appendChild(z9);
+		this.newSelect.appendChild(z10);
+		this.newBlock.appendChild(this.newSelect);
+		// this.newBlock.appendChild(this.newInput);
 		playground.appendChild(this.newBlock);
-		console.log('Added Activation block');
 	};
 
 	// -----------------------------------------------------------------------------------------------
@@ -722,36 +802,140 @@ document.addEventListener('DOMContentLoaded', function() {
 		this.newTitleNode.style.paddingTop = '20px';
 		this.newTitleNode.style.fontSize = '15px';
 
-		this.newInput = document.createElement('input');
-		this.newInput.setAttribute('type', 'text');
-		this.newInput.setAttribute('placeholder', 'set loss function');
-		this.newInput.style.width = '140px';
-		this.newInput.style.height = '30px';
-		this.newInput.style.marginTop = '-5px';
-		this.newInput.style.textAlign = 'center';
-		this.newInput.style.border = 'none';
-		this.newInput.style.fontFamily = 'Avenir Next';
-		this.newInput.style.fontSize = '12px';
-		this.newInput.style.borderRadius = '15px';
+		this.newSelect = document.createElement("select");
+		this.newSelect.style.border = "none";
+		this.newSelect.style.width = "140px";
+		this.newSelect.style.height = "30px";	
 
-		this.newInput2 = document.createElement('input');
-		this.newInput2.setAttribute('type', 'text');
-		this.newInput2.setAttribute('placeholder', 'set optimizer');
-		this.newInput2.style.width = '140px';
-		this.newInput2.style.height = '30px';
-		this.newInput2.style.marginTop = '5px';
-		this.newInput2.style.textAlign = 'center';
-		this.newInput2.style.border = 'none';
-		this.newInput2.style.fontFamily = 'Avenir Next';
-		this.newInput2.style.fontSize = '12px';
-		this.newInput2.style.borderRadius = '15px';
+		var z1 = document.createElement("option");
+		z1.setAttribute("value", "mean_squared_error");
+		var t1 = document.createTextNode("mean_squared_error");
+		z1.appendChild(t1);
+
+		var z2 = document.createElement("option");
+		z2.setAttribute("value", "mean_absolute_error");
+		var t2 = document.createTextNode("mean_absolute_error");
+		z2.appendChild(t2);
+
+		var z3 = document.createElement("option");
+		z3.setAttribute("value", "mean_absolute_percentage_error");
+		var t3 = document.createTextNode("mean_absolute_percentage_error");
+		z3.appendChild(t3);	
+		
+		var z4 = document.createElement("option");
+		z4.setAttribute("value", "mean_squared_logarithmic_error");
+		var t4 = document.createTextNode("mean_squared_logarithmic_error");
+		z4.appendChild(t4);	
+
+		var z5 = document.createElement("option");
+		z5.setAttribute("value", "hinge");
+		var t5 = document.createTextNode("hinge");
+		z5.appendChild(t5);	
+
+		var z6 = document.createElement("option");
+		z6.setAttribute("value", "logcosh");
+		var t6 = document.createTextNode("logcosh");
+		z6.appendChild(t6);	
+
+		var z7 = document.createElement("option");
+		z7.setAttribute("value", "categorical_crossentropy");
+		var t7 = document.createTextNode("categorical_crossentropy");
+		z7.appendChild(t7);	
+
+		var z8 = document.createElement("option");
+		z8.setAttribute("value", "sparse_categorical_crossentropy");
+		var t8 = document.createTextNode("sparse_categorical_crossentropy");
+		z8.appendChild(t8);	
+
+		var z9 = document.createElement("option");
+		z9.setAttribute("value", "linear");
+		var t9 = document.createTextNode("linear");
+		z9.appendChild(t9);	
+
+		var z10 = document.createElement("option");
+		z10.setAttribute("value", "binary_crossentropy");
+		var t10 = document.createTextNode("binary_crossentropy");
+		z10.appendChild(t10);
+
+		var z11 = document.createElement("option");
+		z11.setAttribute("value", "kullback_leibler_divergence");
+		var t11 = document.createTextNode("kullback_leibler_divergence");
+		z11.appendChild(t11);
+
+		var z121 = document.createElement("option");
+		z121.setAttribute("value", "binary_crossentropy");
+		var t121 = document.createTextNode("binary_crossentropy");
+		z121.appendChild(t121);
+
+		var z13 = document.createElement("option");
+		z13.setAttribute("value", "poisson");
+		var t13 = document.createTextNode("poisson");
+		z13.appendChild(t13);
+
+		var z14 = document.createElement("option");
+		z14.setAttribute("value", "cosine_proximity");
+		var t14 = document.createTextNode("cosine_proximity");
+		z14.appendChild(t14);
+
+		this.newSelect2 = document.createElement("select");
+		this.newSelect2.style.border = "none";
+		this.newSelect2.style.width = "140px";
+		this.newSelect2.style.height = "30px";	
+		this.newSelect2.style.marginTop = "5px";
+
+		var z12 = document.createElement("option");
+		z12.setAttribute("value", "sgd");
+		var t12 = document.createTextNode("sgd");
+		z12.appendChild(t12);
+
+		var z22 = document.createElement("option");
+		z22.setAttribute("value", "adagrad");
+		var t22 = document.createTextNode("adagrad");
+		z22.appendChild(t22);
+
+		var z32 = document.createElement("option");
+		z32.setAttribute("value", "adadelta");
+		var t32 = document.createTextNode("adadelta");
+		z32.appendChild(t32);	
+		
+		var z42 = document.createElement("option");
+		z42.setAttribute("value", "adam");
+		var t42 = document.createTextNode("adam");
+		z42.appendChild(t42);	
+
+		var z52 = document.createElement("option");
+		z52.setAttribute("value", "adamax");
+		var t52 = document.createTextNode("adamax");
+		z52.appendChild(t52);	
+
+		var z62 = document.createElement("option");
+		z62.setAttribute("value", "nadam");
+		var t62 = document.createTextNode("nadam");
+		z62.appendChild(t62);	
 
 		this.newTitleNode.appendChild(this.newTitle);
 		this.newBlock.appendChild(this.newTitleNode);
-		this.newBlock.appendChild(this.newInput);
-		this.newBlock.appendChild(this.newInput2);
+		this.newSelect.appendChild(z1);
+		this.newSelect.appendChild(z2);
+		this.newSelect.appendChild(z3);
+		this.newSelect.appendChild(z4);
+		this.newSelect.appendChild(z5);
+		this.newSelect.appendChild(z6);
+		this.newSelect.appendChild(z7);
+		this.newSelect.appendChild(z8);
+		this.newSelect.appendChild(z9);
+		this.newSelect.appendChild(z10);
+		this.newSelect2.appendChild(z12);
+		this.newSelect2.appendChild(z22);
+		this.newSelect2.appendChild(z32);
+		this.newSelect2.appendChild(z42);
+		this.newSelect2.appendChild(z52);
+		this.newSelect2.appendChild(z62);
+		this.newBlock.appendChild(this.newSelect);
+		this.newBlock.appendChild(this.newSelect2);
+		// this.newBlock.appendChild(this.newInput);
+		// this.newBlock.appendChild(this.newInput2);
 		playground.appendChild(this.newBlock);
-		console.log('Added Compile block');
 	};
 	
 	// -----------------------------------------------------------------------------------------------
@@ -827,7 +1011,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		this.newBlock.appendChild(this.newInput);
 		this.newBlock.appendChild(this.newInput2);
 		playground.appendChild(this.newBlock);
-		console.log('Added Convolution2D block');
 	}
 	
 	// -----------------------------------------------------------------------------------------------
@@ -881,7 +1064,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		this.newBlock.appendChild(this.newTitleNode);
 		this.newBlock.appendChild(this.newInput);
 		playground.appendChild(this.newBlock);
-		console.log('Added MaxPool2D block');
 	}
 
 	// -----------------------------------------------------------------------------------------------
@@ -935,7 +1117,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		this.newBlock.appendChild(this.newTitleNode);
 		this.newBlock.appendChild(this.newInput);
 		playground.appendChild(this.newBlock);
-		console.log('Added Dropout block');
 	}
 	
 	// -----------------------------------------------------------------------------------------------
@@ -967,7 +1148,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		this.newTitleNode.appendChild(this.newTitle);
 		this.newBlock.appendChild(this.newTitleNode);
 		playground.appendChild(this.newBlock);
-		console.log('Added Flatten block');
 	}
 	
 	// -----------------------------------------------------------------------------------------------
@@ -1004,4 +1184,38 @@ document.addEventListener('DOMContentLoaded', function() {
 		bash.appendChild(bashNode);
 		tracker.appendChild(bash);
 	}
-})
+
+	function errorLogs(errors, bashMsg) {
+		var bash = document.createElement('p');
+		var bashNode = document.createTextNode(bashMsg);
+
+		bash.style.width = '80%';
+		bash.style.margin = '20px auto';
+		bash.style.border = '1px solid #ee5253';
+		bash.style.color = "#ee5253";
+		bash.style.borderRadius = '5px';
+		bash.style.padding = '10px';
+
+		bash.appendChild(bashNode);
+		errors.appendChild(bash);
+	}
+
+	function trackErrors() {
+		var currentErrors = [];
+		console.log("Current error blocks: " + blocks);
+
+		if (blocks[0].includes("Input")) {
+			var msg = "No Input block found at beginning";
+			currentErrors.pop(msg);
+			
+		} else {
+			var msg = "No Input block found at beginning";
+			if (currentErrors.includes(msg)) {} else {
+				console.log(msg);
+				errorLogs(errors, msg);
+				currentErrors.push(msg);
+			}
+		}
+
+	}
+});
