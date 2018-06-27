@@ -1,124 +1,146 @@
 <html>
-	<head>
-		<title>MLBlocks | Sandbox</title>
-		<meta name="viewport" content="width=device-width">
+    <head>
+        <title>blocks.ai | Sandbox</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<link rel="shortcut icon" type="image/ico" href="images/favicon.ico">
-		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700" rel="stylesheet">
-		<link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+        <link rel="stylesheet" href="styles.css">
 
-		<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.3/ace.js" charset="utf-8"></script>
-		<script src="sketch.js" charset="utf-8"></script>
-	</head>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.11.6"></script> -->
+        <script type='text/javascript' src='http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.4.0/fabric.min.js'></script>
+        <script src="https://unpkg.com/ml5"></script>
+        <script src="model.js"></script>
+        <script src="layers.js"></script>
+        <script src="app.js"></script>
+    </head>
 
-	<body>
+    <body>
+        
+        <div id="header">
+            <a href="#"><img draggable="false" src="images/logo.png" alt="logo" id="logo-image"></a>
+            <input type="text" id="program-title" placeholder="Untitled Project">
+        </div>
 
-		<div id="header">
-			<div id="topHeader">
-				<img src="images/logo.png" alt="logo">
-				<input type="text" id='programName' placeholder="Untitled model">
-				<button type="button" id="exportBTN">Export</button>
-			</div>
-			<div id="navbar">
-				<ul>
-					<li id="newBTN">New</li>
-					<li id="editorBTN">Editor</li>
-					<li id="aboutBTN">About</li>
-				</ul>
-			</div>
-		</div>
+        <div id="update-area"></div>
 
-		<div id="openPalette">
-			<i class="fas fa-chevron-circle-right" id="openPal"></i>
-		</div>
+        <div id="palette">
 
-		<div id="palette">
-			<div id="paletteHead">
-				<p>Palette</p>
-				<i class="fas fa-times" id='closePalette'></i>
-			</div>
-			<div id="scroller">
-				<div class="card" id="Input">
-					<p id="title">Input</p>
-				</div>
+            <div id="palette-header-main">
+                <p>Blocks</p>
+            </div>
 
-				<div class="card" id="Compile">
-					<p id="title">Compile</p>
-				</div>
+            <div id="palette-main">
+                <div class="palette-header">
+                    <p>General</p>
+                </div>
+    
+                <div class="classifier-block" id="Input">
+                    <div id="model-info-expand">
+                        <p id="classifier-title">Input</p>
+                        <p id="classifier-icon"><i class="fas fa-download"></i></p>
+                    </div>
+                    <p id="classifier-info">Select data folders to feed into pipeline for training and testing model</p>
+                </div>
+                
+                <div class="classifier-block" id="Output">
+                    <div id="model-info-expand">
+                        <p id="classifier-title">Output</p>
+                        <p id="classifier-icon"><i class="fas fa-upload"></i></p>
+                    </div>
+                    <p id="classifier-info">Select training folder that contain labels and view predictions during testing</p>
+                </div>
+    
+                <div class="classifier-block" id="Graph">
+                    <div id="model-info-expand">
+                        <p id="classifier-title">Graph</p>
+                        <p id="classifier-icon"><i class="fas fa-chart-area"></i></p>
+                    </div>
+                    <p id="classifier-info">Plot metrics such as accuracy and loss over training</p>
+                </div>
 
-				<div class="card" id="Dense">
-					<p id="title">Dense</p>
-				</div>
+                <div class="palette-header">
+                    <p>Layers</p>
+                </div>
+                
+                <div id="palette-individual-blocks">
+                    <div class="layer-block" id="Dense">
+                        <p id="layer-title">Fully Connected</p>
+                    </div>
 
-				<div class="card" id="Activation">
-					<p id="title">Activation</p>
-				</div>
+                    <div class="layer-block" id="Conv2D">
+                        <p id="layer-title">2D Convolution</p>
+                    </div>
 
-				<div class="card" id="Conv2D">
-					<p id="title">Conv2D</p>
-				</div>
+                    <div class="layer-block" id="MaxPool2D">
+                        <p id="layer-title">2D MaxPooling</p>
+                    </div>
 
-				<div class="card" id="MaxPool2D">
-					<p id="title">MaxPool2D</p>
-				</div>
+                    <div class="layer-block" id="Flatten">
+                        <p id="layer-title">Flatten</p>
+                    </div>
 
-				<div class="card" id="Flatten">
-					<p id="title">Flatten</p>
-				</div>
+                    <div class="layer-block" id="Dropout">
+                        <p id="layer-title">Dropout</p>
+                    </div>
 
-				<div class="card" id="LSTM">
-					<p id="title">LSTM</p>
-				</div>
+                    <div class="layer-block" id="BatchNorm">
+                        <p id="layer-title">Batch Normalisation</p>
+                    </div>
 
-				<div class="card" id="Dropout">
-					<p id="title">Dropout</p>
-				</div>
+                    <div class="layer-block" id="LSTM">
+                        <p style='padding-top: 30%;' id="layer-title">Long Short Term Memory Cell</p>
+                    </div>
 
-				<div class="card" id="BatchNorm">
-					<p id="title">BatchNorm</p>
-				</div>
-			</div>
-		</div>
+                    <div class="layer-block" id="RNN">
+                        <p id="layer-title">Recurrent Cell</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
 
-		<div id="playground">
+        <div id="playground">
+            <div id="input-block">
+                <div id="input-block-top">
+                    <p id="input-block-top-title">Input</p>
+                    <p id="input-block-top-button"><i class="fas fa-times"></i></p>
+                    <!-- <p id="input-block-top-button"><i class="fas fa-times"></i></p> -->
+                </div>
+                <div id="input-block-center">
+                    <!-- <img style="display: none" id="cat" src="cat.jpg" width=224 height=224/> -->
+                    <img id="input-image" />
+                    <input type="file" id="input-block-center-files" multiple>
+                </div>
+                <div id="input-block-synapse">
+                    <div id="synapse1" class="synapse"></div>
+                    <div id="synapse2" class="synapse"></div>
+                </div>
+            </div>
+        </div>
 
-		</div>
+        <div id="function-buttons">
+            <div class="tooltip">
+              <button id="export"><i class="fas fa-file-code"></i></button>
+              <span class="tooltiptext">Export code</span>
+            </div>
+            <div class="tooltip">
+              <button id="play"><i class="fas fa-play"></i></button>
+              <span class="tooltiptext">Play/pause</span>
+            </div>
+            <div class="tooltip">
+              <button id="help"><i class="fas fa-question"></i></button>
+              <span class="tooltiptext">Help</span>
+            </div>
+            <div class="tooltip">
+              <button id="trash"><i class="fas fa-trash-alt"></i></button>
+              <span class="tooltiptext">Trash</span>
+            </div>
+        </div>
 
-		<div id="openControl">
-			<i class="fas fa-chevron-circle-left" id="openCon"></i>
-		</div>
+        <div id="plots"></div>
 
-		<div id="control">
-			<div id="controlHead">
-				<p>Activity Log</p>
-				<i class="fas fa-times" id='closeControl'></i>
-			</div>
-			<div id="tracker">
-
-			</div>
-			<div id="controlHead">
-				<p>Errors</p>
-				<i class="fas fa-times" id='closeControl'></i>
-			</div>
-			<div id="errors">
-
-			</div>
-		</div>
-
-		<div id="editor">
-			<div id="editorHead">
-				<p id="programTitle">main.py</p>
-				<i class="fas fa-download" id='downloadCode'></i>
-				<i class="fas fa-times" id='closeEditor'></i>
-			</div>
-
-			<div id="codeEditor">
-			</div>
-		</div>
-
-	</body>
-
+    </body>
 </html>
