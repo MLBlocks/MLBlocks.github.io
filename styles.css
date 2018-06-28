@@ -79,11 +79,14 @@ button:focus {
 /* -------------------------------------------------------------------------------------------------------------- */
 
 #header {
-    width: 100%;
+	position: absolute;
+	top: 0;
+	left: 285px;
+	right: 0;
     height: 75px;
     display: flex;
     justify-content: space-between;
-    background: none;
+	background: none;
 }
 
 #header #program-title {
@@ -92,7 +95,7 @@ button:focus {
     border-radius: 100px;
     position: absolute;
     right: 50px;
-    top: 22px;
+    top: 17px;
     font-size: 15px;
     font-weight: 500;
     text-indent: 20px;
@@ -101,17 +104,16 @@ button:focus {
     color: gray;
 }
 
-#header #logo-image {
+#logo-image {
     height: 45px;
-    margin-left: 112px;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 /* -------------------------------------------------------------------------------------------------------------- */
 
 #palette {
     position: absolute;
-    top: 75px;
+    top: 0px;
     left: 0px;
     bottom: 0px;
     width: 285px;
@@ -120,10 +122,11 @@ button:focus {
 
 #palette #palette-header-main {
     width: 100%;
-    height: 50px;
-    background-color: #1dd1a1;
+    height: 75px;
+    background-color: #c8d6e58a;
     display: flex;
-    justify-content: center;
+	justify-content: center;
+	box-shadow: -1px 1px 1px #88888850;
 }
 
 #palette #palette-main {
@@ -131,8 +134,8 @@ button:focus {
     margin: 0;
     position: absolute;
     width: 100%;
-    top: 50px;
-    bottom: 0;
+    top: 75px;
+	bottom: 0;
     overflow-y: scroll;
     background-color: #c8d6e556;
 }
@@ -148,7 +151,6 @@ button:focus {
 #palette #palette-main .palette-header {
     width: 100%;
     height: 50px;
-    /* background-color: #b8c3cf3f */
 }
 
 #palette #palette-main .palette-header p {
@@ -233,8 +235,8 @@ button:focus {
 .layer-block #layer-title {
     font-size: 16px;
     font-weight: 600;
-    padding-top: 45%;
-    width: 97%;
+    padding-top: 40%;
+    width: 95%;
     margin: 0 auto;
 }
 
@@ -246,10 +248,9 @@ button:focus {
     right: 50px;
     left: 300px;
     bottom: 70px;
-    /* background-color: #5f27cd; */
-    overflow: scroll;
-    display: flex;
-    justify-content: flex-start;
+    /* overflow: scroll; */
+	display: flex;
+	flex-direction: row;
     flex-wrap: wrap;
 }
 
@@ -263,9 +264,9 @@ button:focus {
     background-color: #1dd1a1;
     margin: 25px 20px;
     border-radius: 10px;
-    border: none;
-    cursor: move;
-    display: none;
+    border: 1px solid #1dd1a1;
+	display: none;
+	box-shadow: 3px 3px 8px #88888850;
 }
 
 #input-block #input-block-top {
@@ -303,13 +304,11 @@ button:focus {
 
 #input-block #input-block-center {
     position: relative;
-    width: 198px;
+    width: 200px;
     height: 60%;
     background-color: white;
     text-align: center;
     background-position: center;
-    border-right: 1px solid #1dd1a1;
-    border-left: 1px solid #1dd1a1;
 }
 
 #input-block #input-block-center #input-block-canvas {
@@ -367,7 +366,7 @@ button:focus {
 }
 
 #function-buttons #export {
-    background-color: #1dd1a1;
+    background-color: #54a0ff;
 }
 
 #function-buttons #export i {
@@ -406,8 +405,121 @@ button:focus {
     height: 10px;
     border-radius: 100%;
     margin: 10px;
-    background-color: rgba(55,116,241,1);
+	/* background-color: rgba(55,116,241,1); */
+	background-color: #222f3e;
 }
 
 /* -------------------------------------------------------------------------------------------------------------- */
 
+.new-block-input {
+	width: 280px;
+	height: 101px;
+	background-color: white;
+	margin: 10px auto;
+	margin-left: 10px;
+	margin-right: 10px;
+	border-radius: 10px;
+	border: 1px solid #1dd1a1;
+	cursor: pointer;
+	box-shadow: 2px 2px 5px #88888850;
+}
+
+.new-block-top {
+	position: relative;
+	width: 100%;
+	height: 51px;
+	display: flex;
+	background-color: #1dd1a1;
+	justify-content: space-between;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom: 1px solid #88888867;
+}
+
+.new-block-top-title {
+	color: white;
+	font-size: 17px;
+	margin-left: 10px;
+	font-weight: 600;
+}
+
+.new-block-top-button {
+	font-size: 19px;
+	color: white;
+	margin-right: 10px;
+}
+
+.new-block-input-info-panel {
+	position: relative;
+	width: 100%;
+	height: 50px;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.new-block-info-param {
+	font-size: 15px;
+	color: black;
+	font-weight: 500;
+	padding: 0;
+	margin: 10px;
+	margin-top: 12px;
+}
+
+.new-block-info-input-field {
+	width: 70px;
+	height: 25px;
+	margin: 10px;
+	/* border-radius: 5px; */
+	font-weight: 500;
+	font-size: 13px;
+	border: none;
+	border-bottom: 1px solid #888888;
+	background: none;
+	font-family: Avenir Next;
+	text-align: center;
+}
+
+/* -------------------------------------------------------------------------------------------------------------- */
+
+.new-block-conv2d {
+	width: 280px;
+	height: 140px;
+	background-color: white;
+	margin: 10px auto;
+	margin-left: 10px;
+	margin-right: 10px;
+	border-radius: 10px;
+	border: 1px solid #1dd1a1;
+	cursor: pointer;
+	box-shadow: 2px 2px 5px #88888850;
+}
+
+.new-block-conv2d-info-panel {
+	position: relative;
+	width: 100%;
+	height: 40px;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	display: flex;
+	justify-content: space-between;
+}
+
+/* -------------------------------------------------------------------------------------------------------------- */
+
+.new-block-flatten {
+	width: 280px;
+	height: 55px;
+	background-color: #1dd1a1;
+	margin: 10px auto;
+	margin-left: 10px;
+	margin-right: 10px;
+	border-radius: 10px;
+	border: 1px solid #1dd1a1;
+	cursor: pointer;
+	box-shadow: 2px 2px 5px #88888850;
+	display: flex;
+	justify-content: space-between;
+}

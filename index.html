@@ -10,8 +10,10 @@
         <link rel="stylesheet" href="styles.css">
 
         <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.11.6"></script> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script type='text/javascript' src='http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.4.0/fabric.min.js'></script>
         <script src="https://unpkg.com/ml5"></script>
+        <script src="exporter.js"></script>
         <script src="model.js"></script>
         <script src="layers.js"></script>
         <script src="app.js"></script>
@@ -20,7 +22,6 @@
     <body>
         
         <div id="header">
-            <a href="#"><img draggable="false" src="images/logo.png" alt="logo" id="logo-image"></a>
             <input type="text" id="program-title" placeholder="Untitled Project">
         </div>
 
@@ -29,7 +30,7 @@
         <div id="palette">
 
             <div id="palette-header-main">
-                <p>Blocks</p>
+				<img draggable="false" src="images/logo.png" alt="logo" id="logo-image">
             </div>
 
             <div id="palette-main">
@@ -62,7 +63,35 @@
                 </div>
 
                 <div class="palette-header">
-                    <p>Layers</p>
+                    <p>Models</p>
+                </div>
+
+                <div class="classifier-block model-block" id="image-classification">
+                    <div id="model-info-expand">
+                        <p id="classifier-title">Image Classification</p>
+                        <p id="classifier-icon"><i class="far fa-eye"></i></p>
+                    </div>
+                    <p id="classifier-info">Image Processing model for classification and recognition</p>
+                </div>
+    
+                <div class="classifier-block model-block" id="object-detection">
+                    <div id="model-info-expand">
+                        <p id="classifier-title">Object Detection</p>
+                        <p id="classifier-icon"><i class="far fa-eye"></i></p>
+                    </div>
+                    <p id="classifier-info">Model to detect objects in images/video</p>
+                </div>
+    
+                <div class="classifier-block model-block" id="sentiment-analysis">
+                    <div id="model-info-expand">
+                        <p id="classifier-title">Sentiment Analysis</p>
+                        <p id="classifier-icon"><i class="far fa-comments"></i></p>
+                    </div>
+                    <p id="classifier-info">Predicts positivity/negativity of input text</p>
+                </div>
+
+                <div class="palette-header">
+                    <p style="width: 45px;">Layers</p>
                 </div>
                 
                 <div id="palette-individual-blocks">
@@ -110,7 +139,6 @@
                     <!-- <p id="input-block-top-button"><i class="fas fa-times"></i></p> -->
                 </div>
                 <div id="input-block-center">
-                    <!-- <img style="display: none" id="cat" src="cat.jpg" width=224 height=224/> -->
                     <img id="input-image" />
                     <input type="file" id="input-block-center-files" multiple>
                 </div>
@@ -118,7 +146,7 @@
                     <div id="synapse1" class="synapse"></div>
                     <div id="synapse2" class="synapse"></div>
                 </div>
-            </div>
+            </div>           
         </div>
 
         <div id="function-buttons">

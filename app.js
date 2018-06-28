@@ -45,9 +45,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var num_lstm = 0;
     var num_activation = 0;
 
-    // const image_classification_block = document.getElementById('image-classification');
-    // const sentiment_analysis_block = document.getElementById('sentiment-analysis');
-    // const object_detection_block = document.getElementById('object-detection');
+    const image_classification_block = document.getElementById('image-classification');
+    const sentiment_analysis_block = document.getElementById('sentiment-analysis');
+    const object_detection_block = document.getElementById('object-detection');
 
     // --------------------------------------------------------------------------------------------------------------
 
@@ -79,8 +79,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var input_block_center = document.getElementById('input-block-center');
     var input_block_erase = document.getElementById('input-block-top-button');
 
-    var MOBILE_NET_PATH = 'https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json';
-
     function previewFile() {
         var preview = document.getElementById('input-image');
         var file = document.getElementById('input-block-center-files').files[0];
@@ -93,15 +91,19 @@ document.addEventListener('DOMContentLoaded', function() {
             reader.readAsDataURL(file);
             console.log(file);
         }
-    }
-    
-    var palette_input_block = document.getElementById('Input');
-    palette_input_block.addEventListener('click', function() {
-        var model = new Model();
-        model.addModel(playground, num_models);
+	}
+	
+	input_block_erase.addEventListener('click', function() {
+		input_block.style.display = 'none';
+	}) 
 
-        var block = document.getElementById('input-block');
-        block.style.display = 'block';
+    var palette_input_block = document.getElementById('Input');
+    palette_input_block.addEventListener('click', async function() {
+        var model = new Model();
+		model.addModel(playground, num_models);
+
+        // var block = document.getElementById('input-block');
+		input_block.style.display = 'block';
 
         dense_block.addEventListener('click', function() {
             var dense = new Dense()
@@ -113,7 +115,13 @@ document.addEventListener('DOMContentLoaded', function() {
             var conv2d = new Conv2D()
             model.addLayer(conv2d, num_conv2d);
             num_conv2d += 1;
-        })
+		})
+		
+		maxpool2d_block.addEventListener('click', function() {
+			var maxpool2d = new MaxPool2D()
+			model.addLayer(maxpool2d,num_maxpool2d);
+			num_maxpool2d += 1;
+		})
 
         flatten_block.addEventListener('click', function() {
             var flatten = new Flatten()
