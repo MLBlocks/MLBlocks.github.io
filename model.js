@@ -10,7 +10,7 @@ function Model() {
 }
   
 Model.prototype.addModel = function(playground, numModels) {
-    // Holds all layers in a model
+    // Contains all layers in a model
     var modelID = this.name + numModels;
     this.modelSpace.id = modelID;
     

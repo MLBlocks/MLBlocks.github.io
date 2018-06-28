@@ -117,7 +117,6 @@ button:focus {
     left: 0px;
     bottom: 0px;
     width: 285px;
-    /* background-color: #feca57; */
 }
 
 #palette #palette-header-main {
@@ -248,7 +247,6 @@ button:focus {
     right: 50px;
     left: 300px;
     bottom: 70px;
-    /* overflow: scroll; */
 	display: flex;
 	flex-direction: row;
     flex-wrap: wrap;
@@ -280,7 +278,6 @@ button:focus {
 }
 
 #input-block #input-block-top #input-block-top-title {
-    /* color: white; */
     font-size: 20px;
     font-weight: 500;
     padding: 0;
@@ -292,7 +289,6 @@ button:focus {
 }
 
 #input-block #input-block-top #input-block-top-button {
-    /* color: white; */
     font-size: 17px;
     color: white;
     font-weight: 500;
@@ -405,7 +401,6 @@ button:focus {
     height: 10px;
     border-radius: 100%;
     margin: 10px;
-	/* background-color: rgba(55,116,241,1); */
 	background-color: #222f3e;
 }
 
