@@ -22,8 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Additional variables
     var all_models = []; // All models present
-    var playing = 0;
-    var chatbot_open = 0;
+    var chatbot_open = 1;
     var train_model = true;
     var chatbot_message_index = 0;
     var chatbot_script = ["Hello, welcome to MLBlocks! How can I help you?", "The Sigmoid activation function is a linear activation function that squashes a large value to a probability value between 1 and 0.", "Do you want to build a model from scratch or import a pre-built model?", "Great! Begin by adding an Input layer onto the playground by clicking the Input block under General in the palette.", "Click the Image Classification block under Models in the palette. This should load the Image Classifier model in!", "Click the Output block in the palette.", "Congrats! You've built a neural network! Since the model is pre-built, it has already been trained for you.\nTo test it, switch to Test mode above in the header and click the Input block to upload a training image.\nAfer that, click the play button to get a prediction."];
@@ -91,11 +90,13 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Testing model');
             test_label.style.fontWeight = '600';
             train_label.style.fontWeight = '300';
+            train_model = false;
         } else {
             // Train
             console.log('Training model');
             train_label.style.fontWeight = '600';
             test_label.style.fontWeight = '300';
+            train_model = true;
         }        
     })
 
