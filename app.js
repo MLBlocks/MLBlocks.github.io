@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var chatbot_open = 1;
     var train_model = true;
     var chatbot_message_index = 0;
-    var chatbot_script = ["Hello, welcome to MLBlocks! How can I help you?", "The Sigmoid activation function is a linear activation function that squashes a large value to a probability value between 1 and 0.", "Do you want to build a model from scratch or import a pre-built model?", "Great! Begin by adding an Input layer onto the playground by clicking the Input block under General in the palette.", "Click the Image Classification block under Models in the palette. This should load the Image Classifier model in!", "Click the Output block in the palette.", "Congrats! You've built a neural network! Since the model is pre-built, it has already been trained for you.\nTo test it, switch to Test mode above in the header and click the Input block to upload a training image.\nAfer that, click the play button to get a prediction."];
+    var chatbot_script = ["Hello, welcome to MLBlocks! How can I help you?", "The Sigmoid activation function is a non-linear activation function that squashes a large value to a probability value between 1 and 0.", "A neuron is a single unit that takes a group of weighted inputs, applies an activation function and returns an output.\nIn deep networks, it often takes in the outputs from the previous layer as inputs.\nA layer is formed by stacking neurons.", "Do you want to build a model from scratch or import a pre-built model?", "Great! Begin by adding an Input layer onto the playground by clicking the Input block under General in the palette.", "Click the Image Classification block under Models in the palette. This should load the Image Classifier model in!", "Click the Output block in the palette.", "Congrats! You've built a neural network! Since the model is pre-built, it has already been trained for you.\nTo test it, switch to Test mode above in the header and click the Input block to upload a training image.\nAfer that, click the play button to get a prediction."];
     var prebuilt_model_used = false;
     var prebuiltClassifierUsed = null;
 
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
         chatbot_messages_area.appendChild(newMessageBox);
         chatbot_messages_area.scrollTop = chatbot_messages_area.scrollHeight - chatbot_messages_area.clientHeight;
         chatbot_inputbox.value = '';
-        setTimeout(getReply, 1500);
+        setTimeout(getReply, 2000);
     }
 
     chatbot_inputbox.addEventListener('keydown', function(event) {

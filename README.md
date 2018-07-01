@@ -73,22 +73,9 @@ ___
 ## General usage
 Visit the [MLBlocks]("https://mlblocks.github.io/") website.
 
-1. Click a Layer Block to place it in the sandbox space.
-2. Tweak layer parameters by clicking a block in the sandbox.
-3. Pay attention to the issues that pop up in the Control Panel.
-4. Select Loss function and optimizer before exporting model.
-5. Export completed models in Python by clicking the Export button.
-6. With the Load button on top, load pre-built architectures into memory.
-
-___
-
-## Screenshots
-**Launchscreen**
-<img width="1280" alt="screen shot 2018-01-28 at 12 15 22 pm" src="https://user-images.githubusercontent.com/34085740/35478929-29a5ddc2-0425-11e8-86de-075e1c3f6999.png">
-<br>
-**Realtime issue tracking**
-<img width="1280" alt="screen shot 2018-01-28 at 12 16 43 pm" src="https://user-images.githubusercontent.com/34085740/35478931-2a067c2c-0425-11e8-8b16-1bff4ae3026a.png">
-<br>
-**Exportable models in Python3 (Keras)**
-<img width="1280" alt="screen shot 2018-01-28 at 12 16 09 pm" src="https://user-images.githubusercontent.com/34085740/35478930-29d38998-0425-11e8-9fa4-65dac2027b2d.png">
+1. Click on the chatbot button (bottom right) if new to Machine Learning.
+2. Follow instructions given by the chatbot.
+3. Place blocks in sequence to build Neural Network architectures.
+4. Train and test models by clicking the play button after loading the dataset.
+5. Deploy models on the cloud and serve them as APIs with the advanced packages.
 ___
