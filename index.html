@@ -15,6 +15,7 @@
         <script src="https://unpkg.com/ml5"></script>
         <script src="exporter.js"></script>
         <script src="model.js"></script>
+        <script src="prebuit.js"></script>
         <script src="layers.js"></script>
         <script src="app.js"></script>
     </head>
@@ -22,6 +23,14 @@
     <body>
         
         <div id="header">
+            <div id="train-test-toggle">
+                <p id="train-label">Train</p>
+                <label class="switch">
+                    <input type="checkbox">
+                    <div class="slider"></div>
+                </label>
+                <p id="test-label">Test</p>
+            </div>
             <input type="text" id="program-title" placeholder="Untitled Project">
         </div>
 
@@ -61,7 +70,7 @@
                 </div>
 
                 <div class="palette-header">
-                    <p>Models</p>
+                    <p style="width: 52px;">Models</p>
                 </div>
 
                 <div class="classifier-block model-block" id="image-classification">
@@ -134,7 +143,6 @@
                 <div id="input-block-top">
                     <p id="input-block-top-title">Input</p>
                     <p id="input-block-top-button"><i class="fas fa-times"></i></p>
-                    <!-- <p id="input-block-top-button"><i class="fas fa-times"></i></p> -->
                 </div>
                 <div id="input-block-center">
                     <img id="input-image" />
@@ -150,15 +158,15 @@
         <div id="function-buttons">
             <div class="tooltip">
               <button id="export"><i class="fas fa-file-code"></i></button>
-              <span class="tooltiptext">Export code</span>
+              <span class="tooltiptext">Export</span>
             </div>
             <div class="tooltip">
               <button id="play"><i class="fas fa-play"></i></button>
-              <span class="tooltiptext">Play/pause</span>
+              <span class="tooltiptext">Play</span>
             </div>
             <div class="tooltip">
-              <button id="help"><i class="fas fa-question"></i></button>
-              <span class="tooltiptext">Help</span>
+              <button id="chatbot-toggle"><i class="fas fa-robot"></i></button>
+              <span class="tooltiptext">Chatbot</span>
             </div>
             <div class="tooltip">
               <button id="trash"><i class="fas fa-trash-alt"></i></button>
@@ -167,6 +175,20 @@
         </div>
 
         <div id="plots"></div>
+
+        <div id="chatbot">
+            <div id="chatbot-header">
+                <p id="chatbot-header-text">Chatbot</p>
+                <i class="fas fa-times" id="close-chatbot"></i>
+            </div>
+            <div id="chatbot-messages">
+                
+            </div>
+            <div id="chatbot-textbox">
+                <input type="text" id="chatbot-input" placeholder="Start typing...">
+                <i class="fas fa-paper-plane" id="chatbot-send"></i>
+            </div>
+        </div>
 
     </body>
 </html>

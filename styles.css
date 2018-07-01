@@ -41,11 +41,12 @@ button:focus {
 
 .tooltip .tooltiptext {
     visibility: hidden;
-    min-width: 80px;
+    min-width: 40px;
+    max-width: 80px;
     background-color: #f5f6fa;
     color: #222f3e;
     text-align: center;
-    padding: 5px 0;
+    padding: 5px 5px;
     border-radius: 6px;
     font-weight: 600;
     font-size: 13;
@@ -54,7 +55,7 @@ button:focus {
     z-index: 1;
     bottom: 125%;
     left: 50%;
-    margin-left: -35px;
+    margin-left: -25px;
 
     opacity: 0;
     transition: opacity 0.3s;
@@ -78,6 +79,82 @@ button:focus {
 
 /* -------------------------------------------------------------------------------------------------------------- */
 
+#train-test-toggle {
+    position: absolute;
+    width: 150px;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    top: 20px;
+    right: 330px;
+}
+
+#train-test-toggle p {
+    padding: 0;
+    margin: 0;
+    padding-top: 5px;
+}
+
+#train-label {
+    font-weight: 600;
+}
+
+#test-label {
+    font-weight: 300;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 70px;
+    height: 34px;
+}
+
+.switch input {display:none;}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #2196F3;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 100px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 100%;
+}
+
+input:checked + .slider {
+    background-color: #1dd1a1;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #1dd1a1;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(35px);
+    -ms-transform: translateX(35px);
+    transform: translateX(35px);
+}
+
+/* -------------------------------------------------------------------------------------------------------------- */
+
 #header {
 	position: absolute;
 	top: 0;
@@ -85,7 +162,7 @@ button:focus {
 	right: 0;
     height: 75px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 	background: none;
 }
 
@@ -246,9 +323,10 @@ button:focus {
     top: 80px;
     right: 50px;
     left: 300px;
-    bottom: 70px;
+    bottom: 20px;
 	display: flex;
-	flex-direction: row;
+    flex-direction: row;
+    justify-content: left;
     flex-wrap: wrap;
 }
 
@@ -362,7 +440,7 @@ button:focus {
 }
 
 #function-buttons #export {
-    background-color: #54a0ff;
+    background-color: #1dd1a1;
 }
 
 #function-buttons #export i {
@@ -374,8 +452,12 @@ button:focus {
     background-color: #ff6b6b;
 }
 
-#function-buttons #help {
+#function-buttons #chatbot-toggle {
     background-color: #feca57;
+}
+
+#function-buttons #chatbot-toggle i {
+    margin: 5px;
 }
 
 #function-buttons #trash {
@@ -396,6 +478,133 @@ button:focus {
 
 /* -------------------------------------------------------------------------------------------------------------- */
 
+#chatbot {
+    position: absolute;
+    right: 50px;
+    bottom: 90px;
+    width: 400px;
+    height: 450px;
+    border-radius: 10px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    visibility: hidden;
+}
+
+#chatbot #chatbot-header {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    padding: 0;
+    margin: 0;
+    background-color: #feca57;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 2px 2px 5px #88888850;
+}
+
+#chatbot #chatbot-header #chatbot-header-text {
+    padding: 0;
+    margin: 0;
+    padding-left: 10px;
+    font-weight: 500;
+    font-size: 17px;
+    color: white;
+    padding-top: 15px;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+#chatbot #chatbot-header #close-chatbot {
+    color: white;
+    font-size: 20px;
+    margin-right: 15px;
+    margin-top: 15px;
+}
+
+#chatbot-messages {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    padding: 0;
+    margin: 0;
+    background-color: #c8d6e58a;
+    overflow: scroll;
+    display: block;
+}
+
+#chatbot-message-from {
+    float: left;
+    min-width: auto;
+    max-width: 250px;
+    min-height: 50px;
+    border-radius: 10px;
+    background-color: #69a9f8;
+    margin: 10px 15px;
+    margin-right: 50%;
+}
+
+#chatbot-message-to {
+    float: right;
+    min-width: auto;
+    max-width: 250px;
+    min-height: 50px;
+    border-radius: 10px;
+    background-color: #44cea9;
+    margin: 10px 15px;
+    margin-left: 50%;
+}
+
+#chatbot-message-content {
+    color: white;
+    font-size: 15px;
+    padding: 10px;
+    padding-top: 0;
+    padding-bottom: 0;
+    word-wrap: break-word;
+}
+
+#chatbot-textbox {
+    position: relative;
+    width: 100%;
+    min-height: 50px;
+    margin: 0;
+    padding: 0;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: #c8d6e58a;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#chatbot #chatbot-textbox #chatbot-input {
+    width: 85%;
+    min-height: 40px;
+    margin: 5px;
+    border-radius: 5px;
+    background-color: white;
+    font-family: Avenir Next;
+    font-size: 13px;
+    text-indent: 10px;
+    border: none;
+    word-wrap: normal;
+}
+
+#chatbot #chatbot-textbox #chatbot-send {
+    font-size: 22px;
+    color: white;
+    padding: 15px;
+    padding-top: 12px;
+    padding-right: 20px;
+    padding-left: 10px;
+    cursor: pointer;
+}
+
+/* -------------------------------------------------------------------------------------------------------------- */
+
 .synapse {
     width: 10px;
     height: 10px;
@@ -406,7 +615,7 @@ button:focus {
 
 /* -------------------------------------------------------------------------------------------------------------- */
 
-.new-block-input {
+.new-block-dense {
 	width: 280px;
 	height: 101px;
 	background-color: white;
@@ -444,7 +653,7 @@ button:focus {
 	margin-right: 10px;
 }
 
-.new-block-input-info-panel {
+.new-block-dense-info-panel {
 	position: relative;
 	width: 100%;
 	height: 50px;
