@@ -1,191 +1,166 @@
+<!DOCTYPE html>
 <html>
     <head>
-        <title>MLBlocks | Sandbox</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>MLBlocks</title>
+        <link rel="shortcut icon" type="image/png" href="images/favicon.ico"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- <link href="//cdn-images.mailchimp.com/embedcode/horizontal-slim-10_7.css" rel="stylesheet" type="text/css"> -->
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,600,700" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" media="screen" href="styles.css" />
 
-	<link rel="shortcut icon" type="image/ico" href="images/favicon.ico">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-        <link rel="stylesheet" href="app.css">
-
-        <script src="https://unpkg.com/ml5"></script>
-        <script src="exporter.js"></script>
-        <script src="model.js"></script>
-        <script src="prebuit.js"></script>
-        <script src="layers.js"></script>
         <script src="app.js"></script>
     </head>
 
     <body>
-        
-        <div id="header">
-            <div id="train-test-toggle">
-                <p id="train-label">Train</p>
-                <label class="switch">
-                    <input type="checkbox">
-                    <div class="slider"></div>
-                </label>
-                <p id="test-label">Test</p>
+
+        <div id="hero">
+            <div id="header">
+                <img src="images/logo.png" id="logo">
+                <div id="navbar">
+                    <p id="home-option">Home</p>
+                    <p id="product-option">Product</p>
+                    <p id="integration-option">Integration</p>
+                </div>
             </div>
-            <input type="text" id="program-title" placeholder="Untitled Project">
+            <div id="hero-body">
+                <p id="title"><span>Machine Learning.</span><br>In one line of code.</p>
+                <p id="subtitle">
+                    MLBlocks helps your business integrate Machine Learning pipelines into your applications with a single line of code.
+                    No fuss. No sweat.
+                    <br>
+                    <span>Sign up for our beta!</span>
+                </p>
+                <!-- <input type="text" id="signup-field" placeholder="Your email"> -->
+                <!-- <button id="email-submit"><i class="fas fa-chevron-right" style="padding-left: 5px;font-size: 15px;"></i></button> -->
+
+                <div id="mc_embed_signup">
+                    <form action="https://github.us19.list-manage.com/subscribe/post?u=ecfb6b9095045a9d44ca716ae&amp;id=a57831b978" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+                        <div id="mc_embed_signup_scroll" >
+                            <input type="email" name="EMAIL" class="email" id="mce-EMAIL" placeholder="Your email">
+                            <!-- <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                                <input type="text" name="b_ecfb6b9095045a9d44ca716ae_a57831b978" tabindex="-1">
+                            </div> -->
+                            <div class="clear">
+                                <input type="submit" value='Get started!' name="subscribe" id="mc-embedded-subscribe" class="button" style="border-radius: 0 100px 100px 0;background-color: #00b894;border: none;font-family: Avenir Next;font-weight: 600;font-size: 15px;height: 45px;padding: 0 20px;font-size: 15px;color: white;-webkit-appearance: none;-moz-appearance: none;appearance: none;">
+                            </div>
+                        </div>
+                    </form>
+                </div>                
+
+            </div>
         </div>
 
-        <div id="palette">
-
-            <div id="palette-header-main">
-				<img draggable="false" src="images/logo.png" alt="logo" id="logo-image">
-            </div>
-
-            <div id="palette-main">
-                <div class="palette-header">
-                    <p>General</p>
-                </div>
-    
-                <div class="classifier-block" id="Input">
-                    <div id="model-info-expand">
-                        <p id="classifier-title">Input</p>
-                        <p id="classifier-icon"><i class="fas fa-download"></i></p>
-                    </div>
-                    <p id="classifier-info">Select data folders to feed into pipeline for training and testing model</p>
-                </div>
-                
-                <div class="classifier-block" id="Output">
-                    <div id="model-info-expand">
-                        <p id="classifier-title">Output</p>
-                        <p id="classifier-icon"><i class="fas fa-upload"></i></p>
-                    </div>
-                    <p id="classifier-info">Select training folder that contain labels and view predictions during testing</p>
-                </div>
-    
-                <div class="classifier-block" id="Graph">
-                    <div id="model-info-expand">
-                        <p id="classifier-title">Graph</p>
-                        <p id="classifier-icon"><i class="fas fa-chart-area"></i></p>
-                    </div>
-                    <p id="classifier-info">Plot metrics such as accuracy and loss over training</p>
+        <div id="product">
+            <p class="section-title" id="product-title">What we do</p>
+            <p class="section-content" id="product-content">
+                Machine Learning Engineers and Data Scientists are expensive.
+                Learning the frameworks and the math behind Machine Learning is extremely daunting.                
+                Finally, finding the perfect model for your business is tricky.
+                <br>
+                <br>
+                <span>
+                    Leave the nitty-gritty details behind. Focus on the things that matter more!
+                </span>
+            </p>
+            <div class="section-desc" id="product-desc">
+                <div class="desc-card" id="code">
+                    <i class="fas fa-code"></i>
+                    <p class="desc-info">
+                        Say goodbye to long, confusing model docs! Integrate Machine Learning solutions into your software with a single line of code!
+                    </p>
+                    <p class="desc-link">See supported languages <i style="font-size: 13px;padding-left: 5px;" class="fas fa-arrow-right"></i></p>
                 </div>
 
-                <div class="palette-header">
-                    <p style="width: 52px;">Models</p>
+                <div class="desc-card" id="hardware">
+                    <i class="fas fa-microchip"></i>
+                    <p class="desc-info">
+                        Off-the-shelf hardware-optimised models at your disposal with the perfect architectures for your software - be it on the web or on mobile!
+                    </p>
+                    <p class="desc-link">See hardware stats <i style="font-size: 13px;padding-left: 5px;" class="fas fa-arrow-right"></i></p>
                 </div>
 
-                <div class="classifier-block model-block" id="image-classification">
-                    <div id="model-info-expand">
-                        <p id="classifier-title">Image Classification</p>
-                        <p id="classifier-icon"><i class="far fa-eye"></i></p>
+                <div class="desc-card" id="variety">
+                    <i class="fas fa-shopping-basket"></i>
+                    <div class="desc-info">
+                        Find a variety of models across multiple domains! See which ones suit your business needs and implement them with ease!
                     </div>
-                    <p id="classifier-info">Image Processing model for classification and recognition</p>
-                </div>
-    
-                <div class="classifier-block model-block" id="object-detection">
-                    <div id="model-info-expand">
-                        <p id="classifier-title">Object Detection</p>
-                        <p id="classifier-icon"><i class="far fa-eye"></i></p>
-                    </div>
-                    <p id="classifier-info">Model to detect objects in images/video</p>
-                </div>
-    
-                <div class="classifier-block model-block" id="sentiment-analysis">
-                    <div id="model-info-expand">
-                        <p id="classifier-title">Sentiment Analysis</p>
-                        <p id="classifier-icon"><i class="far fa-comments"></i></p>
-                    </div>
-                    <p id="classifier-info">Predicts positivity/negativity of input text</p>
-                </div>
-
-                <div class="palette-header">
-                    <p style="width: 45px;">Layers</p>
-                </div>
-                
-                <div id="palette-individual-blocks">
-                    <div class="layer-block" id="Dense">
-                        <p id="layer-title">Fully Connected</p>
-                    </div>
-
-                    <div class="layer-block" id="Conv2D">
-                        <p id="layer-title">2D Convolution</p>
-                    </div>
-
-                    <div class="layer-block" id="MaxPool2D">
-                        <p id="layer-title">2D MaxPooling</p>
-                    </div>
-
-                    <div class="layer-block" id="Flatten">
-                        <p id="layer-title">Flatten</p>
-                    </div>
-
-                    <div class="layer-block" id="Dropout">
-                        <p id="layer-title">Dropout</p>
-                    </div>
-
-                    <div class="layer-block" id="BatchNorm">
-                        <p id="layer-title">Batch Normalisation</p>
-                    </div>
-
-                    <div class="layer-block" id="LSTM">
-                        <p style='padding-top: 30%;' id="layer-title">Long Short Term Memory Cell</p>
-                    </div>
-
-                    <div class="layer-block" id="RNN">
-                        <p id="layer-title">Recurrent Cell</p>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-
-        <div id="playground">
-            <div id="input-block">
-                <div id="input-block-top">
-                    <p id="input-block-top-title">Input</p>
-                    <p id="input-block-top-button"><i class="fas fa-times"></i></p>
-                </div>
-                <div id="input-block-center">
-                    <img id="input-image" />
-                    <input type="file" id="input-block-center-files" multiple>
-                </div>
-                <div id="input-block-synapse">
-                    <div id="synapse1" class="synapse"></div>
-                    <div id="synapse2" class="synapse"></div>
+                    <p class="desc-link">See model warehouse <i style="font-size: 13px;padding-left: 5px;" class="fas fa-arrow-right"></i></p>
                 </div>
             </div>
         </div>
 
-        <div id="function-buttons">
-            <div class="tooltip">
-              <button id="export"><i class="fas fa-file-code"></i></button>
-              <span class="tooltiptext">Export</span>
-            </div>
-            <div class="tooltip">
-              <button id="play"><i class="fas fa-play"></i></button>
-              <span class="tooltiptext">Play</span>
-            </div>
-            <div class="tooltip">
-              <button id="chatbot-toggle"><i class="fas fa-robot"></i></button>
-              <span class="tooltiptext">Chatbot</span>
-            </div>
-            <div class="tooltip">
-              <button id="trash"><i class="fas fa-trash-alt"></i></button>
-              <span class="tooltiptext">Trash</span>
+        <div id="integration">
+            <p class="section-title" id="integration-title">Integration</p>
+            <p class="section-content" id="integration-content">
+                With a single line of code, you now have the ability to supercharge your applications with industry-grade Machine Learning pipelines.
+                Find domain-specific models and integrate them into your current stack with ease!
+            </p>
+            <div class="section-desc" id="integration-desc">
+                <div id="editor-view">
+                    <div id="language-choice">
+                        <i title="Python" id="python" class="fab fa-python"></i>
+                        <i title="JavaScript" id="javascript" class="fab fa-js-square"></i>
+                        <i title="Node JS" id="node" class="fab fa-node-js"></i>
+                        <i title="Java" id="java" class="fab fa-java"></i>
+                        <i title="PHP" id="php" class="fab fa-php"></i>
+                    </div>
+                    <div id="code-editor">
+                        <p>
+                            <span class="ce-comment"># !pip install requests</span>
+                            <br>
+                            <span class="ce-keyword">import</span> requests
+                            <br>
+                            <br>
+                            <span class="ce-comment"># Testing instances</span>
+                            <br>
+                            text = <span class="ce-string">'One of the greatest and most underrated composers of all time, Ennio Morricone will be best remembered for his late 60's/early 70's work on Spaggetti Westerns'</span>
+                            <br>
+                            <br>
+                            <span class="ce-comment"># Instantiate model</span>
+                            <br>
+                            url = <span class="ce-string">'api.mlblocks.com/'</span>
+                            <br>
+                            options = {
+                                <br>
+                                <span class="ce-key">api_reference: <span class="ce-value">'API_ACCESS_TOKEN'</span></span>,
+                                <br>
+                                <span class="ce-key">data: <span class="ce-value">text</span></span>
+                                <br>
+                            }
+                            <br>
+                            <br>
+                            <span class="ce-comment"># Get predictions response from trained model</span>
+                            <br>
+                            predictions = request.<span class="ce-function">get</span>(url, <span class="ce-param">data=</span>options)
+                        </p>
+                        <i title="Copy" id="copy-button" class="far fa-copy"></i>
+                    </div>
+                    
+                    <p id="output">JSON Output:</p>
+                    <div id="code-output">
+                        <p>
+                            {
+                                <br>
+                                <span class="ce-key">sentiment_score:</span> <span class="ce-value">0.89</span>,
+                                <br>
+                                <span class="ce-key">metadata: </span> {
+                                    <br>
+                                    <span class="ce-indent"></span><span class="ce-key">string:</span> <span class="ce-value">'One of the greatest and most underrated composers of all time, Ennio Morricone will be best remembered for his late 60's/early 70's work on Spaggetti Westerns'</span>,
+                                    <br>
+                                    <span class="ce-indent"></span><span class="ce-key">language:</span> <span class="ce-value">'en'</span>,
+                                    <br>
+                                    <span class="ce-indent"></span><span class="ce-key">num_words:</span> <span class="ce-value">23</span>,
+                                    <br>
+                                <span class="ce-indent"></span>}
+                                <br>
+                            }
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div id="plots"></div>
-
-        <div id="chatbot">
-            <div id="chatbot-header">
-                <p id="chatbot-header-text">Chatbot</p>
-                <i class="fas fa-times" id="close-chatbot"></i>
-            </div>
-            <div id="chatbot-messages">
-                
-            </div>
-            <div id="chatbot-textbox">
-                <input type="text" id="chatbot-input" placeholder="Start typing...">
-                <i class="fas fa-paper-plane" id="chatbot-send"></i>
-            </div>
-        </div>
-
     </body>
 </html>
